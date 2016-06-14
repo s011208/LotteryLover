@@ -18,13 +18,13 @@ public class Lto extends LotteryItem {
         super(seq, dateTime, normalNumbers, specialNumbers, memo);
     }
 
-    @Override
-    public int getNormalNumbersCount() {
+    public static int getNormalNumbersCount() {
         return 6;
     }
 
-    @Override
-    public int getSpecialNumbersCount() {
+    public static int getSpecialNumbersCount() {
         return 1;
     }
+
+
 }

@@ -10,10 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import yhh.bj4.lotterylover.parser.LotteryParser;
 import yhh.bj4.lotterylover.parser.lto.LtoParser;
 
 public class ViewAllActivity extends AppCompatActivity
@@ -44,7 +46,17 @@ public class ViewAllActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        new LtoParser(0).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new LtoParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+                Log.e("QQQQ", "start, page: " + page);
+            }
+
+            @Override
+            public void onFinish(int page, int[] result) {
+                Log.e("QQQQ", "finish, page: " + page + ", result: " + result[0]);
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

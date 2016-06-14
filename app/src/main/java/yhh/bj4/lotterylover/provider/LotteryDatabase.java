@@ -24,6 +24,7 @@ public class LotteryDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTableLto(db);
+        createTableAppSettings(db);
     }
 
     @Override
@@ -31,7 +32,11 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     }
 
-    public void createTableLto(SQLiteDatabase db) {
+    private void createTableAppSettings(SQLiteDatabase db) {
+        db.execSQL(AppSettings.COMMAND_CREATE_TABLE);
+    }
+
+    private void createTableLto(SQLiteDatabase db) {
         db.execSQL(Lto.COMMAND_CREATE_TABLE(Lto.TABLE_NAME));
     }
 }

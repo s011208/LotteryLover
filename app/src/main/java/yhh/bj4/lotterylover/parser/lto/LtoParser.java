@@ -1,5 +1,7 @@
 package yhh.bj4.lotterylover.parser.lto;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -22,9 +24,12 @@ import yhh.bj4.lotterylover.parser.LotteryParser;
 public class LtoParser extends LotteryParser {
 
     private int mParsePage = 0;
+    private Context mContext;
 
-    public LtoParser(int parsePage) {
+    public LtoParser(Context context, int parsePage, Callback cb) {
+        super(cb);
         mParsePage = parsePage;
+        mContext = context.getApplicationContext();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class LtoParser extends LotteryParser {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected int[] doInBackground(Void... params) {
         if (DEBUG) {
             Log.d(TAG, "doInBackground, " + getUrl());
         }
@@ -96,13 +101,18 @@ public class LtoParser extends LotteryParser {
             }
             if (!items.isEmpty()) {
                 // bulk insert
+                ContentValues[] cvs = new ContentValues[items.size()];
+                for (int i = 0; i < items.size(); ++i) {
+                    cvs[i] = items.get(i).toContentValues();
+                }
+                mContext.getContentResolver().bulkInsert(Lto.DATA_URI, cvs);
             }
         } catch (IOException e) {
             if (DEBUG) {
                 Log.w(TAG, "unexpected exception", e);
             }
+            return new int[]{RESULT_CANCELED};
         }
-
-        return null;
+        return new int[]{RESULT_OK};
     }
 }
