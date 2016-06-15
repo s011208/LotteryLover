@@ -1,5 +1,9 @@
 package yhh.bj4.lotterylover;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,6 +39,46 @@ public class Utilities {
             rtn.add(Integer.valueOf(str));
         }
         return rtn;
+    }
+
+    private static int sWindowBackgroundColor;
+    private static boolean sHasRetrievedWindowBackgroundColor = false;
+
+    public static int getWindowBackgroundColor(Context context) {
+        if (sHasRetrievedWindowBackgroundColor) {
+            return sWindowBackgroundColor;
+        }
+        try {
+            int[] backgroundColorAttr = new int[]{android.R.attr.windowBackground};
+            int indexOfAttrBackgroundColor = 0;
+            TypedArray a = context.obtainStyledAttributes(backgroundColorAttr);
+            sWindowBackgroundColor = a.getColor(indexOfAttrBackgroundColor, -1);
+            a.recycle();
+        } catch (Exception e) {
+            sWindowBackgroundColor = Color.WHITE;
+        }
+        sHasRetrievedWindowBackgroundColor = true;
+        return sWindowBackgroundColor;
+    }
+
+    private static int sPrimaryColor;
+    private static boolean sHasRetrievedPrimaryColor = false;
+
+    public static int getPrimaryColor(Context context) {
+        if (sHasRetrievedPrimaryColor) {
+            return sPrimaryColor;
+        }
+        try {
+            int[] backgroundColorAttr = new int[]{android.R.attr.colorPrimary};
+            int indexOfAttrBackgroundColor = 0;
+            TypedArray a = context.obtainStyledAttributes(backgroundColorAttr);
+            sPrimaryColor = a.getColor(indexOfAttrBackgroundColor, -1);
+            a.recycle();
+        } catch (Exception e) {
+            sPrimaryColor = Color.WHITE;
+        }
+        sHasRetrievedPrimaryColor = true;
+        return sPrimaryColor;
     }
 
     private Utilities() {
