@@ -16,10 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yhh.bj4.lotterylover.parser.LotteryParser;
-import yhh.bj4.lotterylover.parser.lto.LtoParser;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
 
 public class ViewAllActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "ViewAllActivity";
+    private static final boolean DEBUG = Utilities.DEBUG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +51,17 @@ public class ViewAllActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        new LtoParser(this, 0, new LotteryParser.Callback() {
+        new LtoDofParser(this, 0, new LotteryParser.Callback() {
             @Override
             public void onStart(int page) {
-                Log.e("QQQQ", "start, page: " + page);
+                if (DEBUG)
+                    Log.i(TAG, "start, page: " + page);
             }
 
             @Override
             public void onFinish(int page, int[] result) {
-                Log.e("QQQQ", "finish, page: " + page + ", result: " + result[0]);
+                if (DEBUG)
+                    Log.i(TAG, "finish, page: " + page + ", result: " + result[0]);
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

@@ -33,6 +33,8 @@ public abstract class LotteryParser extends AsyncTask<Void, Void, int[]> {
 
     public abstract String getOrderByParameterValue();
 
+    public abstract int getTableTdCount();
+
     public String getUrl() {
         return (getBaseUrl() + "?" + getPageParameter() + "=" + getPageParameterValue() + "&" + getOrderByParameter() + "=" + getOrderByParameterValue());
     }

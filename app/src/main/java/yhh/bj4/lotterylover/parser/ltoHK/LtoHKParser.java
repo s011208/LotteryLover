@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.parser.lto;
+package yhh.bj4.lotterylover.parser.ltoHK;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,12 +21,12 @@ import yhh.bj4.lotterylover.parser.LotteryParser;
  * Created by yenhsunhuang on 2016/6/14.
  * http://www.pilio.idv.tw/ltobig/list.asp?indexpage=1&orderby=new
  */
-public class LtoParser extends LotteryParser {
+public class LtoHKParser extends LotteryParser {
 
     private int mParsePage = 0;
     private Context mContext;
 
-    public LtoParser(Context context, int parsePage, Callback cb) {
+    public LtoHKParser(Context context, int parsePage, Callback cb) {
         super(cb);
         mParsePage = parsePage;
         mContext = context.getApplicationContext();
@@ -34,12 +34,12 @@ public class LtoParser extends LotteryParser {
 
     @Override
     public String getTag() {
-        return LtoParser.class.getSimpleName();
+        return LtoHKParser.class.getSimpleName();
     }
 
     @Override
     public String getBaseUrl() {
-        return "http://www.pilio.idv.tw/ltobig/list.asp";
+        return "http://www.pilio.idv.tw/ltohk/list.asp";
     }
 
     @Override
@@ -88,13 +88,13 @@ public class LtoParser extends LotteryParser {
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
                     List<Integer> normalNumber = Utilities.convertStringNumberToList(tds.get(2).text());
                     List<Integer> specialNumber = Utilities.convertStringNumberToList(tds.get(3).text());
-                    if (normalNumber.size() != Lto.getNormalNumbersCount() ||
-                            specialNumber.size() != Lto.getSpecialNumbersCount()) {
+                    if (normalNumber.size() != LtoHK.getNormalNumbersCount() ||
+                            specialNumber.size() != LtoHK.getSpecialNumbersCount()) {
                         // TODO failed to get right results
                         continue;
                     }
                     String memo = tds.get(4).text();
-                    items.add(new Lto(seq, drawingTime, normalNumber, specialNumber, memo));
+                    items.add(new LtoHK(seq, drawingTime, normalNumber, specialNumber, memo));
                     if (DEBUG) {
                         Log.v(TAG, "----------");
                     }
@@ -115,7 +115,7 @@ public class LtoParser extends LotteryParser {
                 for (int i = 0; i < items.size(); ++i) {
                     cvs[i] = items.get(i).toContentValues();
                 }
-                mContext.getContentResolver().bulkInsert(Lto.DATA_URI, cvs);
+                mContext.getContentResolver().bulkInsert(LtoHK.DATA_URI, cvs);
             }
         } catch (IOException e) {
             if (DEBUG) {

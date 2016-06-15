@@ -13,6 +13,9 @@ import android.util.Log;
 
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.Lto;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -25,9 +28,15 @@ public class LotteryProvider extends ContentProvider {
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int APP_SETTINGS_MATCHER = 0;
     private static final int LTO_MATCHER = 1;
+    private static final int LTO_BIG_MATCHER = 2;
+    private static final int LTO_HK_MATCHER = 3;
+    private static final int LTO_DOF_MATCHER = 4;
 
     static {
         sMatcher.addURI(AUTHORITY, Lto.TABLE_NAME, LTO_MATCHER);
+        sMatcher.addURI(AUTHORITY, LtoBig.TABLE_NAME, LTO_BIG_MATCHER);
+        sMatcher.addURI(AUTHORITY, LtoHK.TABLE_NAME, LTO_HK_MATCHER);
+        sMatcher.addURI(AUTHORITY, LtoDof.TABLE_NAME, LTO_DOF_MATCHER);
         sMatcher.addURI(AUTHORITY, AppSettings.TABLE_NAME, APP_SETTINGS_MATCHER);
     }
 
@@ -42,7 +51,7 @@ public class LotteryProvider extends ContentProvider {
         mDatabase = new LotteryDatabase(getContext()).getWritableDatabase();
         if (DEBUG) {
             printDatabaseData(Lto.DATA_URI);
-//            printDatabaseData(AppSettings.DATA_URI);
+            printDatabaseData(AppSettings.DATA_URI);
         }
         return true;
     }
@@ -50,10 +59,19 @@ public class LotteryProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Cursor rtn = null;
+        Cursor rtn;
         switch (sMatcher.match(uri)) {
             case LTO_MATCHER:
                 rtn = mDatabase.query(Lto.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case LTO_BIG_MATCHER:
+                rtn = mDatabase.query(LtoBig.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case LTO_HK_MATCHER:
+                rtn = mDatabase.query(LtoHK.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case LTO_DOF_MATCHER:
+                rtn = mDatabase.query(LtoDof.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.query(AppSettings.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
@@ -73,13 +91,22 @@ public class LotteryProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Uri rtn = null;
+        Uri rtn;
         switch (sMatcher.match(uri)) {
             case LTO_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.insert(Lto.TABLE_NAME, null, values));
                 break;
+            case LTO_BIG_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoBig.TABLE_NAME, null, values));
+                break;
+            case LTO_HK_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoHK.TABLE_NAME, null, values));
+                break;
+            case LTO_DOF_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoDof.TABLE_NAME, null, values));
+                break;
             case APP_SETTINGS_MATCHER:
-                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(AppSettings.TABLE_NAME, null, values));
+                rtn = ContentUris.withAppendedId(uri, mDatabase.replace(AppSettings.TABLE_NAME, null, values));
                 break;
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
@@ -89,10 +116,19 @@ public class LotteryProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int rtn = 0;
+        int rtn;
         switch (sMatcher.match(uri)) {
             case LTO_MATCHER:
                 rtn = mDatabase.delete(Lto.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LTO_BIG_MATCHER:
+                rtn = mDatabase.delete(LtoBig.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LTO_HK_MATCHER:
+                rtn = mDatabase.delete(LtoHK.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LTO_DOF_MATCHER:
+                rtn = mDatabase.delete(LtoDof.TABLE_NAME, selection, selectionArgs);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.delete(AppSettings.TABLE_NAME, selection, selectionArgs);
@@ -105,13 +141,23 @@ public class LotteryProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        int rtn = 0;
+        int rtn;
         switch (sMatcher.match(uri)) {
             case LTO_MATCHER:
                 rtn = mDatabase.update(Lto.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case LTO_BIG_MATCHER:
+                rtn = mDatabase.update(LtoBig.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case LTO_HK_MATCHER:
+                rtn = mDatabase.update(LtoHK.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case LTO_DOF_MATCHER:
+                rtn = mDatabase.update(LtoDof.TABLE_NAME, values, selection, selectionArgs);
+                break;
             case APP_SETTINGS_MATCHER:
-                rtn = mDatabase.update(AppSettings.TABLE_NAME, values, selection, selectionArgs);
+                mDatabase.replace(AppSettings.TABLE_NAME, null, values);
+                rtn = 1;
                 break;
             default:
                 throw new RuntimeException("unexpected update uri: " + uri);
@@ -121,10 +167,19 @@ public class LotteryProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        int rtn = 0;
+        int rtn;
         switch (sMatcher.match(uri)) {
             case LTO_MATCHER:
                 rtn = bulkInsert(Lto.TABLE_NAME, values);
+                break;
+            case LTO_BIG_MATCHER:
+                rtn = bulkInsert(LtoBig.TABLE_NAME, values);
+                break;
+            case LTO_HK_MATCHER:
+                rtn = bulkInsert(LtoHK.TABLE_NAME, values);
+                break;
+            case LTO_DOF_MATCHER:
+                rtn = bulkInsert(LtoDof.TABLE_NAME, values);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = bulkInsert(AppSettings.TABLE_NAME, values);
@@ -151,16 +206,20 @@ public class LotteryProvider extends ContentProvider {
     }
 
     private void printDatabaseData(Uri uri) {
-        Log.i(TAG, "============ start to print " + uri.getPath() + " ============");
-        Cursor cursor = query(uri, null, null, null, null);
-        if (cursor != null) {
-            try {
-                String data = DatabaseUtils.dumpCursorToString(cursor);
-                Log.d(TAG, "data: " + data);
-            } finally {
-                cursor.close();
+        try {
+            Log.i(TAG, "============ start to print " + uri.getPath() + " ============");
+            Cursor cursor = query(uri, null, null, null, null);
+            if (cursor != null) {
+                try {
+                    String data = DatabaseUtils.dumpCursorToString(cursor);
+                    Log.d(TAG, "data: " + data);
+                } finally {
+                    cursor.close();
+                }
             }
+            Log.i(TAG, "============ finish ============");
+        } catch (Exception e) {
+            Log.w(TAG, "unexpected exception occurs when printDatabaseData, uri: " + uri, e);
         }
-        Log.i(TAG, "============ finish ============");
     }
 }
