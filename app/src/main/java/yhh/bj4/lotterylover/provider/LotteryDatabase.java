@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.Lto;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
+import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
@@ -30,6 +32,8 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         createTableLtoBig(db);
         createTableLtoHK(db);
         createTableLtoDof(db);
+        createTableLto2C(db);
+        createTableLto7C(db);
         createTableAppSettings(db);
     }
 
@@ -56,5 +60,13 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     private void createTableLtoDof(SQLiteDatabase db) {
         db.execSQL(LtoDof.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+    }
+
+    private void createTableLto2C(SQLiteDatabase db) {
+        db.execSQL(Lto2C.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+    }
+
+    private void createTableLto7C(SQLiteDatabase db) {
+        db.execSQL(Lto7C.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
     }
 }

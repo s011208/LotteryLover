@@ -16,9 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yhh.bj4.lotterylover.parser.LotteryParser;
-import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
-import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
-import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
 
 public class ViewAllActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,7 +49,7 @@ public class ViewAllActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        new LtoDofParser(this, 0, new LotteryParser.Callback() {
+        new Lto2CParser(this, 0, new LotteryParser.Callback() {
             @Override
             public void onStart(int page) {
                 if (DEBUG)
