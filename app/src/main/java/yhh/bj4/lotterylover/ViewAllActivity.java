@@ -1,7 +1,6 @@
 package yhh.bj4.lotterylover;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -22,18 +21,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import yhh.bj4.lotterylover.parser.LotteryParser;
-import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
+import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
 public class ViewAllActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainTableFragment.Callback {
 
     private static final String TAG = "ViewAllActivity";
     private static final boolean DEBUG = Utilities.DEBUG;
 
     private Spinner mActionBarSpinner;
     private RecyclerView mListTypeView;
+    private MainTableFragment mMainTableFragment;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
 
@@ -44,20 +43,11 @@ public class ViewAllActivity extends AppCompatActivity
         initActionBar(savedInstanceState);
         initViewComponents(savedInstanceState);
 
-
-        new Lto7CParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-                if (DEBUG)
-                    Log.i(TAG, "start, page: " + page);
-            }
-
-            @Override
-            public void onFinish(int page, int[] result) {
-                if (DEBUG)
-                    Log.i(TAG, "finish, page: " + page + ", result: " + result[0]);
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mMainTableFragment = (MainTableFragment) getSupportFragmentManager().findFragmentByTag(MainTableFragment.class.getSimpleName());
+        if (mMainTableFragment == null) {
+            mMainTableFragment = new MainTableFragment();
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
     }
 
     private void initViewComponents(Bundle savedInstanceState) {
@@ -91,6 +81,7 @@ public class ViewAllActivity extends AppCompatActivity
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
+                    mMainTableFragment.setLtoType(mLtoType);
                 }
 
                 @Override
@@ -113,6 +104,7 @@ public class ViewAllActivity extends AppCompatActivity
             @Override
             public void onListTypeChanged(int type) {
                 mListType = type;
+                mMainTableFragment.setListType(mListType);
             }
         }));
     }
@@ -172,5 +164,15 @@ public class ViewAllActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public int getLtoType() {
+        return mLtoType;
+    }
+
+    @Override
+    public int getListType() {
+        return mListType;
     }
 }
