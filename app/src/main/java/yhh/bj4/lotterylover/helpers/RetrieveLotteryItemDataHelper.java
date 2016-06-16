@@ -32,12 +32,12 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
     }
 
     private final WeakReference<Context> mContext;
-    private final WeakReference<Callback> mCallback;
+    private final Callback mCallback;
     private final int mLtoType;
 
     public RetrieveLotteryItemDataHelper(Context context, Callback cb, int ltoType) {
         mContext = new WeakReference<>(context);
-        mCallback = new WeakReference<>(cb);
+        mCallback = cb;
         mLtoType = ltoType;
     }
 
@@ -150,14 +150,13 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 queryUri = LtoHK.DATA_URI;
                 break;
         }
-        return context.getContentResolver().query(queryUri, null, null, null, null);
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME);
     }
 
     @Override
     protected void onPostExecute(List<LotteryItem> lotteryItems) {
         super.onPostExecute(lotteryItems);
-        final Callback cb = mCallback.get();
-        if (cb == null) return;
-        cb.onFinished(lotteryItems);
+        if (mCallback == null) return;
+        mCallback.onFinished(lotteryItems);
     }
 }
