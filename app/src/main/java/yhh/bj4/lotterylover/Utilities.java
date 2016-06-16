@@ -3,6 +3,7 @@ package yhh.bj4.lotterylover;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,44 +42,30 @@ public class Utilities {
         return rtn;
     }
 
-    private static int sWindowBackgroundColor;
-    private static boolean sHasRetrievedWindowBackgroundColor = false;
+    private static final SparseArray<Integer> sColorAttrsArray = new SparseArray<>();
 
-    public static int getWindowBackgroundColor(Context context) {
-        if (sHasRetrievedWindowBackgroundColor) {
-            return sWindowBackgroundColor;
+    public static int getColorAttribute(Context context, int key, int defaultColor) {
+        if (sColorAttrsArray.get(key) != null) {
+            return sColorAttrsArray.get(key);
         }
         try {
-            int[] backgroundColorAttr = new int[]{android.R.attr.windowBackground};
+            int[] attr = new int[]{key};
             int indexOfAttrBackgroundColor = 0;
-            TypedArray a = context.obtainStyledAttributes(backgroundColorAttr);
-            sWindowBackgroundColor = a.getColor(indexOfAttrBackgroundColor, -1);
+            TypedArray a = context.obtainStyledAttributes(attr);
+            sColorAttrsArray.put(key, a.getColor(indexOfAttrBackgroundColor, defaultColor));
             a.recycle();
         } catch (Exception e) {
-            sWindowBackgroundColor = Color.WHITE;
+            sColorAttrsArray.put(key, defaultColor);
         }
-        sHasRetrievedWindowBackgroundColor = true;
-        return sWindowBackgroundColor;
+        return sColorAttrsArray.get(key);
     }
 
-    private static int sPrimaryColor;
-    private static boolean sHasRetrievedPrimaryColor = false;
+    public static int getWindowBackgroundColor(Context context) {
+        return getColorAttribute(context, android.R.attr.windowBackground, Color.WHITE);
+    }
 
     public static int getPrimaryColor(Context context) {
-        if (sHasRetrievedPrimaryColor) {
-            return sPrimaryColor;
-        }
-        try {
-            int[] backgroundColorAttr = new int[]{android.R.attr.colorPrimary};
-            int indexOfAttrBackgroundColor = 0;
-            TypedArray a = context.obtainStyledAttributes(backgroundColorAttr);
-            sPrimaryColor = a.getColor(indexOfAttrBackgroundColor, -1);
-            a.recycle();
-        } catch (Exception e) {
-            sPrimaryColor = Color.WHITE;
-        }
-        sHasRetrievedPrimaryColor = true;
-        return sPrimaryColor;
+        return getColorAttribute(context, android.R.attr.colorPrimary, Color.WHITE);
     }
 
     private Utilities() {

@@ -10,4 +10,7 @@
     <!-- action bar -->
     <dimen name="action_bar_text_size">20sp</dimen>
     <dimen name="list_type_item_padding">8dp</dimen>
+
+    <!-- fragment -->
+    <dimen name="main_table_fragment_padding">8dp</dimen>
 </resources>

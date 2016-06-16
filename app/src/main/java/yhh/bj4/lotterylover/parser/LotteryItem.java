@@ -31,14 +31,6 @@ public abstract class LotteryItem {
     private String mMemo;
     private String mExtraMessage;
 
-    public LotteryItem(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers) {
-        this(seq, dateTime, normalNumbers, specialNumbers, "");
-    }
-
-    public LotteryItem(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo) {
-        this(seq, dateTime, normalNumbers, specialNumbers, memo, "");
-    }
-
     public LotteryItem(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo, String extra) {
         mSequence = seq;
         mDrawingDateTime = dateTime;
@@ -65,6 +57,14 @@ public abstract class LotteryItem {
 
     public static int getSpecialNumbersCount() {
         throw new RuntimeException("must implement getSpecialNumbersCount");
+    }
+
+    public static int getMaximumNormalNumber() {
+        throw new RuntimeException("must implement getMaximumNormalNumber");
+    }
+
+    public static int getMaximumSpecialNumber() {
+        throw new RuntimeException("must implement getMaximumSpecialNumber");
     }
 
     public static int getTotalNumbers() {

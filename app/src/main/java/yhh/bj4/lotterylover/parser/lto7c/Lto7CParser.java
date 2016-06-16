@@ -94,7 +94,7 @@ public class Lto7CParser extends LotteryParser {
                         continue;
                     }
                     String memo = tds.get(4).text();
-                    items.add(new Lto7C(seq, drawingTime, normalNumber, specialNumber, memo));
+                    items.add(new Lto7C(seq, drawingTime, normalNumber, specialNumber, memo, ""));
                     if (DEBUG) {
                         Log.v(TAG, "----------");
                     }

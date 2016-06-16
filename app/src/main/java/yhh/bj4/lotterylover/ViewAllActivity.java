@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
+import yhh.bj4.lotterylover.parser.LotteryParser;
+import yhh.bj4.lotterylover.parser.lto.LtoParser;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
 public class ViewAllActivity extends AppCompatActivity
@@ -40,6 +42,7 @@ public class ViewAllActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
+        restoreSavedInstanceState(savedInstanceState);
         initActionBar(savedInstanceState);
         initViewComponents(savedInstanceState);
 
@@ -48,6 +51,31 @@ public class ViewAllActivity extends AppCompatActivity
             mMainTableFragment = new MainTableFragment();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+
+//        new LtoParser(this, 0, new LotteryParser.Callback() {
+//            @Override
+//            public void onStart(int page) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish(int page, int[] results) {
+//
+//            }
+//        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void restoreSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+        mListType = savedInstanceState.getInt(LotteryLover.KEY_LIST_TYPE, mListType);
+        mLtoType = savedInstanceState.getInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(LotteryLover.KEY_LIST_TYPE, mListType);
+        outState.putInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
     }
 
     private void initViewComponents(Bundle savedInstanceState) {
@@ -77,6 +105,7 @@ public class ViewAllActivity extends AppCompatActivity
 
             mActionBarSpinner = (Spinner) ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_action_bar_spinner, null);
             mActionBarSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.action_bar_spinner_lto_type)));
+            mActionBarSpinner.setSelection(mLtoType);
             mActionBarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -106,7 +135,7 @@ public class ViewAllActivity extends AppCompatActivity
                 mListType = type;
                 mMainTableFragment.setListType(mListType);
             }
-        }));
+        }, mListType));
     }
 
     @Override

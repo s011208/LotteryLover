@@ -14,8 +14,8 @@ public class LtoBig extends LotteryItem {
     public static final String TABLE_NAME = "ltobig";
     public static final Uri DATA_URI = LotteryProvider.getUri(TABLE_NAME);
 
-    public LtoBig(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo) {
-        super(seq, dateTime, normalNumbers, specialNumbers, memo);
+    public LtoBig(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo, String extra) {
+        super(seq, dateTime, normalNumbers, specialNumbers, memo, extra);
     }
 
     public static int getNormalNumbersCount() {
@@ -24,5 +24,13 @@ public class LtoBig extends LotteryItem {
 
     public static int getSpecialNumbersCount() {
         return 1;
+    }
+
+    public static int getMaximumNormalNumber() {
+        return 49;
+    }
+
+    public static int getMaximumSpecialNumber() {
+        return -1;
     }
 }

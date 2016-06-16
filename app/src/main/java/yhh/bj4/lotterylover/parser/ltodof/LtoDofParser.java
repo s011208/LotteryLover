@@ -99,7 +99,7 @@ public class LtoDofParser extends LotteryParser {
                         continue;
                     }
                     String memo = tds.get(3).text();
-                    items.add(new LtoDof(seq, drawingTime, normalNumber, new ArrayList<Integer>(), memo));
+                    items.add(new LtoDof(seq, drawingTime, normalNumber, new ArrayList<Integer>(), memo, ""));
                     if (DEBUG) {
                         Log.v(TAG, "----------");
                     }

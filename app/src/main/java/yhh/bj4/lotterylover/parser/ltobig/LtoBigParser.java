@@ -94,7 +94,7 @@ public class LtoBigParser extends LotteryParser {
                         continue;
                     }
                     String memo = tds.get(4).text();
-                    items.add(new LtoBig(seq, drawingTime, normalNumber, specialNumber, memo));
+                    items.add(new LtoBig(seq, drawingTime, normalNumber, specialNumber, memo, ""));
                     if (DEBUG) {
                         Log.v(TAG, "----------");
                     }

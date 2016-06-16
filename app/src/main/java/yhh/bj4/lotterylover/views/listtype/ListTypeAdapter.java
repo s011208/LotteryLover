@@ -25,10 +25,11 @@ public class ListTypeAdapter extends RecyclerView.Adapter {
     private int mSelectedPosition = 0;
     private Callback mCallback;
 
-    public ListTypeAdapter(Context context, Callback cb) {
+    public ListTypeAdapter(Context context, Callback cb, int selectedPosition) {
         mContext = context;
         mCallback = cb;
         mItems = context.getResources().getStringArray(R.array.action_bar_list_type);
+        mSelectedPosition = selectedPosition;
     }
 
     @Override
