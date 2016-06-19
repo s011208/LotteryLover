@@ -150,7 +150,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 queryUri = LtoHK.DATA_URI;
                 break;
         }
-        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME);
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " desc");
     }
 
     @Override

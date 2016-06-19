@@ -55,10 +55,10 @@ public class LotteryProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mDatabase = new LotteryDatabase(getContext()).getWritableDatabase();
-        if (DEBUG) {
-            printDatabaseData(Lto.DATA_URI);
-            printDatabaseData(AppSettings.DATA_URI);
-        }
+//        if (DEBUG) {
+//            printDatabaseData(Lto.DATA_URI);
+//            printDatabaseData(AppSettings.DATA_URI);
+//        }
         return true;
     }
 

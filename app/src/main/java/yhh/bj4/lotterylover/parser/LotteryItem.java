@@ -11,6 +11,12 @@ import java.util.Collections;
 import java.util.List;
 
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.parser.lto.Lto;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
+import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -65,6 +71,78 @@ public abstract class LotteryItem {
 
     public static int getMaximumSpecialNumber() {
         throw new RuntimeException("must implement getMaximumSpecialNumber");
+    }
+
+    public static int getNormalNumbersCount(LotteryItem item) {
+        if (item instanceof Lto) {
+            return Lto.getNormalNumbersCount();
+        } else if (item instanceof Lto2C) {
+            return Lto2C.getNormalNumbersCount();
+        } else if (item instanceof Lto7C) {
+            return Lto7C.getNormalNumbersCount();
+        } else if (item instanceof LtoBig) {
+            return LtoBig.getNormalNumbersCount();
+        } else if (item instanceof LtoDof) {
+            return LtoDof.getNormalNumbersCount();
+        } else if (item instanceof LtoHK) {
+            return LtoHK.getNormalNumbersCount();
+        } else {
+            throw new RuntimeException("must provide valid item");
+        }
+    }
+
+    public static int getSpecialNumbersCount(LotteryItem item) {
+        if (item instanceof Lto) {
+            return Lto.getSpecialNumbersCount();
+        } else if (item instanceof Lto2C) {
+            return Lto2C.getSpecialNumbersCount();
+        } else if (item instanceof Lto7C) {
+            return Lto7C.getSpecialNumbersCount();
+        } else if (item instanceof LtoBig) {
+            return LtoBig.getSpecialNumbersCount();
+        } else if (item instanceof LtoDof) {
+            return LtoDof.getSpecialNumbersCount();
+        } else if (item instanceof LtoHK) {
+            return LtoHK.getSpecialNumbersCount();
+        } else {
+            throw new RuntimeException("must provide valid item");
+        }
+    }
+
+    public static int getMaximumNormalNumber(LotteryItem item) {
+        if (item instanceof Lto) {
+            return Lto.getMaximumNormalNumber();
+        } else if (item instanceof Lto2C) {
+            return Lto2C.getMaximumNormalNumber();
+        } else if (item instanceof Lto7C) {
+            return Lto7C.getMaximumNormalNumber();
+        } else if (item instanceof LtoBig) {
+            return LtoBig.getMaximumNormalNumber();
+        } else if (item instanceof LtoDof) {
+            return LtoDof.getMaximumNormalNumber();
+        } else if (item instanceof LtoHK) {
+            return LtoHK.getMaximumNormalNumber();
+        } else {
+            throw new RuntimeException("must provide valid item");
+        }
+    }
+
+    public static int getMaximumSpecialNumber(LotteryItem item) {
+        if (item instanceof Lto) {
+            return Lto.getMaximumSpecialNumber();
+        } else if (item instanceof Lto2C) {
+            return Lto2C.getMaximumSpecialNumber();
+        } else if (item instanceof Lto7C) {
+            return Lto7C.getMaximumSpecialNumber();
+        } else if (item instanceof LtoBig) {
+            return LtoBig.getMaximumSpecialNumber();
+        } else if (item instanceof LtoDof) {
+            return LtoDof.getMaximumSpecialNumber();
+        } else if (item instanceof LtoHK) {
+            return LtoHK.getMaximumSpecialNumber();
+        } else {
+            throw new RuntimeException("must provide valid item");
+        }
     }
 
     public static int getTotalNumbers() {

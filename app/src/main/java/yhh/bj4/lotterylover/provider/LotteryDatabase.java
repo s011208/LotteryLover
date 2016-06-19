@@ -59,14 +59,14 @@ public class LotteryDatabase extends SQLiteOpenHelper {
     }
 
     private void createTableLtoDof(SQLiteDatabase db) {
-        db.execSQL(LtoDof.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+        db.execSQL(LtoDof.COMMAND_CREATE_TABLE(LtoDof.TABLE_NAME));
     }
 
     private void createTableLto2C(SQLiteDatabase db) {
-        db.execSQL(Lto2C.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+        db.execSQL(Lto2C.COMMAND_CREATE_TABLE(Lto2C.TABLE_NAME));
     }
 
     private void createTableLto7C(SQLiteDatabase db) {
-        db.execSQL(Lto7C.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+        db.execSQL(Lto7C.COMMAND_CREATE_TABLE(Lto7C.TABLE_NAME));
     }
 }

@@ -39,7 +39,7 @@ public class Lto2CParser extends LotteryParser {
 
     @Override
     public String getBaseUrl() {
-        return "http://www.pilio.idv.tw/lto2c/list.asp";
+        return "http://www.pilio.idv.tw/lto2c/listbbk.asp";
     }
 
     @Override

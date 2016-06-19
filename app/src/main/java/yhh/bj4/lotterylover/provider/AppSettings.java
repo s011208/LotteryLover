@@ -21,6 +21,16 @@ public class AppSettings {
                     + COLUMN_VALUE + " TEXT NOT NULL"
                     + ")";
 
+    public static boolean contains(Context context, String key) {
+        Cursor cursor = context.getContentResolver().query(DATA_URI, null, COLUMN_KEY + "='" + key + "'", null, null);
+        if (cursor == null) return false;
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
     public static int get(Context context, String key, int defaultValue) {
         int rtn = defaultValue;
         Cursor c = context.getContentResolver().query(DATA_URI, new String[]{COLUMN_VALUE}, COLUMN_KEY + "='" + key + "'", null, null);

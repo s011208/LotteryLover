@@ -1,0 +1,12 @@
+<resources>
+    <!-- action bar -->
+    <string-array name="action_bar_spinner_lto_type">
+        <item>威力彩</item>
+        <item>雙色球</item>
+        <item>七樂彩</item>
+        <item>大樂透</item>
+        <item>大福彩</item>
+        <item>六合彩</item>
+    </string-array>
+
+</resources>

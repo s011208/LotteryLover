@@ -39,7 +39,7 @@ public class LtoParser extends LotteryParser {
 
     @Override
     public String getBaseUrl() {
-        return "http://www.pilio.idv.tw/ltobig/list.asp";
+        return "http://www.pilio.idv.tw/lto/listbbk.asp";
     }
 
     @Override
@@ -82,7 +82,12 @@ public class LtoParser extends LotteryParser {
             Elements tableTr = doc.select("table tr");
             for (Element ele : tableTr) {
                 Elements tds = ele.select("td");
-                if (tds.size() != getTableTdCount()) continue;
+                if (tds.size() != getTableTdCount()) {
+                    if (DEBUG) {
+                        Log.v(TAG, "tds.size(): " + tds.size() + ", getTableTdCount(): " + getTableTdCount());
+                    }
+                    continue;
+                }
                 try {
                     long seq = Long.valueOf(tds.get(0).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
@@ -91,6 +96,9 @@ public class LtoParser extends LotteryParser {
                     if (normalNumber.size() != Lto.getNormalNumbersCount() ||
                             specialNumber.size() != Lto.getSpecialNumbersCount()) {
                         // TODO failed to get right results
+                        if (DEBUG) {
+                            Log.w(TAG, "failed to get right results");
+                        }
                         continue;
                     }
                     String memo = tds.get(4).text();
@@ -105,7 +113,7 @@ public class LtoParser extends LotteryParser {
                     }
                 } catch (NumberFormatException e) {
                     if (DEBUG) {
-                        Log.v(TAG, "ignore wrong data set");
+                        Log.v(TAG, "ignore wrong data set", e);
                     }
                 }
             }
@@ -115,7 +123,10 @@ public class LtoParser extends LotteryParser {
                 for (int i = 0; i < items.size(); ++i) {
                     cvs[i] = items.get(i).toContentValues();
                 }
-                mContext.getContentResolver().bulkInsert(Lto.DATA_URI, cvs);
+                int result = mContext.getContentResolver().bulkInsert(Lto.DATA_URI, cvs);
+                if (DEBUG) {
+                    Log.d(TAG, "insert result: " + result);
+                }
             }
         } catch (IOException e) {
             if (DEBUG) {

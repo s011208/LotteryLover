@@ -24,6 +24,12 @@ import android.widget.Spinner;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryParser;
 import yhh.bj4.lotterylover.parser.lto.LtoParser;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
+import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
+import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
 public class ViewAllActivity extends AppCompatActivity
@@ -52,23 +58,91 @@ public class ViewAllActivity extends AppCompatActivity
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
 
-//        new LtoParser(this, 0, new LotteryParser.Callback() {
-//            @Override
-//            public void onStart(int page) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish(int page, int[] results) {
-//
-//            }
-//        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        queryPage0();
+    }
+
+    private void queryPage0() {
+        new Lto2CParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        new Lto7CParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        new LtoBigParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        new LtoDofParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        new LtoHKParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        new LtoParser(this, 0, new LotteryParser.Callback() {
+            @Override
+            public void onStart(int page) {
+
+            }
+
+            @Override
+            public void onFinish(int page, int[] results) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-        mListType = savedInstanceState.getInt(LotteryLover.KEY_LIST_TYPE, mListType);
-        mLtoType = savedInstanceState.getInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
+        if (savedInstanceState == null) {
+            mListType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
+            mLtoType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
+        } else {
+            mListType = savedInstanceState.getInt(LotteryLover.KEY_LIST_TYPE, mListType);
+            mLtoType = savedInstanceState.getInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
+        }
     }
 
     @Override
@@ -110,6 +184,7 @@ public class ViewAllActivity extends AppCompatActivity
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
+                    AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
                     mMainTableFragment.setLtoType(mLtoType);
                 }
 
@@ -133,6 +208,7 @@ public class ViewAllActivity extends AppCompatActivity
             @Override
             public void onListTypeChanged(int type) {
                 mListType = type;
+                AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
                 mMainTableFragment.setListType(mListType);
             }
         }, mListType));

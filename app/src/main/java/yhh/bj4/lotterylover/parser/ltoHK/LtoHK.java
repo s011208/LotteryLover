@@ -11,7 +11,7 @@ import yhh.bj4.lotterylover.provider.LotteryProvider;
  * Created by yenhsunhuang on 2016/6/14.
  */
 public class LtoHK extends LotteryItem {
-    public static final String TABLE_NAME = "lto";
+    public static final String TABLE_NAME = "ltohk";
     public static final Uri DATA_URI = LotteryProvider.getUri(TABLE_NAME);
 
     public LtoHK(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo, String extra) {

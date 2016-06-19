@@ -10,6 +10,7 @@
     <string-array name="action_bar_spinner_lto_type">
         <item>Lto</item>
         <item>Lto 2c</item>
+        <item>Lto 7c</item>
         <item>Lto big</item>
         <item>Lto dof</item>
         <item>Lto hk</item>
