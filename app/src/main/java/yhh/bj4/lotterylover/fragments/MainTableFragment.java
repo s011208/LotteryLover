@@ -23,6 +23,8 @@ public class MainTableFragment extends Fragment {
     private static final String TAG = "MainTableFragment";
     private static final boolean DEBUG = Utilities.DEBUG;
 
+    private static final int MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS = 40;
+
     private int mLtoType, mListType;
 
     private ProgressBar mLoadingProgress;
@@ -35,6 +37,9 @@ public class MainTableFragment extends Fragment {
         final View root = inflater.inflate(R.layout.main_table_fragment, null);
         mMainTable = (RecyclerView) root.findViewById(R.id.main_table_recyclerview);
         mMainTable.addItemDecoration(new DividerItemDecoration(getActivity()));
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_NUMERIC, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_TOGETHER, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         return root;
     }
 

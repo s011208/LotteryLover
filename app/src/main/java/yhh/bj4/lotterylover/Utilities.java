@@ -142,6 +142,46 @@ public class Utilities {
         return new Pair<>(resultOfNormal, resultOfSpecial);
     }
 
+    public static int addDigits(int num) {
+        return num == 0 ? 0 : (num % 9 == 0 ? 9 : (num % 9));
+    }
+
+    public static int getLastDigit(int num) {
+        return num % 10;
+    }
+
+    public static int addDigitsOnce(int num) {
+        return num / 10 + num % 10;
+    }
+
+    private static Map<Integer, List<Integer>> sPlusAndLastDigitMap = new HashMap<>();
+
+    static {
+        for (int i = 0; i < 100; ++i) {
+            int digit = Utilities.getLastDigit(Utilities.addDigitsOnce(i));
+            List<Integer> listData = sPlusAndLastDigitMap.get(digit);
+            if (listData == null) {
+                listData = new ArrayList<>();
+            }
+            listData.add(i);
+            sPlusAndLastDigitMap.put(i, listData);
+        }
+    }
+
+    public static Map<Integer, Integer> getPlusAndLastDigitMap(int maximumIndex) {
+        Map<Integer, Integer> rtn = new HashMap<>();
+        int index = 0;
+        for (int i = 0; i < 10; ++i) {
+            List<Integer> data = sPlusAndLastDigitMap.get(i);
+            for (Integer value : data) {
+                if (value <= maximumIndex) {
+                    rtn.put(index++, value);
+                }
+            }
+        }
+        return rtn;
+    }
+
     private Utilities() {
     }
 }

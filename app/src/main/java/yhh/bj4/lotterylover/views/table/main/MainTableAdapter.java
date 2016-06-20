@@ -18,6 +18,7 @@ import yhh.bj4.lotterylover.views.table.main.holder.OverallContentHolder;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
+import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 
 /**
  * Created by yenhsunhuang on 2016/6/16.
@@ -28,6 +29,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_OVER_ALL_CONTENT = 0;
     public static final int TYPE_NUMERIC = 1;
+    public static final int TYPE_PLUS_TOGETHER = 2;
 
     private int mLtoType, mListType;
 
@@ -70,11 +72,11 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder holder = null;
         switch (viewType) {
             case TYPE_OVER_ALL_CONTENT:
-                holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null));
-                break;
+            case TYPE_PLUS_TOGETHER:
             case TYPE_NUMERIC:
                 holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null));
                 break;
+
         }
         return holder;
     }
@@ -89,7 +91,16 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_NUMERIC:
                 bindNumericContent(holder, position);
                 break;
+            case TYPE_PLUS_TOGETHER:
+                bindPlusTogetherContent(holder, position);
+                break;
         }
+    }
+
+    private void bindPlusTogetherContent(RecyclerView.ViewHolder holder, int position) {
+        final TypePlusTogether item = (TypePlusTogether) getItem(position);
+        OverallContentHolder contentHolder = (OverallContentHolder) holder;
+        contentHolder.getTextView().setText(item.getSpannableString());
     }
 
     private void bindNumericContent(RecyclerView.ViewHolder holder, int position) {

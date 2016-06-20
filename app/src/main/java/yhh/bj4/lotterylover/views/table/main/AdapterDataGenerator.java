@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
@@ -20,6 +21,7 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
+import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 
 /**
  * Created by yenhsunhuang on 2016/6/16.
@@ -60,6 +62,131 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             case LotteryLover.LIST_TYPE_NUMERIC:
                 rtn.addAll(initListTypeNumeric());
                 break;
+            case LotteryLover.LIST_TYPE_PLUS_TOGETHER:
+                rtn.addAll(initListTypePlusTogether());
+                break;
+        }
+        return rtn;
+    }
+
+    private ArrayList<MainTableItem> initListTypePlusTogether() {
+        ArrayList<MainTableItem> rtn = new ArrayList<>();
+        // add content data
+        for (LotteryItem item : mLotteryData) {
+            MainTableItem mainTableItem = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
+                    item.getSequence(), item.getDrawingDateTime(),
+                    item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                    , mMaximumSpecialNumber);
+            mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+            mainTableItem.setIsContentView(true);
+            Map<Integer, Integer> newNormalIndex = Utilities.getPlusAndLastDigitMap(mMaximumNormalNumber);
+
+            for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
+                boolean isFind = false;
+                int valueOfIndex = newNormalIndex.get(k);
+                for (int i = 0; i < mNormalNumberCount; ++i) {
+                    if (item.getNormalNumbers().get(i) == valueOfIndex) {
+                        isFind = true;
+                        // TODO found item can be removed
+                        break;
+                    }
+                }
+                if (isFind) {
+                    mainTableItem.addNormalNumber(k - TABLE_OFFSET, valueOfIndex);
+                } else {
+                    mainTableItem.addNormalNumber(k - TABLE_OFFSET, -1);
+                }
+            }
+
+            if (mMaximumSpecialNumber == -1) {
+                for (int i = 0; i < mSpecialNumberCount; ++i) {
+                    mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
+                }
+            } else {
+                newNormalIndex = Utilities.getPlusAndLastDigitMap(mMaximumSpecialNumber);
+                for (int k = TABLE_OFFSET; k < mMaximumSpecialNumber + TABLE_OFFSET; ++k) {
+                    boolean isFind = false;
+                    int valueOfIndex = newNormalIndex.get(k);
+                    for (int i = 0; i < mSpecialNumberCount; ++i) {
+                        if (item.getSpecialNumbers().get(i) == valueOfIndex) {
+                            isFind = true;
+                            // TODO found item can be removed
+                            break;
+                        }
+                    }
+                    if (isFind) {
+                        mainTableItem.addSpecialNumber(k - TABLE_OFFSET, valueOfIndex);
+                    } else {
+                        mainTableItem.addSpecialNumber(k - TABLE_OFFSET, -1);
+                    }
+                }
+            }
+
+            mainTableItem.getSpannableString();
+            rtn.add(mainTableItem);
+        }
+
+        // add monthly data
+        Calendar previous = null, current = Calendar.getInstance();
+        ArrayList<LotteryItem> tempItems = new ArrayList<>();
+        int itemAdded = 0;
+        for (int i = 0; i < mLotteryData.size(); ++i) {
+            LotteryItem item = mLotteryData.get(i);
+            current.setTimeInMillis(item.getDrawingDateTime());
+            if (previous == null) {
+                tempItems.add(item);
+            } else {
+                if (previous.get(Calendar.MONTH) == current.get(Calendar.MONTH) && i != mLotteryData.size() - 1) {
+                    tempItems.add(item);
+                } else {
+                    LotteryItem tempItem = tempItems.get(tempItems.size() - 1);
+                    if (i == mLotteryData.size() - 1) {
+                        tempItems.add(item);
+                        tempItem = item;
+                        itemAdded++; // insert into the last item of list
+                    }
+
+                    Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(tempItems);
+
+                    MainTableItem mainTableItem = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
+                            tempItem.getSequence(), tempItem.getDrawingDateTime(),
+                            tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                            , mMaximumSpecialNumber);
+                    mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+                    mainTableItem.setIsContentView(false);
+
+                    if (mMaximumSpecialNumber == -1) {
+                        // combine results
+                        if (DEBUG) {
+                            // special & normal list should have the same list size
+                            Log.d(TAG, "normal: " + combinedResult.first.size() + ", special: " + combinedResult.second.size());
+                        }
+                        for (int indexOfList = 0; indexOfList < combinedResult.first.size(); ++indexOfList) {
+                            combinedResult.first.set(indexOfList, combinedResult.first.get(indexOfList) + combinedResult.second.get(indexOfList));
+                        }
+                    }
+                    if (DEBUG) {
+                        Log.d(TAG, "mMaximumNormalNumber: " + mMaximumNormalNumber + ", combinedResult.first: " + combinedResult.first.size());
+                    }
+                    for (int k = 0; k < mMaximumNormalNumber; ++k) {
+                        mainTableItem.addNormalNumber(k, combinedResult.first.get(k));
+                    }
+
+                    if (mMaximumSpecialNumber != -1) {
+                        for (int k = 0; k < mMaximumSpecialNumber; ++k) {
+                            mainTableItem.addSpecialNumber(k, combinedResult.second.get(k));
+                        }
+                    }
+
+                    tempItems.clear();
+                    tempItems.add(item);
+                    rtn.add(i + itemAdded++, mainTableItem);
+                }
+            }
+            if (previous == null) {
+                previous = Calendar.getInstance();
+            }
+            previous.setTimeInMillis(current.getTimeInMillis());
         }
         return rtn;
     }
@@ -119,7 +246,6 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         // add monthly data
         Calendar previous = null, current = Calendar.getInstance();
         ArrayList<LotteryItem> tempItems = new ArrayList<>();
-        ArrayList<LotteryItem> monthlyDataItems = new ArrayList<>();
         int itemAdded = 0;
         for (int i = 0; i < mLotteryData.size(); ++i) {
             LotteryItem item = mLotteryData.get(i);

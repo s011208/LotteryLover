@@ -12,6 +12,8 @@ import yhh.bj4.lotterylover.Utilities;
  * Created by yenhsunhuang on 2016/6/16.
  */
 public abstract class MainTableItem {
+    static final int MONTHLY_DATA_BACKGROUND_COLOR = Color.argb(50, 0xff, 0xbb, 0x77);
+
     static final String SEP = "   ";
     static final float SEP_RELATIVE_SIZE = 0.3f;
     /**
