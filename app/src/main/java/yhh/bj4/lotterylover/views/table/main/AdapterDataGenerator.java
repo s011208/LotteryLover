@@ -168,13 +168,29 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     if (DEBUG) {
                         Log.d(TAG, "mMaximumNormalNumber: " + mMaximumNormalNumber + ", combinedResult.first: " + combinedResult.first.size());
                     }
+                    List<Integer> tempData = new ArrayList<>();
                     for (int k = 0; k < mMaximumNormalNumber; ++k) {
-                        mainTableItem.addNormalNumber(k, combinedResult.first.get(k));
+                        tempData.add(k, combinedResult.first.get(k));
+                    }
+
+                    Map<Integer, Integer> tempMap = Utilities.getPlusAndLastDigitMap(mMaximumNormalNumber);
+                    for (int in = 1; in < mMaximumNormalNumber + 1; ++in) {
+                        int newKey = in - 1;
+                        int oldKey = tempMap.get(in) - 1;
+                        mainTableItem.addNormalNumber(newKey, combinedResult.first.get(oldKey));
                     }
 
                     if (mMaximumSpecialNumber != -1) {
+                        tempData.clear();
                         for (int k = 0; k < mMaximumSpecialNumber; ++k) {
-                            mainTableItem.addSpecialNumber(k, combinedResult.second.get(k));
+                            tempData.add(k, combinedResult.second.get(k));
+                        }
+
+                        tempMap = Utilities.getPlusAndLastDigitMap(mMaximumSpecialNumber);
+                        for (int in = 1; in < mMaximumSpecialNumber + 1; ++in) {
+                            int newKey = in - 1;
+                            int oldKey = tempMap.get(in) - 1;
+                            mainTableItem.addSpecialNumber(newKey, combinedResult.second.get(oldKey));
                         }
                     }
 

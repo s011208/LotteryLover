@@ -168,6 +168,11 @@ public class Utilities {
         }
     }
 
+    /**
+     * key = new index, value = old index
+     * @param maximumIndex
+     * @return
+     */
     public static Map<Integer, Integer> getPlusAndLastDigitMap(int maximumIndex) {
         Map<Integer, Integer> rtn = new HashMap<>();
         int index = 0;

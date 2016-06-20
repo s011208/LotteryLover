@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.text.SpannableString;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import yhh.bj4.lotterylover.Utilities;
