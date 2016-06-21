@@ -159,7 +159,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected void onPostExecute(MainTableItem mainTableItem) {
                 if (mainTableItem == null) {
-                    mHeader.setText("null");
+                    mHeader.setText("");
                 } else {
                     mHeader.setText(mainTableItem.getSpannableString());
                 }

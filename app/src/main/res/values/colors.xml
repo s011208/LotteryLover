@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FF8800</color>
     <color name="colorPrimaryDark">#FF5511</color>
-    <color name="colorPrimaryLight">#10FFBB77</color>
+    <color name="colorPrimaryLight">#FFBB77</color>
     <color name="colorAccent">#00BBFF</color>
 
     <!-- action bar -->

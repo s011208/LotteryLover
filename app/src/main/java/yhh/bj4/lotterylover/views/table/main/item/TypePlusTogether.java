@@ -146,6 +146,10 @@ public class TypePlusTogether extends MainTableItem {
             rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
+        if (mItemType == ITEM_TYPE_SUB_TOTAL) {
+            rtn.setSpan(new ForegroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
         // rest of spe of normal
         for (int i = 0; i < indexOfSepOfNormal.size(); ++i) {
             final int startIndex = indexOfSepOfNormal.get(i) + 1;
