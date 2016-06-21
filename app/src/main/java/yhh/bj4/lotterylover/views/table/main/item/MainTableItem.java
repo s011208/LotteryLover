@@ -25,6 +25,13 @@ public abstract class MainTableItem {
     public static final int ITEM_TYPE_HEADER = 2;
     public static final int ITEM_TYPE_FOOTER = 3;
 
+    static final int SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER = Color.WHITE;
+    static final int SPECIAL_NUMBER_COLOR = Color.RED;
+    static final int SEP_COLOR_OF_NORMAL = Color.LTGRAY;
+    static final int SEP_COLOR_OF_NORMAL_OF_GROUP = Color.RED;
+    static final int SEP_COLOR_OF_SPECIAL = Color.LTGRAY;
+    static final int SEP_COLOR_OF_SPECIAL_OF_GROUP = Color.CYAN;
+
     static final String SEP = "   ";
     static final float SEP_RELATIVE_SIZE = 0.3f;
     /**
