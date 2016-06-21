@@ -45,7 +45,7 @@ public class TypePlusTogether extends MainTableItem {
         start = builder.length();
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
         indexOfDrawingTime = new Pair<>(start, builder.length());
-        indexOfSepOfNormal.add(builder.length());
+        indexOfSepOfNormalGroup.add(builder.length());
         builder.append(SEP);
 
         if (mMaximumSpecialNumber == -1) {
@@ -133,7 +133,7 @@ public class TypePlusTogether extends MainTableItem {
         SpannableString rtn = new SpannableString(builder.toString());
 
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new BackgroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new BackgroundColorSpan(mWindowBackgroundColor), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // first spe
@@ -147,7 +147,7 @@ public class TypePlusTogether extends MainTableItem {
         }
 
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new ForegroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // rest of spe of normal

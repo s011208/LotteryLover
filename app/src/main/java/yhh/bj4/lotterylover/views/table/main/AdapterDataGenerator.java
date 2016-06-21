@@ -149,7 +149,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
-                    mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+                    mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {
@@ -287,7 +287,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
-                    mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+                    mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {
@@ -420,7 +420,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
-                    mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+                    mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {

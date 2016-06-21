@@ -28,6 +28,8 @@ public class Utilities {
     public static final long HOUR = 60 * MINUTE;
     public static final long DAY = 24 * HOUR;
 
+    public static final int QUERY_LIMIT = 500;
+
     private static Calendar sCalendar = Calendar.getInstance();
 
     static {
@@ -81,7 +83,18 @@ public class Utilities {
     }
 
     public static int getPrimaryColor(Context context) {
+        if (context == null) return Color.rgb(0xff, 0x88, 0x00);
         return getColorAttribute(context, android.R.attr.colorPrimary, context.getResources().getColor(R.color.colorPrimary));
+    }
+
+    public static int getPrimaryDarkColor(Context context) {
+        if (context == null) return Color.rgb(0xff, 0x55, 0x11);
+        return getColorAttribute(context, android.R.attr.colorPrimaryDark, context.getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    public static int getPrimaryLightColor(Context context) {
+        if (context == null) return Color.rgb(0xff, 0xbb, 0x77);
+        return context.getResources().getColor(R.color.colorPrimaryLight);
     }
 
     public static String getDateTimeYMDString(long time) {

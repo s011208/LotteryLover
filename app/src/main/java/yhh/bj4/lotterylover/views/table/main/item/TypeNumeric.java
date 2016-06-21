@@ -89,7 +89,7 @@ public class TypeNumeric extends MainTableItem {
         SpannableString rtn = new SpannableString(builder.toString());
 
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new BackgroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new BackgroundColorSpan(mWindowBackgroundColor), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // first spe
@@ -102,8 +102,9 @@ public class TypeNumeric extends MainTableItem {
             rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
+        // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new ForegroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // rest of spe of normal

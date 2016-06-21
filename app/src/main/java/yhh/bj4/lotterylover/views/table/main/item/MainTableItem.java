@@ -25,8 +25,6 @@ public abstract class MainTableItem {
     public static final int ITEM_TYPE_HEADER = 2;
     public static final int ITEM_TYPE_FOOTER = 3;
 
-    static final int MONTHLY_DATA_BACKGROUND_COLOR = Color.rgb(0xff, 0xbb, 0x77);
-
     static final String SEP = "   ";
     static final float SEP_RELATIVE_SIZE = 0.3f;
     /**

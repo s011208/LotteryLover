@@ -46,14 +46,14 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
         final Context context = mContext.get();
         final ArrayList<LotteryItem> rtn = new ArrayList<>();
         if (context == null) return rtn;
-        Cursor cursor = getDataCursor(context);
-        rtn.addAll(getDataFromCursor(cursor));
+        Cursor cursor = getDataCursor(context, mLtoType);
+        rtn.addAll(getDataFromCursor(cursor, mLtoType));
         if (DEBUG)
             Log.d(TAG, "doInBackground, rtn size: " + rtn.size());
         return rtn;
     }
 
-    private ArrayList<LotteryItem> getDataFromCursor(Cursor cursor) {
+    public static ArrayList<LotteryItem> getDataFromCursor(Cursor cursor, int ltoType) {
         final ArrayList<LotteryItem> rtn = new ArrayList<>();
         if (cursor == null) return rtn;
         if (DEBUG)
@@ -67,7 +67,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
             final int indexOfMemo = cursor.getColumnIndex(LotteryItem.COLUMN_MEMO);
             final int indexOfExtra = cursor.getColumnIndex(LotteryItem.COLUMN_EXTRA);
 
-            if (mLtoType == LotteryLover.LTO_TYPE_LTO) {
+            if (ltoType == LotteryLover.LTO_TYPE_LTO) {
                 while (cursor.moveToNext()) {
                     rtn.add(new Lto(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -76,7 +76,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
-            } else if (mLtoType == LotteryLover.LTO_TYPE_LTO2C) {
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO2C) {
                 while (cursor.moveToNext()) {
                     rtn.add(new Lto2C(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -85,7 +85,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
-            } else if (mLtoType == LotteryLover.LTO_TYPE_LTO7C) {
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO7C) {
                 while (cursor.moveToNext()) {
                     rtn.add(new Lto7C(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -94,7 +94,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
-            } else if (mLtoType == LotteryLover.LTO_TYPE_LTO_BIG) {
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_BIG) {
                 while (cursor.moveToNext()) {
                     rtn.add(new LtoBig(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -103,7 +103,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
-            } else if (mLtoType == LotteryLover.LTO_TYPE_LTO_DOF) {
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_DOF) {
                 while (cursor.moveToNext()) {
                     rtn.add(new LtoDof(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -112,7 +112,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
-            } else if (mLtoType == LotteryLover.LTO_TYPE_LTO_HK) {
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_HK) {
                 while (cursor.moveToNext()) {
                     rtn.add(new LtoHK(cursor.getLong(indexOfSeq),
                             cursor.getLong(indexOfDrawingTime),
@@ -128,9 +128,9 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
         return rtn;
     }
 
-    private Cursor getDataCursor(Context context) {
+    public static Cursor getDataCursor(Context context, int ltoType) {
         Uri queryUri = null;
-        switch (mLtoType) {
+        switch (ltoType) {
             case LotteryLover.LTO_TYPE_LTO:
                 queryUri = Lto.DATA_URI;
                 break;
@@ -150,7 +150,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 queryUri = LtoHK.DATA_URI;
                 break;
         }
-        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " desc");
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " desc limit " + Utilities.QUERY_LIMIT);
     }
 
     @Override
