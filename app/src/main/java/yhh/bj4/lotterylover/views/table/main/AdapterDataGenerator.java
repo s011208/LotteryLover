@@ -16,6 +16,7 @@ import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
+import yhh.bj4.lotterylover.views.table.main.item.TypePlusAndMinus;
 import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 
 /**
@@ -62,6 +63,29 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 break;
             case LotteryLover.LIST_TYPE_LAST_DIGIT:
                 rtn.addAll(initListTypeLastDigit());
+                break;
+            case LotteryLover.LIST_TYPE_PLUS_AND_MINUS:
+                rtn.addAll(initListTypePlusAndMinus());
+                break;
+        }
+        return rtn;
+    }
+
+    private ArrayList<MainTableItem> initListTypePlusAndMinus() {
+        ArrayList<MainTableItem> rtn = new ArrayList<>();
+        for (LotteryItem item : mLotteryData) {
+            MainTableItem mainTableItem = new TypePlusAndMinus(MainTableAdapter.TYPE_PLUS_AND_MINUS,
+                    item.getSequence(), item.getDrawingDateTime(),
+                    item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                    , mMaximumSpecialNumber);
+            for (int i = 0; i < mNormalNumberCount; ++i) {
+                mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
+            }
+            for (int i = 0; i < mSpecialNumberCount; ++i) {
+                mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
+            }
+            mainTableItem.getSpannableString();
+            rtn.add(mainTableItem);
         }
         return rtn;
     }

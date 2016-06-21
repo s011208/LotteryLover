@@ -19,6 +19,7 @@ import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
+import yhh.bj4.lotterylover.views.table.main.item.TypePlusAndMinus;
 import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 
 /**
@@ -32,6 +33,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     public static final int TYPE_NUMERIC = 1;
     public static final int TYPE_PLUS_TOGETHER = 2;
     public static final int TYPE_LAST_DIGIT = 3;
+    public static final int TYPE_PLUS_AND_MINUS = 4;
 
     public interface Callback {
         void onFinishLoadingData();
@@ -90,6 +92,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_PLUS_TOGETHER:
             case TYPE_NUMERIC:
             case TYPE_LAST_DIGIT:
+            case TYPE_PLUS_AND_MINUS:
                 holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null));
                 break;
 
@@ -113,7 +116,16 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_LAST_DIGIT:
                 bindLastNumberContent(holder, position);
                 break;
+            case TYPE_PLUS_AND_MINUS:
+                bindPlusAndMinusContent(holder, position);
+                break;
         }
+    }
+
+    private void bindPlusAndMinusContent(RecyclerView.ViewHolder holder, int position) {
+        final TypePlusAndMinus item = (TypePlusAndMinus) getItem(position);
+        OverallContentHolder contentHolder = (OverallContentHolder) holder;
+        contentHolder.getTextView().setText(item.getSpannableString());
     }
 
     private void bindLastNumberContent(RecyclerView.ViewHolder holder, int position) {

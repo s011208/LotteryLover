@@ -99,8 +99,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 }
 
                 final int finalWidth = Math.min(width, mainTableWidth);
-                mHeader.setWidth(finalWidth);
-                mFooter.setWidth(finalWidth);
+                mHeader.setMinWidth(finalWidth);
+                mFooter.setMinWidth(finalWidth);
 
                 mTopSep.setMinimumWidth(finalWidth);
                 mBottomSep.setMinimumWidth(finalWidth);
