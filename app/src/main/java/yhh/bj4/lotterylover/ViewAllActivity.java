@@ -58,7 +58,7 @@ public class ViewAllActivity extends AppCompatActivity
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
 
-//        queryPage0();
+        queryPage0();
     }
 
     private void queryPage0() {

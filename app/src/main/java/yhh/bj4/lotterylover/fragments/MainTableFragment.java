@@ -71,6 +71,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mBottomSep = root.findViewById(R.id.bottom_sep);
 
         mHeader.setVisibility(View.INVISIBLE);
+        mFooter.setVisibility(View.INVISIBLE);
+        mTopSep.setVisibility(View.INVISIBLE);
+        mBottomSep.setVisibility(View.INVISIBLE);
         return root;
     }
 
@@ -107,6 +110,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
                 mHeader.setVisibility(View.VISIBLE);
                 mFooter.setVisibility(View.VISIBLE);
+
+                mTopSep.setVisibility(View.VISIBLE);
+                mBottomSep.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -165,6 +171,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected void onPreExecute() {
                 mHeader.setVisibility(View.INVISIBLE);
+                mTopSep.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -248,6 +255,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected void onPreExecute() {
                 mFooter.setVisibility(View.INVISIBLE);
+                mBottomSep.setVisibility(View.INVISIBLE);
             }
 
             @Override

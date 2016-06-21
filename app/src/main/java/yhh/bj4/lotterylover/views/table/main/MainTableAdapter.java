@@ -61,6 +61,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     public void updateData(int ltoType, int listType) {
         mListType = listType;
         mLtoType = ltoType;
+        mData.clear();
+        notifyDataSetChanged();
         new RetrieveLotteryItemDataHelper(mContext, new RetrieveLotteryItemDataHelper.Callback() {
             @Override
             public void onFinished(List<LotteryItem> data) {
