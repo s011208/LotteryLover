@@ -4,17 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <include
+            android:id="@+id/header"
+            layout="@layout/main_table_adapter_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <View
+            android:id="@+id/top_sep"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@+id/header"
+            android:background="@android:color/holo_red_dark" />
+
+        <include
+            android:id="@+id/footer"
+            layout="@layout/main_table_adapter_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
+        <View
+            android:id="@+id/bottom_sep"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_above="@+id/footer"
+            android:background="@android:color/holo_red_dark" />
+
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/main_table_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_sep"
+            android:layout_below="@+id/top_sep"
             android:orientation="vertical"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+    </RelativeLayout>
 </HorizontalScrollView>

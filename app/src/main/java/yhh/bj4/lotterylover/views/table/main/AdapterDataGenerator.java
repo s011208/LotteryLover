@@ -12,12 +12,6 @@ import java.util.Map;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
-import yhh.bj4.lotterylover.parser.lto.Lto;
-import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
-import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
-import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
-import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
-import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
@@ -81,7 +75,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-            mainTableItem.setIsContentView(true);
+            mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             Map<Integer, Integer> newNormalIndex = Utilities.getLastDigitMap(mMaximumNormalNumber);
 
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
@@ -156,7 +150,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
                     mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-                    mainTableItem.setIsContentView(false);
+                    mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {
                         // combine results
@@ -219,7 +213,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-            mainTableItem.setIsContentView(true);
+            mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             Map<Integer, Integer> newNormalIndex = Utilities.getPlusAndLastDigitMap(mMaximumNormalNumber);
 
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
@@ -294,7 +288,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
                     mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-                    mainTableItem.setIsContentView(false);
+                    mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {
                         // combine results
@@ -357,7 +351,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-            mainTableItem.setIsContentView(true);
+            mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
                 boolean isFind = false;
                 for (int i = 0; i < mNormalNumberCount; ++i) {
@@ -427,7 +421,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
                     mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
-                    mainTableItem.setIsContentView(false);
+                    mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
                     if (mMaximumSpecialNumber == -1) {
                         // combine results
@@ -485,39 +479,11 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
     }
 
     private void initParameters() {
-        if (mLotteryData.get(0) instanceof Lto) {
-            mNormalNumberCount = Lto.getNormalNumbersCount();
-            mSpecialNumberCount = Lto.getSpecialNumbersCount();
-            mMaximumNormalNumber = Lto.getMaximumNormalNumber();
-            mMaximumSpecialNumber = Lto.getMaximumSpecialNumber();
-        } else if (mLotteryData.get(0) instanceof Lto2C) {
-            mNormalNumberCount = Lto2C.getNormalNumbersCount();
-            mSpecialNumberCount = Lto2C.getSpecialNumbersCount();
-            mMaximumNormalNumber = Lto2C.getMaximumNormalNumber();
-            mMaximumSpecialNumber = Lto2C.getMaximumSpecialNumber();
-        } else if (mLotteryData.get(0) instanceof Lto7C) {
-            mNormalNumberCount = Lto7C.getNormalNumbersCount();
-            mSpecialNumberCount = Lto7C.getSpecialNumbersCount();
-            mMaximumNormalNumber = Lto7C.getMaximumNormalNumber();
-            mMaximumSpecialNumber = Lto7C.getMaximumSpecialNumber();
-        } else if (mLotteryData.get(0) instanceof LtoBig) {
-            mNormalNumberCount = LtoBig.getNormalNumbersCount();
-            mSpecialNumberCount = LtoBig.getSpecialNumbersCount();
-            mMaximumNormalNumber = LtoBig.getMaximumNormalNumber();
-            mMaximumSpecialNumber = LtoBig.getMaximumSpecialNumber();
-        } else if (mLotteryData.get(0) instanceof LtoDof) {
-            mNormalNumberCount = LtoDof.getNormalNumbersCount();
-            mSpecialNumberCount = LtoDof.getSpecialNumbersCount();
-            mMaximumNormalNumber = LtoDof.getMaximumNormalNumber();
-            mMaximumSpecialNumber = LtoDof.getMaximumSpecialNumber();
-        } else if (mLotteryData.get(0) instanceof LtoHK) {
-            mNormalNumberCount = LtoHK.getNormalNumbersCount();
-            mSpecialNumberCount = LtoHK.getSpecialNumbersCount();
-            mMaximumNormalNumber = LtoHK.getMaximumNormalNumber();
-            mMaximumSpecialNumber = LtoHK.getMaximumSpecialNumber();
-        } else {
-            throw new RuntimeException("unexpected instance");
-        }
+        int[] parameters = MainTableItem.initParameters(mLotteryData.get(0));
+        mNormalNumberCount = parameters[0];
+        mSpecialNumberCount = parameters[1];
+        mMaximumNormalNumber = parameters[2];
+        mMaximumSpecialNumber = parameters[3];
     }
 
     @Override

@@ -2,5 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:maxLines="1"
     android:padding="2dp"
+    android:singleLine="true"
     android:textSize="@dimen/main_table_adapter_content_text_size"></TextView>

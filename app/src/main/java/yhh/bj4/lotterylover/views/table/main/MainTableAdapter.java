@@ -33,6 +33,10 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     public static final int TYPE_PLUS_TOGETHER = 2;
     public static final int TYPE_LAST_DIGIT = 3;
 
+    public interface Callback {
+        void onFinishLoadingData();
+    }
+
     private int mLtoType, mListType;
 
     private ArrayList<MainTableItem> mData = new ArrayList<>();
@@ -40,10 +44,16 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private LayoutInflater mInflater;
 
+    private Callback mCallback;
+
     public MainTableAdapter(Context context, int ltoType, int listType) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         updateData(ltoType, listType);
+    }
+
+    public void setCallback(Callback cb) {
+        mCallback = cb;
     }
 
     public void updateData(int ltoType, int listType) {
@@ -63,6 +73,9 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                             Log.i(TAG, "AdapterDataGenerator cb, size: " + data.size());
                         }
                         notifyDataSetChanged();
+                        if (mCallback != null) {
+                            mCallback.onFinishLoadingData();
+                        }
                     }
                 }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }

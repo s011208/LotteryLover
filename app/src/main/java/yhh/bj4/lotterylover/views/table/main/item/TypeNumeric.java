@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover.views.table.main.item;
 
 import android.graphics.Color;
+import android.support.v4.util.Pair;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
@@ -28,12 +29,18 @@ public class TypeNumeric extends MainTableItem {
         List<Integer> indexOfSpecial = new ArrayList<>();
         List<Integer> indexOfZero = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
+        Pair<Integer, Integer> indexOfSequence, indexOfDrawingTime;
+
         builder.append(SEP);
         builder.deleteCharAt(0);
+        int start = builder.length();
         builder.append(Utilities.getLotterySequenceString(mSequence));
+        indexOfSequence = new Pair<>(start, builder.length());
         indexOfSepOfNormal.add(builder.length());
         builder.append(SEP);
+        start = builder.length();
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
+        indexOfDrawingTime = new Pair<>(start, builder.length());
         indexOfSepOfNormal.add(builder.length());
         builder.append(SEP);
 
@@ -81,13 +88,19 @@ public class TypeNumeric extends MainTableItem {
 
         SpannableString rtn = new SpannableString(builder.toString());
 
-        if (!mIsContentView) {
+        if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
             rtn.setSpan(new BackgroundColorSpan(MONTHLY_DATA_BACKGROUND_COLOR), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // first spe
         rtn.setSpan(new BackgroundColorSpan(Color.LTGRAY), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         rtn.setSpan(new RelativeSizeSpan(SEP_RELATIVE_SIZE), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // drawing time & sequence
+        if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER) {
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
         // rest of spe of normal
         for (int i = 0; i < indexOfSepOfNormal.size(); ++i) {
