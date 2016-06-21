@@ -19,6 +19,7 @@ import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
+import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
 import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
@@ -65,6 +66,146 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             case LotteryLover.LIST_TYPE_PLUS_TOGETHER:
                 rtn.addAll(initListTypePlusTogether());
                 break;
+            case LotteryLover.LIST_TYPE_LAST_DIGIT:
+                rtn.addAll(initListTypeLastDigit());
+        }
+        return rtn;
+    }
+
+    private ArrayList<MainTableItem> initListTypeLastDigit() {
+        ArrayList<MainTableItem> rtn = new ArrayList<>();
+        // add content data
+        for (LotteryItem item : mLotteryData) {
+            MainTableItem mainTableItem = new TypeLastDigit(MainTableAdapter.TYPE_LAST_DIGIT,
+                    item.getSequence(), item.getDrawingDateTime(),
+                    item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                    , mMaximumSpecialNumber);
+            mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+            mainTableItem.setIsContentView(true);
+            Map<Integer, Integer> newNormalIndex = Utilities.getLastDigitMap(mMaximumNormalNumber);
+
+            for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
+                boolean isFind = false;
+                int valueOfIndex = newNormalIndex.get(k);
+                for (int i = 0; i < mNormalNumberCount; ++i) {
+                    if (item.getNormalNumbers().get(i) == valueOfIndex) {
+                        isFind = true;
+                        // TODO found item can be removed
+                        break;
+                    }
+                }
+                if (isFind) {
+                    mainTableItem.addNormalNumber(k - TABLE_OFFSET, valueOfIndex);
+                } else {
+                    mainTableItem.addNormalNumber(k - TABLE_OFFSET, -1);
+                }
+            }
+
+            if (mMaximumSpecialNumber == -1) {
+                for (int i = 0; i < mSpecialNumberCount; ++i) {
+                    mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
+                }
+            } else {
+                newNormalIndex = Utilities.getLastDigitMap(mMaximumSpecialNumber);
+                for (int k = TABLE_OFFSET; k < mMaximumSpecialNumber + TABLE_OFFSET; ++k) {
+                    boolean isFind = false;
+                    int valueOfIndex = newNormalIndex.get(k);
+                    for (int i = 0; i < mSpecialNumberCount; ++i) {
+                        if (item.getSpecialNumbers().get(i) == valueOfIndex) {
+                            isFind = true;
+                            // TODO found item can be removed
+                            break;
+                        }
+                    }
+                    if (isFind) {
+                        mainTableItem.addSpecialNumber(k - TABLE_OFFSET, valueOfIndex);
+                    } else {
+                        mainTableItem.addSpecialNumber(k - TABLE_OFFSET, -1);
+                    }
+                }
+            }
+
+            mainTableItem.getSpannableString();
+            rtn.add(mainTableItem);
+        }
+
+        // add monthly data
+        Calendar previous = null, current = Calendar.getInstance();
+        ArrayList<LotteryItem> tempItems = new ArrayList<>();
+        int itemAdded = 0;
+        for (int i = 0; i < mLotteryData.size(); ++i) {
+            LotteryItem item = mLotteryData.get(i);
+            current.setTimeInMillis(item.getDrawingDateTime());
+            if (previous == null) {
+                tempItems.add(item);
+            } else {
+                if (previous.get(Calendar.MONTH) == current.get(Calendar.MONTH) && i != mLotteryData.size() - 1) {
+                    tempItems.add(item);
+                } else {
+                    LotteryItem tempItem = tempItems.get(tempItems.size() - 1);
+                    if (i == mLotteryData.size() - 1) {
+                        tempItems.add(item);
+                        tempItem = item;
+                        itemAdded++; // insert into the last item of list
+                    }
+
+                    Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(tempItems);
+
+                    MainTableItem mainTableItem = new TypeLastDigit(MainTableAdapter.TYPE_LAST_DIGIT,
+                            tempItem.getSequence(), tempItem.getDrawingDateTime(),
+                            tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                            , mMaximumSpecialNumber);
+                    mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+                    mainTableItem.setIsContentView(false);
+
+                    if (mMaximumSpecialNumber == -1) {
+                        // combine results
+                        if (DEBUG) {
+                            // special & normal list should have the same list size
+                            Log.d(TAG, "normal: " + combinedResult.first.size() + ", special: " + combinedResult.second.size());
+                        }
+                        for (int indexOfList = 0; indexOfList < combinedResult.first.size(); ++indexOfList) {
+                            combinedResult.first.set(indexOfList, combinedResult.first.get(indexOfList) + combinedResult.second.get(indexOfList));
+                        }
+                    }
+                    if (DEBUG) {
+                        Log.d(TAG, "mMaximumNormalNumber: " + mMaximumNormalNumber + ", combinedResult.first: " + combinedResult.first.size());
+                    }
+                    List<Integer> tempData = new ArrayList<>();
+                    for (int k = 0; k < mMaximumNormalNumber; ++k) {
+                        tempData.add(k, combinedResult.first.get(k));
+                    }
+
+                    Map<Integer, Integer> tempMap = Utilities.getLastDigitMap(mMaximumNormalNumber);
+                    for (int in = 1; in < mMaximumNormalNumber + 1; ++in) {
+                        int newKey = in - 1;
+                        int oldKey = tempMap.get(in) - 1;
+                        mainTableItem.addNormalNumber(newKey, combinedResult.first.get(oldKey));
+                    }
+
+                    if (mMaximumSpecialNumber != -1) {
+                        tempData.clear();
+                        for (int k = 0; k < mMaximumSpecialNumber; ++k) {
+                            tempData.add(k, combinedResult.second.get(k));
+                        }
+
+                        tempMap = Utilities.getLastDigitMap(mMaximumSpecialNumber);
+                        for (int in = 1; in < mMaximumSpecialNumber + 1; ++in) {
+                            int newKey = in - 1;
+                            int oldKey = tempMap.get(in) - 1;
+                            mainTableItem.addSpecialNumber(newKey, combinedResult.second.get(oldKey));
+                        }
+                    }
+
+                    tempItems.clear();
+                    tempItems.add(item);
+                    rtn.add(i + itemAdded++, mainTableItem);
+                }
+            }
+            if (previous == null) {
+                previous = Calendar.getInstance();
+            }
+            previous.setTimeInMillis(current.getTimeInMillis());
         }
         return rtn;
     }

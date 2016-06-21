@@ -18,6 +18,6 @@ public class LotteryLover {
     public static final int LIST_TYPE_OVERALL = 0;
     public static final int LIST_TYPE_NUMERIC = 1;
     public static final int LIST_TYPE_PLUS_TOGETHER = 2;
-    public static final int LIST_TYPE_LAST_NUMBER = 3;
+    public static final int LIST_TYPE_LAST_DIGIT = 3;
     public static final int LIST_TYPE_PLUS_AND_MINUS = 4;
 }

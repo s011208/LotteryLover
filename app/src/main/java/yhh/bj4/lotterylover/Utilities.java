@@ -170,6 +170,7 @@ public class Utilities {
 
     /**
      * key = new index, value = old index
+     *
      * @param maximumIndex
      * @return
      */
@@ -178,6 +179,40 @@ public class Utilities {
         int index = 0;
         for (int i = 0; i < 10; ++i) {
             List<Integer> data = sPlusAndLastDigitMap.get(i);
+            for (Integer value : data) {
+                if (value <= maximumIndex) {
+                    rtn.put(index++, value);
+                }
+            }
+        }
+        return rtn;
+    }
+
+    private static Map<Integer, List<Integer>> sLastDigitMap = new HashMap<>();
+
+    static {
+        for (int i = 0; i < 100; ++i) {
+            int digit = Utilities.getLastDigit(i);
+            List<Integer> listData = sLastDigitMap.get(digit);
+            if (listData == null) {
+                listData = new ArrayList<>();
+            }
+            listData.add(i);
+            sLastDigitMap.put(i, listData);
+        }
+    }
+
+    /**
+     * key = new index, value = old index
+     *
+     * @param maximumIndex
+     * @return
+     */
+    public static Map<Integer, Integer> getLastDigitMap(int maximumIndex) {
+        Map<Integer, Integer> rtn = new HashMap<>();
+        int index = 0;
+        for (int i = 0; i < 10; ++i) {
+            List<Integer> data = sLastDigitMap.get(i);
             for (Integer value : data) {
                 if (value <= maximumIndex) {
                     rtn.put(index++, value);
