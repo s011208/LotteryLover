@@ -6,6 +6,17 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- settings -->
+    <string name="settings_appearance_category_title">Appearance</string>
+    <string name="settings_appearance_digit_size_title">Digit size</string>
+
+    <string-array name="settings_appearance_digit_size_list">
+        <item>Tiny</item>
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+        <item>Huge</item>
+    </string-array>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>Lto</item>

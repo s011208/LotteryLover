@@ -28,6 +28,12 @@
             android:name=".provider.LotteryProvider"
             android:authorities="yhh.bj4.lotterylover.lottery_provider"
             android:process=":remote_components" />
+
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".ViewAllActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

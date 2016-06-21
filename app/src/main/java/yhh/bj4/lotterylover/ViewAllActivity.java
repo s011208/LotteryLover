@@ -1,6 +1,8 @@
 package yhh.bj4.lotterylover;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +23,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryParser;
@@ -30,6 +35,7 @@ import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.settings.SettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
 public class ViewAllActivity extends AppCompatActivity
@@ -37,6 +43,8 @@ public class ViewAllActivity extends AppCompatActivity
 
     private static final String TAG = "ViewAllActivity";
     private static final boolean DEBUG = Utilities.DEBUG;
+
+    private static final int REQUEST_SETTIGNS = 1000;
 
     private Spinner mActionBarSpinner;
     private RecyclerView mListTypeView;
@@ -225,6 +233,19 @@ public class ViewAllActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SETTIGNS) {
+            if (data == null || resultCode != Activity.RESULT_OK) return;
+            ArrayList<String> changedItemList = data.getStringArrayListExtra(SettingsActivity.CHANGED_LIST_KEY);
+            if (DEBUG) {
+                for (String s : changedItemList) {
+                    Log.d(TAG, "changedItemList:" + s);
+                }
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_all, menu);
@@ -233,13 +254,10 @@ public class ViewAllActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(ViewAllActivity.this, SettingsActivity.class);
+            startActivityForResult(intent, REQUEST_SETTIGNS);
             return true;
         }
 
