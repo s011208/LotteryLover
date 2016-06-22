@@ -19,6 +19,7 @@ import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.provider.AppSettings;
 
 /**
  * Created by yenhsunhuang on 2016/6/16.
@@ -150,7 +151,32 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 queryUri = LtoHK.DATA_URI;
                 break;
         }
-        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " desc limit " + Utilities.QUERY_LIMIT);
+        int orderSettings = AppSettings.get(context, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
+        String order = orderSettings == LotteryLover.ORDER_BY_ASC ? "asc" : "desc";
+
+        int rowSettings = AppSettings.get(context, LotteryLover.KEY_DISPLAY_ROWS, LotteryLover.DISPLAY_ROWS_100);
+        String row = "";
+        switch (rowSettings) {
+            case LotteryLover.DISPLAY_ROWS_50:
+                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_50;
+                break;
+            case LotteryLover.DISPLAY_ROWS_100:
+                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_100;
+                break;
+            case LotteryLover.DISPLAY_ROWS_150:
+                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_150;
+                break;
+            case LotteryLover.DISPLAY_ROWS_200:
+                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_200;
+                break;
+            case LotteryLover.DISPLAY_ROWS_500:
+                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_500;
+                break;
+            case LotteryLover.DISPLAY_ROWS_ALL:
+                row = "";
+                break;
+        }
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " " + order + " " + row);
     }
 
     @Override

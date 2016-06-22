@@ -247,6 +247,12 @@ public class ViewAllActivity extends AppCompatActivity
                     mMainTableFragment.updateDigitScaleSize();
                 }
             }
+            if (changedItemList.contains(LotteryLover.KEY_ORDER) ||
+                    changedItemList.contains(LotteryLover.KEY_DISPLAY_ROWS)) {
+                if (mMainTableFragment != null) {
+                    mMainTableFragment.updateAllList();
+                }
+            }
         }
     }
 

@@ -471,4 +471,11 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (getActivity() == null) return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
         return Utilities.getDigitSizeScale(AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL));
     }
+
+    public void updateAllList() {
+        if (mMainTableAdapter != null) {
+            mMainTableAdapter.notifyDataSetChanged();
+            updateMainTableAdapter();
+        }
+    }
 }
