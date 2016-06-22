@@ -71,6 +71,10 @@ public abstract class MainTableItem {
         mItemType = itemType;
     }
 
+    public final int getItemType() {
+        return mItemType;
+    }
+
     public final int getViewType() {
         return mViewType;
     }

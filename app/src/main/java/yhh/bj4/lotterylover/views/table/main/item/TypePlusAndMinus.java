@@ -16,6 +16,9 @@ import yhh.bj4.lotterylover.Utilities;
  * Created by yenhsunhuang on 2016/6/17.
  */
 public class TypePlusAndMinus extends MainTableItem {
+    private ArrayList<Integer> mHitIndexOfNormal = new ArrayList<>();
+    private ArrayList<Integer> mHitIndexOfSpecial = new ArrayList<>();
+
     public TypePlusAndMinus(int viewType, long sequence, long drawingTime, String memo, String extra, int nnc, int snc, int mnn, int msn) {
         super(viewType, sequence, drawingTime, memo, extra, nnc, snc, mnn, msn);
     }
@@ -24,6 +27,14 @@ public class TypePlusAndMinus extends MainTableItem {
         setCacheSpannableString(false);
         makeSpannableString();
         setCacheSpannableString(true);
+    }
+
+    public void addHitIndexOfNormal(int hitIndex) {
+        mHitIndexOfNormal.add(hitIndex);
+    }
+
+    public void addHitIndexOfSpecial(int hitIndex) {
+        mHitIndexOfSpecial.add(hitIndex);
     }
 
     @Override

@@ -78,6 +78,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             for (int i = 0; i < mNormalNumberCount; ++i) {
                 mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
             }

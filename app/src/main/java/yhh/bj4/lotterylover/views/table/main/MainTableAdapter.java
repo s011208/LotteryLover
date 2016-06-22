@@ -15,6 +15,7 @@ import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.table.main.holder.OverallContentHolder;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
@@ -190,7 +191,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     public void setAddAndMinus(int value) {
         mPlusAndMinus = value;
-        new UpdatePlusAndMinusHelper(mLotteryItems, value, mData, new UpdatePlusAndMinusHelper.Callback() {
+        int queryOrder = AppSettings.get(mContext, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
+        new UpdatePlusAndMinusHelper(mLotteryItems, value, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
             @Override
             public void onFinished() {
                 if (DEBUG)
