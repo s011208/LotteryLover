@@ -10,6 +10,24 @@
     <string name="settings_appearance_category_title">Appearance</string>
     <string name="settings_appearance_digit_scale_size_title">Digit scale</string>
 
+    <string name="settings_display_category_title">Display</string>
+    <string name="settings_display_order">Order</string>
+    <string name="settings_display_row_count">Display rows</string>
+
+    <string-array name="settings_display_rows">
+        <item>50 rows</item>
+        <item>100 rows</item>
+        <item>150 rows</item>
+        <item>200 rows</item>
+        <item>500 rows</item>
+        <item>All rows</item>
+    </string-array>
+
+    <string-array name="settings_display_order">
+        <item>Ascendant</item>
+        <item>Descendant</item>
+    </string-array>
+
     <string-array name="settings_appearance_digit_size_list">
         <item>Tiny</item>
         <item>Small</item>

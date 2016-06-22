@@ -20,6 +20,12 @@ public class TypePlusAndMinus extends MainTableItem {
         super(viewType, sequence, drawingTime, memo, extra, nnc, snc, mnn, msn);
     }
 
+    public void clearCacheAndMakeNewSpannableString() {
+        setCacheSpannableString(false);
+        makeSpannableString();
+        setCacheSpannableString(true);
+    }
+
     @Override
     public SpannableString generateSpannableString() {
         List<Integer> indexOfSep = new ArrayList<>();

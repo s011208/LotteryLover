@@ -4,5 +4,16 @@
         <Preference
             android:key="settings_appearance_digit_scale_size"
             android:title="@string/settings_appearance_digit_scale_size_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_display_category_title">
+        <Preference
+            android:key="settings_display_order"
+            android:title="@string/settings_display_order" />
+
+        <Preference
+            android:key="settings_display_row_count"
+            android:title="@string/settings_display_row_count" />
     </PreferenceCategory>
 </PreferenceScreen>

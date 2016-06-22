@@ -84,7 +84,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             for (int i = 0; i < mSpecialNumberCount; ++i) {
                 mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
             }
-            mainTableItem.getSpannableString();
+            mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
         return rtn;
@@ -143,7 +143,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 }
             }
 
-            mainTableItem.getSpannableString();
+            mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
 
@@ -281,7 +281,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 }
             }
 
-            mainTableItem.getSpannableString();
+            mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
 
@@ -414,7 +414,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 }
             }
 
-            mainTableItem.getSpannableString();
+            mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
 
@@ -496,7 +496,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             for (int i = 0; i < mSpecialNumberCount; ++i) {
                 mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
             }
-            mainTableItem.getSpannableString();
+            mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
         return rtn;

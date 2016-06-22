@@ -42,6 +42,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private int mLtoType, mListType;
 
+    private int mPlusAndMinus = 0;
+
     private float mDigitScale = LotteryLover.DIGIT_SCALE_SIZE_NORMAL;
 
     private ArrayList<MainTableItem> mData = new ArrayList<>();
@@ -50,6 +52,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     private LayoutInflater mInflater;
 
     private Callback mCallback;
+
+    private ArrayList<LotteryItem> mLotteryItems = new ArrayList<>();
 
     public MainTableAdapter(Context context, int ltoType, int listType) {
         mContext = context;
@@ -65,16 +69,20 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         mListType = listType;
         mLtoType = ltoType;
         mData.clear();
+        mLotteryItems.clear();
         notifyDataSetChanged();
         new RetrieveLotteryItemDataHelper(mContext, new RetrieveLotteryItemDataHelper.Callback() {
             @Override
             public void onFinished(List<LotteryItem> data) {
+                mLotteryItems.addAll(data);
                 new AdapterDataGenerator(mLtoType, mListType, Utilities.getWindowBackgroundColor(mContext), data, new AdapterDataGenerator.Callback() {
                     @Override
                     public void onFinished(ArrayList<MainTableItem> data) {
                         mData.clear();
                         if (data != null && !data.isEmpty()) {
                             mData.addAll(data);
+                        } else {
+                            mLotteryItems.clear();
                         }
                         if (DEBUG) {
                             Log.i(TAG, "AdapterDataGenerator cb, size: " + data.size());
@@ -130,35 +138,35 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     private void bindPlusAndMinusContent(RecyclerView.ViewHolder holder, int position) {
         final TypePlusAndMinus item = (TypePlusAndMinus) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
-        contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.getTextView().setText(item.makeSpannableString());
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindLastNumberContent(RecyclerView.ViewHolder holder, int position) {
         final TypeLastDigit item = (TypeLastDigit) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
-        contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.getTextView().setText(item.makeSpannableString());
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindPlusTogetherContent(RecyclerView.ViewHolder holder, int position) {
         final TypePlusTogether item = (TypePlusTogether) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
-        contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.getTextView().setText(item.makeSpannableString());
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindNumericContent(RecyclerView.ViewHolder holder, int position) {
         final TypeNumeric item = (TypeNumeric) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
-        contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.getTextView().setText(item.makeSpannableString());
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindOverallContent(RecyclerView.ViewHolder holder, int position) {
         final TypeOverall item = (TypeOverall) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
-        contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.getTextView().setText(item.makeSpannableString());
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
@@ -178,5 +186,17 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     public void setDigitSize(float scale) {
         mDigitScale = scale;
+    }
+
+    public void setAddAndMinus(int value) {
+        mPlusAndMinus = value;
+        new UpdatePlusAndMinusHelper(mLotteryItems, value, mData, new UpdatePlusAndMinusHelper.Callback() {
+            @Override
+            public void onFinished() {
+                if (DEBUG)
+                    Log.d(TAG, "UpdatePlusAndMinusHelper, onFinished");
+                notifyDataSetChanged();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

@@ -113,7 +113,11 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     }
 
     private void updatePlusAndMinus(int value) {
-        Log.d(TAG, "updatePlusAndMinus, value: " + value);
+        if (DEBUG) {
+            Log.d(TAG, "updatePlusAndMinus, value: " + value);
+        }
+        if (mMainTableAdapter == null) return;
+        mMainTableAdapter.setAddAndMinus(value);
     }
 
     private void updateMainTableAdapter() {
@@ -223,7 +227,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 } else {
                     mPlusGroup.setVisibility(View.INVISIBLE);
                     mHeader.setVisibility(View.VISIBLE);
-                    mHeader.setText(mainTableItem.getSpannableString());
+                    mHeader.setText(mainTableItem.makeSpannableString());
                 }
                 mTopSep.setVisibility(View.VISIBLE);
             }
@@ -249,7 +253,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                         }
                     }
 
-                    rtn.getSpannableString();
+                    rtn.makeSpannableString();
                 } else if (listType == LotteryLover.LIST_TYPE_PLUS_TOGETHER) {
                     Map<Integer, Integer> index = Utilities.getPlusAndLastDigitMap(parameters[2]);
                     rtn = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
@@ -318,7 +322,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 } else {
                     mMinusGroup.setVisibility(View.INVISIBLE);
                     mFooter.setVisibility(View.VISIBLE);
-                    mFooter.setText(mainTableItem.getSpannableString());
+                    mFooter.setText(mainTableItem.makeSpannableString());
                 }
             }
 
@@ -351,7 +355,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                         }
                     }
 
-                    rtn.getSpannableString();
+                    rtn.makeSpannableString();
                 } else if (listType == LotteryLover.LIST_TYPE_PLUS_TOGETHER) {
                     rtn = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);

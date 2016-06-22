@@ -83,16 +83,6 @@ public abstract class MainTableItem {
         mSpecialNumberData.add(index, value);
     }
 
-    public final void setNormalNumber(int index, int value) {
-        mNormalNumberData.remove(index);
-        mNormalNumberData.add(index, value);
-    }
-
-    public final void setSpecialNumber(int index, int value) {
-        mSpecialNumberData.remove(index);
-        mSpecialNumberData.add(index, value);
-    }
-
     public final void setCacheSpannableString(boolean b) {
         mCacheSpannableString = b;
     }
@@ -107,7 +97,7 @@ public abstract class MainTableItem {
 
     abstract SpannableString generateSpannableString();
 
-    public final SpannableString getSpannableString() {
+    public final SpannableString makeSpannableString() {
         if (mSpannableString == null || !mCacheSpannableString) {
             mSpannableString = generateSpannableString();
         }

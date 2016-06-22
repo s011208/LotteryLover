@@ -33,4 +33,24 @@ public class LotteryLover {
     public static final float VALUE_DIGIT_SCALE_SIZE_NORMAL = 1f;
     public static final float VALUE_DIGIT_SCALE_SIZE_LARGE = 1.15f;
     public static final float VALUE_DIGIT_SCALE_SIZE_HUGE = 1.3f;
+
+    public static final String KEY_ORDER = "display_order";
+    public static final int ORDER_BY_ASC = 0;
+    public static final int ORDER_BY_DESC = 1;
+
+    public static final String KEY_DISPLAY_ROWS = "display_rows";
+    public static final int DISPLAY_ROWS_50 = 0;
+    public static final int DISPLAY_ROWS_100 = 1;
+    public static final int DISPLAY_ROWS_150 = 2;
+    public static final int DISPLAY_ROWS_200 = 3;
+    public static final int DISPLAY_ROWS_500 = 4;
+    public static final int DISPLAY_ROWS_ALL = 5;
+
+    public static final int VALUE_DISPLAY_ROWS_50 = 50;
+    public static final int VALUE_DISPLAY_ROWS_100 = 100;
+    public static final int VALUE_DISPLAY_ROWS_150 = 150;
+    public static final int VALUE_DISPLAY_ROWS_200 = 200;
+    public static final int VALUE_DISPLAY_ROWS_500 = 500;
+    public static final int VALUE_DISPLAY_ROWS_ALL = -1;
+
 }
