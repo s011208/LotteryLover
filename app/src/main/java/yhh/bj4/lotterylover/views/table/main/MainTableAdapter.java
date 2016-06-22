@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
@@ -40,6 +41,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     }
 
     private int mLtoType, mListType;
+
+    private float mDigitScale = LotteryLover.DIGIT_SCALE_SIZE_NORMAL;
 
     private ArrayList<MainTableItem> mData = new ArrayList<>();
 
@@ -95,7 +98,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_NUMERIC:
             case TYPE_LAST_DIGIT:
             case TYPE_PLUS_AND_MINUS:
-                holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null));
+                holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null), mDigitScale);
                 break;
 
         }
@@ -128,30 +131,35 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         final TypePlusAndMinus item = (TypePlusAndMinus) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindLastNumberContent(RecyclerView.ViewHolder holder, int position) {
         final TypeLastDigit item = (TypeLastDigit) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindPlusTogetherContent(RecyclerView.ViewHolder holder, int position) {
         final TypePlusTogether item = (TypePlusTogether) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindNumericContent(RecyclerView.ViewHolder holder, int position) {
         final TypeNumeric item = (TypeNumeric) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindOverallContent(RecyclerView.ViewHolder holder, int position) {
         final TypeOverall item = (TypeOverall) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.getSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     @Override
@@ -166,5 +174,9 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         return getItem(position).getViewType();
+    }
+
+    public void setDigitSize(float scale) {
+        mDigitScale = scale;
     }
 }

@@ -21,16 +21,16 @@ public class LotteryLover {
     public static final int LIST_TYPE_LAST_DIGIT = 3;
     public static final int LIST_TYPE_PLUS_AND_MINUS = 4;
 
-    public static final String KEY_DIGIT_SIZE = "digit_size";
-    public static final int DIGIT_SIZE_TINY = 0;
-    public static final int DIGIT_SIZE_SMALL = 1;
-    public static final int DIGIT_SIZE_NORMAL = 2;
-    public static final int DIGIT_SIZE_LARGE = 3;
-    public static final int DIGIT_SIZE_HUGE = 4;
+    public static final String KEY_DIGIT_SCALE_SIZE = "digit_scale_size";
+    public static final int DIGIT_SCALE_SIZE_TINY = 0;
+    public static final int DIGIT_SCALE_SIZE_SMALL = 1;
+    public static final int DIGIT_SCALE_SIZE_NORMAL = 2;
+    public static final int DIGIT_SCALE_SIZE_LARGE = 3;
+    public static final int DIGIT_SCALE_SIZE_HUGE = 4;
 
-    public static final float VALUE_DIGIT_SIZE_TINY = .70f;
-    public static final float VALUE_DIGIT_SIZE_SMALL = .85f;
-    public static final float VALUE_DIGIT_SIZE_NORMAL = 1f;
-    public static final float VALUE_DIGIT_SIZE_LARGE = 1.15f;
-    public static final float VALUE_DIGIT_SIZE_HUGE = 1.3f;
+    public static final float VALUE_DIGIT_SCALE_SIZE_TINY = .70f;
+    public static final float VALUE_DIGIT_SCALE_SIZE_SMALL = .85f;
+    public static final float VALUE_DIGIT_SCALE_SIZE_NORMAL = 1f;
+    public static final float VALUE_DIGIT_SCALE_SIZE_LARGE = 1.15f;
+    public static final float VALUE_DIGIT_SCALE_SIZE_HUGE = 1.3f;
 }

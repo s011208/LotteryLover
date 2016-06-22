@@ -16,26 +16,26 @@ import yhh.bj4.lotterylover.provider.AppSettings;
  */
 public class MainSettingsFragment extends PreferenceFragment {
 
-    private static final String SETTINGS_APPEARANCE_DIGIT_SIZE = "settings_appearance_digit_size";
+    private static final String SETTINGS_APPEARANCE_DIGIT_SCALE_SIZE = "settings_appearance_digit_scale_size";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.main_settings);
 
-        Preference digitSize = findPreference(SETTINGS_APPEARANCE_DIGIT_SIZE);
+        Preference digitSize = findPreference(SETTINGS_APPEARANCE_DIGIT_SCALE_SIZE);
         if (digitSize != null) {
-            digitSize.setSummary(getActivity().getResources().getStringArray(R.array.settings_appearance_digit_size_list)[AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SIZE, LotteryLover.DIGIT_SIZE_NORMAL)]);
+            digitSize.setSummary(getActivity().getResources().getStringArray(R.array.settings_appearance_digit_size_list)[AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL)]);
         }
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, final Preference preference) {
         final String key = preference.getKey();
-        if (SETTINGS_APPEARANCE_DIGIT_SIZE.equals(key)) {
-            final int selectedDigitSize = AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SIZE, LotteryLover.DIGIT_SIZE_NORMAL);
+        if (SETTINGS_APPEARANCE_DIGIT_SCALE_SIZE.equals(key)) {
+            final int selectedDigitSize = AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL);
             final AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.settings_appearance_digit_size_title)
+                    .setTitle(R.string.settings_appearance_digit_scale_size_title)
                     .setCancelable(true)
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -49,9 +49,9 @@ public class MainSettingsFragment extends PreferenceFragment {
                             if (which == selectedDigitSize) return;
                             dialog.dismiss();
                             preference.setSummary(getActivity().getResources().getStringArray(R.array.settings_appearance_digit_size_list)[which]);
-                            AppSettings.put(getActivity(), LotteryLover.KEY_DIGIT_SIZE, which);
+                            AppSettings.put(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, which);
                             if (getActivity() instanceof Callback) {
-                                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DIGIT_SIZE);
+                                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DIGIT_SCALE_SIZE);
                             }
                         }
                     }).create();

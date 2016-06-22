@@ -242,6 +242,11 @@ public class ViewAllActivity extends AppCompatActivity
                     Log.d(TAG, "changedItemList:" + s);
                 }
             }
+            if (changedItemList.contains(LotteryLover.KEY_DIGIT_SCALE_SIZE)) {
+                if (mMainTableFragment != null) {
+                    mMainTableFragment.updateDigitScaleSize();
+                }
+            }
         }
     }
 

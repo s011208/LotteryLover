@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.DividerItemDecoration;
 import yhh.bj4.lotterylover.views.table.main.MainTableAdapter;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
@@ -53,6 +55,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private TextView mHeader, mFooter;
     private View mTopSep, mBottomSep;
 
+    private float mOriginHeaderTextSize, mOriginFooterTextSize;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,16 +74,24 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mTopSep = root.findViewById(R.id.top_sep);
         mBottomSep = root.findViewById(R.id.bottom_sep);
 
+        mOriginHeaderTextSize = mHeader.getTextSize();
+        mOriginFooterTextSize = mFooter.getTextSize();
+
         mHeader.setVisibility(View.INVISIBLE);
         mFooter.setVisibility(View.INVISIBLE);
         mTopSep.setVisibility(View.INVISIBLE);
         mBottomSep.setVisibility(View.INVISIBLE);
+
+        final float digitScaleSize = getDigitScaleSize();
+        mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
+        mFooter.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginFooterTextSize * digitScaleSize);
         return root;
     }
 
     private void updateMainTableAdapter() {
         if (mMainTableAdapter == null) {
             mMainTableAdapter = new MainTableAdapter(getActivity(), mLtoType, mListType);
+            mMainTableAdapter.setDigitSize(getDigitScaleSize());
             mMainTableAdapter.setCallback(this);
             mMainTable.setAdapter(mMainTableAdapter);
         } else {
@@ -377,5 +389,20 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         int getLtoType();
 
         int getListType();
+    }
+
+    public void updateDigitScaleSize() {
+        final float digitScaleSize = getDigitScaleSize();
+        mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
+        mFooter.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginFooterTextSize * digitScaleSize);
+        if (mMainTableAdapter != null) {
+            mMainTableAdapter.setDigitSize(digitScaleSize);
+            mMainTableAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private float getDigitScaleSize() {
+        if (getActivity() == null) return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
+        return Utilities.getDigitSizeScale(AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL));
     }
 }

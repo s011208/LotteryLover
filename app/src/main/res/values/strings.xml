@@ -8,7 +8,7 @@
 
     <!-- settings -->
     <string name="settings_appearance_category_title">Appearance</string>
-    <string name="settings_appearance_digit_size_title">Digit size</string>
+    <string name="settings_appearance_digit_scale_size_title">Digit scale</string>
 
     <string-array name="settings_appearance_digit_size_list">
         <item>Tiny</item>

@@ -30,7 +30,7 @@ public abstract class MainTableItem {
     static final int SEP_COLOR_OF_NORMAL = Color.LTGRAY;
     static final int SEP_COLOR_OF_NORMAL_OF_GROUP = Color.RED;
     static final int SEP_COLOR_OF_SPECIAL = Color.LTGRAY;
-    static final int SEP_COLOR_OF_SPECIAL_OF_GROUP = Color.rgb(0x75, 0x00, 0x00);
+    static final int SEP_COLOR_OF_SPECIAL_OF_GROUP = Color.DKGRAY;
 
     static final String SEP = "   ";
     static final float SEP_RELATIVE_SIZE = 0.3f;

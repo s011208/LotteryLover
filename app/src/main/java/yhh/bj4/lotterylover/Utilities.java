@@ -235,6 +235,22 @@ public class Utilities {
         return rtn;
     }
 
+    public static float getDigitSizeScale(int index) {
+        switch (index) {
+            case LotteryLover.DIGIT_SCALE_SIZE_TINY:
+                return LotteryLover.VALUE_DIGIT_SCALE_SIZE_TINY;
+            case LotteryLover.DIGIT_SCALE_SIZE_SMALL:
+                return LotteryLover.VALUE_DIGIT_SCALE_SIZE_SMALL;
+            case LotteryLover.DIGIT_SCALE_SIZE_NORMAL:
+                return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
+            case LotteryLover.DIGIT_SCALE_SIZE_LARGE:
+                return LotteryLover.VALUE_DIGIT_SCALE_SIZE_LARGE;
+            case LotteryLover.DIGIT_SCALE_SIZE_HUGE:
+                return LotteryLover.VALUE_DIGIT_SCALE_SIZE_HUGE;
+        }
+        return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
+    }
+
     private Utilities() {
     }
 }
