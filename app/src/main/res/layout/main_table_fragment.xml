@@ -21,6 +21,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical" />
+
+            <RadioGroup
+                android:id="@+id/plus_rg_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="invisible"></RadioGroup>
         </FrameLayout>
 
         <View
@@ -42,6 +49,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical" />
+
+            <RadioGroup
+                android:id="@+id/minus_rg_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="invisible"></RadioGroup>
         </FrameLayout>
 
         <View

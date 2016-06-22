@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 /**
  * Created by User on 2016/6/15.
  */
-public class MainTableFragment extends Fragment implements MainTableAdapter.Callback {
+public class MainTableFragment extends Fragment implements MainTableAdapter.Callback, View.OnClickListener {
     private static final String TAG = "MainTableFragment";
     private static final boolean DEBUG = Utilities.DEBUG;
 
@@ -56,6 +58,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private View mTopSep, mBottomSep;
 
     private float mOriginHeaderTextSize, mOriginFooterTextSize;
+
+    private RadioGroup mPlusGroup, mMinusGroup;
 
     @Nullable
     @Override
@@ -85,7 +89,31 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         final float digitScaleSize = getDigitScaleSize();
         mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
         mFooter.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginFooterTextSize * digitScaleSize);
+
+        mPlusGroup = (RadioGroup) root.findViewById(R.id.plus_rg_group);
+        RadioButton btn;
+        for (int i = 1; i < 11; ++i) {
+            btn = new RadioButton(getActivity());
+            btn.setText("+" + i);
+            btn.setTag(i);
+            btn.setOnClickListener(this);
+            mPlusGroup.addView(btn);
+        }
+
+        mMinusGroup = (RadioGroup) root.findViewById(R.id.minus_rg_group);
+        for (int i = 1; i < 11; ++i) {
+            btn = new RadioButton(getActivity());
+            btn.setText("-" + i);
+            btn.setTag(-i);
+            btn.setOnClickListener(this);
+            mMinusGroup.addView(btn);
+        }
+
         return root;
+    }
+
+    private void updatePlusAndMinus(int value) {
+        Log.d(TAG, "updatePlusAndMinus, value: " + value);
     }
 
     private void updateMainTableAdapter() {
@@ -119,12 +147,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
                 mTopSep.setMinimumWidth(finalWidth);
                 mBottomSep.setMinimumWidth(finalWidth);
-
-                mHeader.setVisibility(View.VISIBLE);
-                mFooter.setVisibility(View.VISIBLE);
-
-                mTopSep.setVisibility(View.VISIBLE);
-                mBottomSep.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -184,15 +206,26 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             protected void onPreExecute() {
                 mHeader.setVisibility(View.INVISIBLE);
                 mTopSep.setVisibility(View.INVISIBLE);
+                mPlusGroup.setVisibility(View.INVISIBLE);
             }
 
             @Override
             protected void onPostExecute(MainTableItem mainTableItem) {
                 if (mainTableItem == null) {
                     mHeader.setText("");
+                    if (listType == LotteryLover.LIST_TYPE_OVERALL) {
+                        mPlusGroup.setVisibility(View.INVISIBLE);
+                        mHeader.setVisibility(View.INVISIBLE);
+                    } else {
+                        mPlusGroup.setVisibility(View.VISIBLE);
+                        mHeader.setVisibility(View.INVISIBLE);
+                    }
                 } else {
+                    mPlusGroup.setVisibility(View.INVISIBLE);
+                    mHeader.setVisibility(View.VISIBLE);
                     mHeader.setText(mainTableItem.getSpannableString());
                 }
+                mTopSep.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -268,13 +301,23 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             protected void onPreExecute() {
                 mFooter.setVisibility(View.INVISIBLE);
                 mBottomSep.setVisibility(View.INVISIBLE);
+                mMinusGroup.setVisibility(View.INVISIBLE);
             }
 
             @Override
             protected void onPostExecute(MainTableItem mainTableItem) {
                 if (mainTableItem == null) {
                     mFooter.setText("");
+                    if (listType == LotteryLover.LIST_TYPE_OVERALL) {
+                        mMinusGroup.setVisibility(View.INVISIBLE);
+                        mFooter.setVisibility(View.INVISIBLE);
+                    } else {
+                        mMinusGroup.setVisibility(View.VISIBLE);
+                        mFooter.setVisibility(View.INVISIBLE);
+                    }
                 } else {
+                    mMinusGroup.setVisibility(View.INVISIBLE);
+                    mFooter.setVisibility(View.VISIBLE);
                     mFooter.setText(mainTableItem.getSpannableString());
                 }
             }
@@ -383,6 +426,24 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     @Override
     public void onFinishLoadingData() {
         updateHeaderAndFooterWidth();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v instanceof RadioButton) {
+            final Integer tag = (Integer) v.getTag();
+            if (tag == null) return;
+            updatePlusAndMinus(tag);
+            if (tag < 0) {
+                for (int i = 0; i < mPlusGroup.getChildCount(); ++i) {
+                    ((RadioButton) mPlusGroup.getChildAt(i)).setChecked(false);
+                }
+            } else {
+                for (int i = 0; i < mMinusGroup.getChildCount(); ++i) {
+                    ((RadioButton) mMinusGroup.getChildAt(i)).setChecked(false);
+                }
+            }
+        }
     }
 
     public interface Callback {
