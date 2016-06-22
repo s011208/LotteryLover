@@ -67,7 +67,7 @@ public class ViewAllActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
 
 //        queryPage0();
-    }tㄔㄍㄋ
+    }
 
     private void queryPage0() {
         new Lto2CParser(this, 0, new LotteryParser.Callback() {
