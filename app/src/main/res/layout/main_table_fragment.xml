@@ -9,32 +9,46 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/main_table_adapter_text"
+        <FrameLayout
+            android:id="@+id/header_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/main_table_adapter_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+        </FrameLayout>
 
         <View
             android:id="@+id/top_sep"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
-            android:layout_below="@+id/header"
+            android:layout_below="@+id/header_container"
             android:background="@android:color/holo_red_dark" />
 
-        <include
-            android:id="@+id/footer"
-            layout="@layout/main_table_adapter_text"
+        <FrameLayout
+            android:id="@+id/footer_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true">
+
+            <include
+                android:id="@+id/footer"
+                layout="@layout/main_table_adapter_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+        </FrameLayout>
 
         <View
             android:id="@+id/bottom_sep"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
-            android:layout_above="@+id/footer"
+            android:layout_above="@+id/footer_container"
             android:background="@android:color/holo_red_dark" />
 
 

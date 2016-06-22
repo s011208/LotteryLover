@@ -14,9 +14,12 @@ public class OverallContentHolder extends MainTableHolder {
 
     private float mCurrentScale = LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
 
+    private float mOriginTextSize;
+
     public OverallContentHolder(View itemView, float scale) {
         super(itemView);
         mTextView = (TextView) itemView;
+        mOriginTextSize = mTextView.getTextSize();
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextView.getTextSize() * scale);
         mCurrentScale = scale;
     }
@@ -29,7 +32,7 @@ public class OverallContentHolder extends MainTableHolder {
         if (mCurrentScale == scale) {
             return;
         }
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextView.getTextSize() * scale);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginTextSize * scale);
         mCurrentScale = scale;
     }
 }

@@ -399,6 +399,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.setDigitSize(digitScaleSize);
             mMainTableAdapter.notifyDataSetChanged();
         }
+        updateHeaderAndFooterWidth();
     }
 
     private float getDigitScaleSize() {
