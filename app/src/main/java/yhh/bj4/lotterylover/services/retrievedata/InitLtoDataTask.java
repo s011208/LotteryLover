@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Process;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,10 @@ public class InitLtoDataTask implements Runnable {
 
     @Override
     public void run() {
+        if (DEBUG) {
+            Log.i(TAG, "InitLtoDataTask with type: " + LotteryItem.getSimpleClassName(mLtoType)
+                    + ", pid: " + Process.myPid() + ", tid: " + Process.myTid());
+        }
         // check whether sync old providerData from firebase.
         final int providerDataCount;
         Cursor providerData = mContext.getContentResolver().query(LotteryItem.getLtoTypeUri(mLtoType), new String[]{LotteryItem.COLUMN_SEQUENCE}, null, null, null);
@@ -97,13 +102,10 @@ public class InitLtoDataTask implements Runnable {
         Context context = mContext;
         if (context == null) return;
         List<LotteryItem> providerItemList = new ArrayList<>();
-        int index = -1;
         for (Map<String, String> map : firebaseData) {
-            ++index;
             if (map == null) {
                 continue;
             }
-            Log.d(TAG, "index: " + index);
             switch (mLtoType) {
                 case LotteryLover.LTO_TYPE_LTO:
                     providerItemList.add(new Lto(map));
