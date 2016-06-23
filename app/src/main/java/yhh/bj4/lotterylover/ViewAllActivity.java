@@ -3,8 +3,11 @@ package yhh.bj4.lotterylover;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -25,16 +28,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryParser;
+import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto.LtoParser;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
+import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.SettingsActivity;
@@ -46,13 +59,40 @@ public class ViewAllActivity extends AppCompatActivity
     private static final String TAG = "ViewAllActivity";
     private static final boolean DEBUG = Utilities.DEBUG;
 
-    private static final int REQUEST_SETTIGNS = 1000;
+    private static final int REQUEST_SETTINGS = 1000;
 
     private Spinner mActionBarSpinner;
     private RecyclerView mListTypeView;
     private MainTableFragment mMainTableFragment;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
+
+    private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (selfChange) return;
+            if (DEBUG) {
+                Log.d(TAG, "onChange, uri: " + uri);
+            }
+            boolean updateList = false;
+            if (Lto.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO;
+            } else if (Lto2C.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO2C;
+            } else if (Lto7C.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO7C;
+            } else if (LtoBig.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_BIG;
+            } else if (LtoDof.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_DOF;
+            } else if (LtoHK.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_HK;
+            }
+            if (updateList) {
+                mMainTableFragment.updateAllList();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +109,43 @@ public class ViewAllActivity extends AppCompatActivity
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
 
+        registerObserver();
 //        queryPage0();
+//        for (int i=1; i<1500; ++i) {
+//            add(i);
+//        }
+    }
+
+    private void add(int seq) {
+        ArrayList<Integer> normal = new ArrayList<>();
+        normal.add(3);
+        normal.add(6);
+        normal.add(8);
+        normal.add(30);
+        normal.add(33);
+        normal.add(36);
+
+        ArrayList<Integer> special = new ArrayList<>();
+        special.add(3);
+
+        Lto lto = new Lto(seq, 321000, normal, special, "memo", "extra");
+        DatabaseReference db = FirebaseDatabaseHelper.getFirebaseDatabase().getReference();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(String.valueOf(lto.getSequence()), lto.toMap());
+        db.child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA).child(Lto.class.getSimpleName()).updateChildren(childUpdates);
+    }
+
+    private void registerObserver() {
+        getContentResolver().registerContentObserver(Lto.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(Lto2C.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(Lto7C.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(LtoBig.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(LtoDof.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(LtoHK.DATA_URI, true, mContentObserver);
+    }
+
+    public void unregisterObserver() {
+        getContentResolver().unregisterContentObserver(mContentObserver);
     }
 
     @Override
@@ -87,6 +163,7 @@ public class ViewAllActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         FirebaseCrash.log("ViewAllActivity onDestroy " + this);
+        unregisterObserver();
         super.onDestroy();
     }
 
@@ -255,7 +332,7 @@ public class ViewAllActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SETTIGNS) {
+        if (requestCode == REQUEST_SETTINGS) {
             if (data == null || resultCode != Activity.RESULT_OK) return;
             ArrayList<String> changedItemList = data.getStringArrayListExtra(SettingsActivity.CHANGED_LIST_KEY);
             if (DEBUG) {
@@ -289,7 +366,7 @@ public class ViewAllActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             Intent intent = new Intent(ViewAllActivity.this, SettingsActivity.class);
-            startActivityForResult(intent, REQUEST_SETTIGNS);
+            startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
         }
 

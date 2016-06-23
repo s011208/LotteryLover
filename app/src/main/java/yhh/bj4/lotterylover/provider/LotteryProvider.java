@@ -59,6 +59,7 @@ public class LotteryProvider extends ContentProvider {
 //            printDatabaseData(Lto.DATA_URI);
 //            printDatabaseData(AppSettings.DATA_URI);
 //        }
+        clearTable(Lto.DATA_URI);
         return true;
     }
 
@@ -129,6 +130,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rtn;
     }
 
@@ -160,6 +162,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected delete uri: " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rtn;
     }
 
@@ -192,6 +195,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected update uri: " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rtn;
     }
 
@@ -223,6 +227,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected bulkInsert uri: " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rtn;
     }
 
@@ -257,5 +262,9 @@ public class LotteryProvider extends ContentProvider {
         } catch (Exception e) {
             Log.w(TAG, "unexpected exception occurs when printDatabaseData, uri: " + uri, e);
         }
+    }
+
+    private void clearTable(Uri uri) {
+        delete(uri, null, null);
     }
 }

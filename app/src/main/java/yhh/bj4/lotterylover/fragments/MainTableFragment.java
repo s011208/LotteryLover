@@ -331,6 +331,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 int[] parameters = MainTableItem.initParameters(ltoType);
                 ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(getActivity(), ltoType), ltoType);
                 Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(items);
+                if (combinedResult.first.isEmpty() || combinedResult.second.isEmpty()) return null;
                 MainTableItem rtn = null;
                 if (parameters[3] <= 0) {
                     // combine

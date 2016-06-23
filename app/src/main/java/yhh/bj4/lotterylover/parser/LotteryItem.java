@@ -1,15 +1,22 @@
 package yhh.bj4.lotterylover.parser;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.util.Log;
+
+import com.google.firebase.database.Exclude;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
@@ -36,6 +43,15 @@ public abstract class LotteryItem {
     private long mDrawingDateTime;
     private String mMemo;
     private String mExtraMessage;
+
+    public LotteryItem() {
+    }
+
+    public LotteryItem(Map<String, String> map) {
+        this(Long.valueOf(map.get(COLUMN_SEQUENCE)), Long.valueOf(map.get(COLUMN_DRAWING_DATE_TIME))
+                , fromJsonToList(map.get(COLUMN_NORMAL_NUMBERS)), fromJsonToList(map.get(COLUMN_SPECIAL_NUMBERS)),
+                map.get(COLUMN_MEMO), map.get(COLUMN_EXTRA));
+    }
 
     public LotteryItem(long seq, long dateTime, List<Integer> normalNumbers, List<Integer> specialNumbers, String memo, String extra) {
         mSequence = seq;
@@ -211,5 +227,55 @@ public abstract class LotteryItem {
     @Override
     public String toString() {
         return "seq: " + mSequence + ", time: " + mDrawingDateTime + ", memo: " + mMemo + ", extra: " + mExtraMessage;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put(COLUMN_SEQUENCE, String.valueOf(mSequence));
+        result.put(COLUMN_DRAWING_DATE_TIME, String.valueOf(mDrawingDateTime));
+        result.put(COLUMN_NORMAL_NUMBERS, fromListToJson(mNormalNumbers));
+        result.put(COLUMN_SPECIAL_NUMBERS, fromListToJson(mSpecialNumbers));
+        result.put(COLUMN_MEMO, mMemo);
+        result.put(COLUMN_EXTRA, mExtraMessage);
+        return result;
+    }
+
+    public static Uri getLtoTypeUri(int ltoType) {
+        switch (ltoType) {
+            case LotteryLover.LTO_TYPE_LTO:
+                return Lto.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO2C:
+                return Lto2C.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO7C:
+                return Lto7C.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_BIG:
+                return LtoBig.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_DOF:
+                return LtoDof.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_HK:
+                return LtoHK.DATA_URI;
+            default:
+                throw new RuntimeException("wrong lto type");
+        }
+    }
+
+    public static String getSimpleClassName(int ltoType) {
+        switch (ltoType) {
+            case LotteryLover.LTO_TYPE_LTO:
+                return Lto.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO2C:
+                return Lto2C.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO7C:
+                return Lto7C.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_BIG:
+                return LtoBig.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_DOF:
+                return LtoDof.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_HK:
+                return LtoHK.class.getSimpleName();
+            default:
+                throw new RuntimeException("wrong lto type");
+        }
     }
 }

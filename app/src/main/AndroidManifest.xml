@@ -41,9 +41,7 @@
             android:parentActivityName=".ViewAllActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service
-            android:name=".services.RetrieveDataService"
-            android:process=":remote_query" />
+        <service android:name=".services.RetrieveDataService" />
 
         <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
