@@ -1,7 +1,6 @@
 package yhh.bj4.lotterylover.views.table.main;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -47,37 +46,57 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
         List<Integer> tempNormalCompareItem = new ArrayList<>();
         List<Integer> tempSpecialCompareItem = new ArrayList<>();
         int[] parameters = MainTableItem.initParameters(mLotteryItems.get(0));
-        if (DEBUG)
-            Log.d(TAG, "mResults size: " + mResults.size() + ", mLotteryItems size: " + mLotteryItems.size());
         for (MainTableItem mainTableItem : mResults) {
-            if (DEBUG) {
-                Log.d(TAG, "mainTableItem.getItemType(): " + mainTableItem.getItemType());
-            }
             TypePlusAndMinus item = (TypePlusAndMinus) mainTableItem;
+            LotteryItem currentItem, compareItem;
             if (mainTableItem.getItemType() == MainTableItem.ITEM_TYPE_CONTENT) {
-                LotteryItem currentItem = mLotteryItems.get(counter++);
+                item.cleanHitResult();
+                currentItem = mLotteryItems.get(counter);
                 if (mQueryOrder == LotteryLover.ORDER_BY_ASC) {
                     if (counter >= mLotteryItems.size() - 1) continue;
                     // compare with next
-                    LotteryItem compareItem = mLotteryItems.get(counter + 1);
-                    tempNormalCompareItem.addAll(compareItem.getNormalNumbers());
-                    if (parameters[3] == -1) {
-                        tempNormalCompareItem.addAll(compareItem.getSpecialNumbers());
-                    } else {
-                        tempSpecialCompareItem.addAll(compareItem.getSpecialNumbers());
-                    }
-                    for (int i = 0; i < currentItem.getNormalNumbers().size(); ++i) {
-                        int v = currentItem.getNormalNumbers().get(i);
-                        if (tempNormalCompareItem.contains((v + mValue) % parameters[2])) {
-                            item.addHitIndexOfNormal(i);
-                        }
-                    }
-
+                    compareItem = mLotteryItems.get(counter + 1);
                 } else {
                     if (counter == 0) continue;
                     // compare with previous
-                    LotteryItem compareItem = mLotteryItems.get(counter - 1);
+                    compareItem = mLotteryItems.get(counter - 1);
                 }
+                if (compareItem == null) continue;
+                tempNormalCompareItem.addAll(compareItem.getNormalNumbers());
+                if (parameters[3] == -1) {
+                    tempNormalCompareItem.addAll(compareItem.getSpecialNumbers());
+                    for (int i = 0; i < currentItem.getNormalNumbers().size(); ++i) {
+                        int normalNumber = currentItem.getNormalNumbers().get(i);
+                        final int v = (normalNumber + mValue) % parameters[2];
+                        if (tempNormalCompareItem.contains(v)) {
+                            item.addHitIndexOfNormal(i);
+                        }
+                    }
+                    for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
+                        int specialNumber = currentItem.getSpecialNumbers().get(i);
+                        final int v = (specialNumber + mValue) % parameters[2];
+                        if (tempNormalCompareItem.contains(v)) {
+                            item.addHitIndexOfSpecial(i);
+                        }
+                    }
+                } else {
+                    tempSpecialCompareItem.addAll(compareItem.getSpecialNumbers());
+                    for (int i = 0; i < currentItem.getNormalNumbers().size(); ++i) {
+                        int normalNumber = currentItem.getNormalNumbers().get(i);
+                        final int v = (normalNumber + mValue) % parameters[2];
+                        if (tempNormalCompareItem.contains(v)) {
+                            item.addHitIndexOfNormal(i);
+                        }
+                    }
+                    for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
+                        int specialNumber = currentItem.getSpecialNumbers().get(i);
+                        final int v = (specialNumber + mValue) % parameters[2];
+                        if (tempSpecialCompareItem.contains(v)) {
+                            item.addHitIndexOfSpecial(i);
+                        }
+                    }
+                }
+                ++counter;
             } else {
                 // collect data for monthly data
 
@@ -87,7 +106,9 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
             }
             tempNormalCompareItem.clear();
             tempSpecialCompareItem.clear();
-            ((TypePlusAndMinus) mainTableItem).clearCacheAndMakeNewSpannableString();
+            compareItem = null;
+            currentItem = null;
+            item.clearCacheAndMakeNewSpannableString();
         }
         return null;
     }

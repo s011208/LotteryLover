@@ -88,7 +88,15 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                         if (DEBUG) {
                             Log.i(TAG, "AdapterDataGenerator cb, size: " + data.size());
                         }
-                        notifyDataSetChanged();
+                        if (mListType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
+                            if (mPlusAndMinus != 0) {
+                                updateAddAndMinus();
+                            } else {
+                                notifyDataSetChanged();
+                            }
+                        } else {
+                            notifyDataSetChanged();
+                        }
                         if (mCallback != null) {
                             mCallback.onFinishLoadingData();
                         }
@@ -191,8 +199,12 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     public void setAddAndMinus(int value) {
         mPlusAndMinus = value;
+        updateAddAndMinus();
+    }
+
+    private void updateAddAndMinus() {
         int queryOrder = AppSettings.get(mContext, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
-        new UpdatePlusAndMinusHelper(mLotteryItems, value, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
+        new UpdatePlusAndMinusHelper(mLotteryItems, mPlusAndMinus, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
             @Override
             public void onFinished() {
                 if (DEBUG)
