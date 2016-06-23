@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "410107880596",
+    "firebase_url": "https://lotterylover.firebaseio.com",
+    "project_id": "project-4595708104798093054",
+    "storage_bucket": "project-4595708104798093054.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410107880596:android:3f8c939d6d44be2a",
+        "android_client_info": {
+          "package_name": "yhh.bj4.lotterylover"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410107880596-qriscd8vuum46d2v4dlgj0qf9smuepi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvw4_vPRI_lnZVtSIOYKQlaTfw_dvQxe4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

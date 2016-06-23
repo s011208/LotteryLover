@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.ArrayList;
 
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
@@ -54,6 +56,7 @@ public class ViewAllActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseCrash.log("ViewAllActivity onCreate " + this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         restoreSavedInstanceState(savedInstanceState);
@@ -67,6 +70,24 @@ public class ViewAllActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
 
 //        queryPage0();
+    }
+
+    @Override
+    protected void onResume() {
+        FirebaseCrash.log("ViewAllActivity onResume " + this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        FirebaseCrash.log("ViewAllActivity onPause " + this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FirebaseCrash.log("ViewAllActivity onDestroy " + this);
+        super.onDestroy();
     }
 
     private void queryPage0() {
