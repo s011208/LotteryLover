@@ -1,4 +1,40 @@
 <resources>
+    <string name="app_name">樂透小幫手</string>
+
+    <string name="navigation_drawer_open">打開引導欄</string>
+    <string name="navigation_drawer_close">關閉引導欄</string>
+
+    <string name="action_settings">設定</string>
+
+    <!-- settings -->
+    <string name="settings_appearance_category_title">外觀</string>
+    <string name="settings_appearance_digit_scale_size_title">數字顯示大小</string>
+
+    <string name="settings_display_category_title">顯示內容</string>
+    <string name="settings_display_order">排序</string>
+    <string name="settings_display_row_count">顯示行數</string>
+
+    <string-array name="settings_display_rows">
+        <item>50 行</item>
+        <item>100 行</item>
+        <item>150 行</item>
+        <item>200 行</item>
+        <item>500 行</item>
+        <item>所有行數</item>
+    </string-array>
+
+    <string-array name="settings_display_order">
+        <item>遞增</item>
+        <item>遞減</item>
+    </string-array>
+
+    <string-array name="settings_appearance_digit_size_list">
+        <item>微小</item>
+        <item>小</item>
+        <item>一般</item>
+        <item>大</item>
+        <item>最大</item>
+    </string-array>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>威力彩</item>
@@ -8,5 +44,14 @@
         <item>大福彩</item>
         <item>六合彩</item>
     </string-array>
+
+    <string-array name="action_bar_list_type">
+        <item>列表</item>
+        <item>順序</item>
+        <item>和數</item>
+        <item>尾數</item>
+        <item>加減</item>
+    </string-array>
+
 
 </resources>
