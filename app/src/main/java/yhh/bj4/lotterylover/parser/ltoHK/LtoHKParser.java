@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LotteryParser;
 
@@ -115,7 +116,10 @@ public class LtoHKParser extends LotteryParser {
                 for (int i = 0; i < items.size(); ++i) {
                     cvs[i] = items.get(i).toContentValues();
                 }
-                mContext.getContentResolver().bulkInsert(LtoHK.DATA_URI, cvs);
+                int result = mContext.getContentResolver().bulkInsert(LtoHK.DATA_URI, cvs);
+                if (result != 0) {
+                    FirebaseDatabaseHelper.setLtoValues(items);
+                }
             }
         } catch (IOException e) {
             if (DEBUG) {

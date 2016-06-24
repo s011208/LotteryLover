@@ -26,6 +26,9 @@ public class LotteryProvider extends ContentProvider {
     private static final String TAG = "LotteryProvider";
     private static final boolean DEBUG = Utilities.DEBUG;
 
+    public static final int TRUE = 1;
+    public static final int FALSE = 0;
+
     private static final String AUTHORITY = "yhh.bj4.lotterylover.lottery_provider";
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int APP_SETTINGS_MATCHER = 0;
@@ -35,6 +38,8 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_DOF_MATCHER = 4;
     private static final int LTO_2C_MATCHER = 5;
     private static final int LTO_7C_MATCHER = 6;
+
+    public static final String PARAMETER_NOTIFY = "notify";
 
     static {
         sMatcher.addURI(AUTHORITY, Lto.TABLE_NAME, LTO_MATCHER);
@@ -59,7 +64,13 @@ public class LotteryProvider extends ContentProvider {
 //            printDatabaseData(Lto.DATA_URI);
 //            printDatabaseData(AppSettings.DATA_URI);
 //        }
-        clearTable(Lto.DATA_URI);
+//        clearTable(Lto.DATA_URI);
+//        clearTable(Lto2C.DATA_URI);
+//        clearTable(Lto7C.DATA_URI);
+//        clearTable(LtoBig.DATA_URI);
+//        clearTable(LtoDof.DATA_URI);
+//        clearTable(LtoHK.DATA_URI);
+//        clearTable(AppSettings.DATA_URI);
         return true;
     }
 
@@ -130,7 +141,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        sendNotify(uri);
         return rtn;
     }
 
@@ -162,7 +173,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected delete uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        sendNotify(uri);
         return rtn;
     }
 
@@ -195,7 +206,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected update uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        sendNotify(uri);
         return rtn;
     }
 
@@ -227,7 +238,7 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected bulkInsert uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        sendNotify(uri);
         return rtn;
     }
 
@@ -244,6 +255,13 @@ public class LotteryProvider extends ContentProvider {
             mDatabase.endTransaction();
         }
         return rtn;
+    }
+
+    private void sendNotify(Uri uri) {
+        String notify = uri.getQueryParameter(PARAMETER_NOTIFY);
+        if (notify == null || "true".equals(notify)) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
     }
 
     private void printDatabaseData(Uri uri) {

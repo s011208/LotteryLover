@@ -51,4 +51,25 @@ public class AppSettings {
         cv.put(COLUMN_VALUE, value);
         context.getContentResolver().insert(DATA_URI, cv);
     }
+
+    public static void put(Context context, String key, boolean value) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_KEY, key);
+        cv.put(COLUMN_VALUE, value ? LotteryProvider.TRUE : LotteryProvider.FALSE);
+        context.getContentResolver().insert(DATA_URI, cv);
+    }
+
+    public static boolean get(Context context, String key, boolean defaultValue) {
+        boolean rtn = defaultValue;
+        Cursor c = context.getContentResolver().query(DATA_URI, new String[]{COLUMN_VALUE}, COLUMN_KEY + "='" + key + "'", null, null);
+        if (c == null) return rtn;
+        try {
+            while (c.moveToNext()) {
+                return c.getInt(0) == LotteryProvider.TRUE;
+            }
+        } finally {
+            c.close();
+        }
+        return rtn;
+    }
 }

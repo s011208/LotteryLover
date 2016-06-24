@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.services.RetrieveDataService;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -249,6 +251,27 @@ public class Utilities {
                 return LotteryLover.VALUE_DIGIT_SCALE_SIZE_HUGE;
         }
         return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
+    }
+
+    public static boolean areAllLtoItemsAreInit(Context context) {
+        return AppSettings.get(context, LotteryLover.KEY_INIT_LTO, false) &&
+                AppSettings.get(context, LotteryLover.KEY_INIT_LTO2C, false) &&
+                AppSettings.get(context, LotteryLover.KEY_INIT_LTO7C, false) &&
+                AppSettings.get(context, LotteryLover.KEY_INIT_LTO_BIG, false) &&
+                AppSettings.get(context, LotteryLover.KEY_INIT_LTO_DOF, false) &&
+                AppSettings.get(context, LotteryLover.KEY_INIT_LTO_HK, false);
+    }
+
+    public static void updateAllLtoData(Context context, String reason) {
+        Log.d(TAG, "updateAllLtoData reason: " + reason);
+        if (Utilities.areAllLtoItemsAreInit(context)) {
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO2C);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO7C);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_BIG);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_DOF);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_HK);
+        }
     }
 
     private Utilities() {

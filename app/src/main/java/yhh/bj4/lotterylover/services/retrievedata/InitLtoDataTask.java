@@ -25,6 +25,7 @@ import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.provider.AppSettings;
 
 /**
  * init from firebase
@@ -52,9 +53,11 @@ public class InitLtoDataTask implements Runnable {
             Log.i(TAG, "InitLtoDataTask with type: " + LotteryItem.getSimpleClassName(mLtoType)
                     + ", pid: " + Process.myPid() + ", tid: " + Process.myTid());
         }
+        Context context = mContext;
+        if (context == null) return;
         // check whether sync old providerData from firebase.
         final int providerDataCount;
-        Cursor providerData = mContext.getContentResolver().query(LotteryItem.getLtoTypeUri(mLtoType), new String[]{LotteryItem.COLUMN_SEQUENCE}, null, null, null);
+        Cursor providerData = context.getContentResolver().query(LotteryItem.getLtoTypeUri(mLtoType), new String[]{LotteryItem.COLUMN_SEQUENCE}, null, null, null);
         if (providerData != null) {
             providerDataCount = providerData.getCount();
             providerData.close();
@@ -71,8 +74,11 @@ public class InitLtoDataTask implements Runnable {
                 if (DEBUG) {
                     Log.i(TAG, "onDataChange");
                 }
-                final List<Map<String, String>> values = (List<Map<String, String>>) dataSnapshot.getValue();
-                if (providerDataCount < values.size()) {
+                final List<Map<String, String>> values = new ArrayList<>();
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                    values.add((Map<String, String>) s.getValue());
+                }
+                if (values != null && providerDataCount < values.size()) {
                     // sync from firebase directly
                     new Thread(new Runnable() {
                         @Override
@@ -82,9 +88,37 @@ public class InitLtoDataTask implements Runnable {
                     }).start();
                 }
 
-
                 FirebaseDatabaseHelper.getFirebaseDatabase().getReference().child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA)
                         .child(LotteryItem.getSimpleClassName(mLtoType)).removeEventListener(this);
+
+                Context context = mContext;
+                if (context == null) return;
+                String key = null;
+                switch (mLtoType) {
+                    case LotteryLover.LTO_TYPE_LTO:
+                        key = LotteryLover.KEY_INIT_LTO;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO2C:
+                        key = LotteryLover.KEY_INIT_LTO2C;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO7C:
+                        key = LotteryLover.KEY_INIT_LTO7C;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO_BIG:
+                        key = LotteryLover.KEY_INIT_LTO_BIG;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO_DOF:
+                        key = LotteryLover.KEY_INIT_LTO_DOF;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO_HK:
+                        key = LotteryLover.KEY_INIT_LTO_HK;
+                        break;
+                    default:
+                        throw new RuntimeException("wrong lto type");
+                }
+                if (key != null) {
+                    AppSettings.put(context, key, true);
+                }
             }
 
             @Override

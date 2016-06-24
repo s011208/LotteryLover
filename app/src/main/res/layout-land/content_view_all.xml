@@ -16,9 +16,9 @@
         android:layout_marginTop="1dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/list_type_item_padding"
         android:paddingLeft="@dimen/list_type_item_padding"
         android:paddingTop="@dimen/list_type_item_padding"
-        android:paddingBottom="@dimen/list_type_item_padding"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
 
     <FrameLayout
@@ -30,4 +30,25 @@
         android:paddingLeft="@dimen/main_table_fragment_padding"
         android:paddingRight="@dimen/main_table_fragment_padding"
         android:paddingTop="@dimen/main_table_fragment_padding"></FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/loading_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ProgressBar
+            style="@style/Base.Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/loading" />
+    </LinearLayout>
 </RelativeLayout>

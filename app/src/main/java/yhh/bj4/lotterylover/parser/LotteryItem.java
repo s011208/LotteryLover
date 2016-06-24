@@ -12,7 +12,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +23,7 @@ import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.provider.LotteryProvider;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -255,6 +255,25 @@ public abstract class LotteryItem {
                 return LtoDof.DATA_URI;
             case LotteryLover.LTO_TYPE_LTO_HK:
                 return LtoHK.DATA_URI;
+            default:
+                throw new RuntimeException("wrong lto type");
+        }
+    }
+
+    public static Uri getLtoTypeUriNotNotify(int ltoType) {
+        switch (ltoType) {
+            case LotteryLover.LTO_TYPE_LTO:
+                return Uri.parse(Lto.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO2C:
+                return Uri.parse(Lto2C.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO7C:
+                return Uri.parse(Lto7C.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_BIG:
+                return Uri.parse(LtoBig.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_DOF:
+                return Uri.parse(LtoDof.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_HK:
+                return Uri.parse(LtoHK.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
             default:
                 throw new RuntimeException("wrong lto type");
         }

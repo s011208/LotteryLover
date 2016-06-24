@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LotteryParser;
 
@@ -126,6 +127,9 @@ public class LtoParser extends LotteryParser {
                 int result = mContext.getContentResolver().bulkInsert(Lto.DATA_URI, cvs);
                 if (DEBUG) {
                     Log.d(TAG, "insert result: " + result);
+                }
+                if (result != 0) {
+                    FirebaseDatabaseHelper.setLtoValues(items);
                 }
             }
         } catch (IOException e) {

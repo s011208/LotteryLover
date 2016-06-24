@@ -140,7 +140,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 final int mainTableWidth = mMainTable.getWidth();
                 if (DEBUG)
                     Log.d(TAG, "width: " + width + ", mainTableWidth: " + mainTableWidth);
-                if (width == 0 || mainTableWidth == 0) return false;
+                if (width == 0 || mainTableWidth == 0) return true;
                 if (mMainTable.getViewTreeObserver().isAlive()) {
                     mMainTable.getViewTreeObserver().removeOnPreDrawListener(this);
                 }
@@ -151,7 +151,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
                 mTopSep.setMinimumWidth(finalWidth);
                 mBottomSep.setMinimumWidth(finalWidth);
-                return false;
+                return true;
             }
         });
     }

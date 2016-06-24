@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -25,30 +24,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
-import yhh.bj4.lotterylover.parser.LotteryParser;
 import yhh.bj4.lotterylover.parser.lto.Lto;
-import yhh.bj4.lotterylover.parser.lto.LtoParser;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
-import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
-import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
-import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
-import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
-import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.SettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
@@ -64,6 +53,7 @@ public class ViewAllActivity extends AppCompatActivity
     private Spinner mActionBarSpinner;
     private RecyclerView mListTypeView;
     private MainTableFragment mMainTableFragment;
+    private LinearLayout mLoadingProgressbar;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
 
@@ -87,6 +77,14 @@ public class ViewAllActivity extends AppCompatActivity
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_DOF;
             } else if (LtoHK.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_HK;
+            } else if (AppSettings.DATA_URI.equals(uri)) {
+                Log.e(TAG, "AppSettings, isShouldHideProgressbar(): " + isShouldHideProgressbar()
+                        + ", v: " + mLoadingProgressbar.getVisibility());
+                if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
+                    Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
+                    mLoadingProgressbar.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                }
             }
             if (updateList) {
                 mMainTableFragment.updateAllList();
@@ -107,32 +105,21 @@ public class ViewAllActivity extends AppCompatActivity
         if (mMainTableFragment == null) {
             mMainTableFragment = new MainTableFragment();
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+
+        if (isShouldHideProgressbar()) {
+            mLoadingProgressbar.setVisibility(View.GONE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+        }
 
         registerObserver();
-//        queryPage0();
-//        for (int i=1; i<1500; ++i) {
-//            add(i);
-//        }
     }
 
-    private void add(int seq) {
-        ArrayList<Integer> normal = new ArrayList<>();
-        normal.add(3);
-        normal.add(6);
-        normal.add(8);
-        normal.add(30);
-        normal.add(33);
-        normal.add(36);
+    private boolean isMainTableAvailable() {
+        return mLoadingProgressbar.getVisibility() != View.VISIBLE;
+    }
 
-        ArrayList<Integer> special = new ArrayList<>();
-        special.add(3);
-
-        Lto lto = new Lto(seq, 321000, normal, special, "memo", "extra");
-        DatabaseReference db = FirebaseDatabaseHelper.getFirebaseDatabase().getReference();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(String.valueOf(lto.getSequence()), lto.toMap());
-        db.child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA).child(Lto.class.getSimpleName()).updateChildren(childUpdates);
+    private boolean isShouldHideProgressbar() {
+        return Utilities.areAllLtoItemsAreInit(this);
     }
 
     private void registerObserver() {
@@ -142,6 +129,7 @@ public class ViewAllActivity extends AppCompatActivity
         getContentResolver().registerContentObserver(LtoBig.DATA_URI, true, mContentObserver);
         getContentResolver().registerContentObserver(LtoDof.DATA_URI, true, mContentObserver);
         getContentResolver().registerContentObserver(LtoHK.DATA_URI, true, mContentObserver);
+        getContentResolver().registerContentObserver(AppSettings.DATA_URI, true, mContentObserver);
     }
 
     public void unregisterObserver() {
@@ -165,80 +153,6 @@ public class ViewAllActivity extends AppCompatActivity
         FirebaseCrash.log("ViewAllActivity onDestroy " + this);
         unregisterObserver();
         super.onDestroy();
-    }
-
-    private void queryPage0() {
-        new Lto2CParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        new Lto7CParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        new LtoBigParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        new LtoDofParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        new LtoHKParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        new LtoParser(this, 0, new LotteryParser.Callback() {
-            @Override
-            public void onStart(int page) {
-
-            }
-
-            @Override
-            public void onFinish(int page, int[] results) {
-
-            }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
@@ -270,6 +184,8 @@ public class ViewAllActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mLoadingProgressbar = (LinearLayout) findViewById(R.id.loading_progressbar);
     }
 
     private void initActionBar(Bundle savedInstanceState) {
@@ -291,7 +207,9 @@ public class ViewAllActivity extends AppCompatActivity
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
                     AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
-                    mMainTableFragment.setLtoType(mLtoType);
+                    if (isMainTableAvailable()) {
+                        mMainTableFragment.setLtoType(mLtoType);
+                    }
                 }
 
                 @Override
@@ -315,7 +233,9 @@ public class ViewAllActivity extends AppCompatActivity
             public void onListTypeChanged(int type) {
                 mListType = type;
                 AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
-                mMainTableFragment.setListType(mListType);
+                if (isMainTableAvailable()) {
+                    mMainTableFragment.setListType(mListType);
+                }
             }
         }, mListType));
     }
@@ -342,13 +262,17 @@ public class ViewAllActivity extends AppCompatActivity
             }
             if (changedItemList.contains(LotteryLover.KEY_DIGIT_SCALE_SIZE)) {
                 if (mMainTableFragment != null) {
-                    mMainTableFragment.updateDigitScaleSize();
+                    if (isMainTableAvailable()) {
+                        mMainTableFragment.updateDigitScaleSize();
+                    }
                 }
             }
             if (changedItemList.contains(LotteryLover.KEY_ORDER) ||
                     changedItemList.contains(LotteryLover.KEY_DISPLAY_ROWS)) {
                 if (mMainTableFragment != null) {
-                    mMainTableFragment.updateAllList();
+                    if (isMainTableAvailable()) {
+                        mMainTableFragment.updateAllList();
+                    }
                 }
             }
         }

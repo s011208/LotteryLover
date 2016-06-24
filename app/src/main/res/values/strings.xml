@@ -52,4 +52,7 @@
         <item>Last digit</item>
         <item>Plus and minus</item>
     </string-array>
+
+    <!-- view all activity -->
+    <string name="loading">Loading data</string>
 </resources>

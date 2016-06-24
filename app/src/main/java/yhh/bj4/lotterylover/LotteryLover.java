@@ -53,4 +53,10 @@ public class LotteryLover {
     public static final int VALUE_DISPLAY_ROWS_500 = 500;
     public static final int VALUE_DISPLAY_ROWS_ALL = -1;
 
+    public static final String KEY_INIT_LTO = "init_lto";
+    public static final String KEY_INIT_LTO2C = "init_lto2c";
+    public static final String KEY_INIT_LTO7C = "init_lto7c";
+    public static final String KEY_INIT_LTO_BIG = "init_lto_big";
+    public static final String KEY_INIT_LTO_DOF = "init_lto_dof";
+    public static final String KEY_INIT_LTO_HK = "init_lto_hk";
 }

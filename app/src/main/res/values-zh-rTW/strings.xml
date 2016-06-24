@@ -53,5 +53,6 @@
         <item>加減</item>
     </string-array>
 
-
+    <!-- view all activity -->
+    <string name="loading">讀取資料</string>
 </resources>
