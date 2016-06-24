@@ -14,6 +14,10 @@
     <string name="settings_display_order">排序</string>
     <string name="settings_display_row_count">顯示行數</string>
 
+    <string name="settings_about_category_title">關於</string>
+    <string name="settings_about_app_version">App 版本</string>
+    <string name="settings_about_contact_me">聯絡作者</string>
+
     <string-array name="settings_display_rows">
         <item>50 行</item>
         <item>100 行</item>

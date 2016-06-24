@@ -16,4 +16,17 @@
             android:key="settings_display_row_count"
             android:title="@string/settings_display_row_count" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="settings_about"
+        android:title="@string/settings_about_category_title">
+        <Preference
+            android:key="settings_about_app_version"
+            android:title="@string/settings_about_app_version" />
+
+        <Preference
+            android:key="settings_about_contact_me"
+            android:summary="s011208@gmail.com"
+            android:title="@string/settings_about_contact_me" />
+    </PreferenceCategory>
 </PreferenceScreen>

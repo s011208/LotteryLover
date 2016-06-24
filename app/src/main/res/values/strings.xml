@@ -14,6 +14,10 @@
     <string name="settings_display_order">Order</string>
     <string name="settings_display_row_count">Display rows</string>
 
+    <string name="settings_about_category_title">About</string>
+    <string name="settings_about_app_version">App version</string>
+    <string name="settings_about_contact_me">Contact me</string>
+
     <string-array name="settings_display_rows">
         <item>50 rows</item>
         <item>100 rows</item>
