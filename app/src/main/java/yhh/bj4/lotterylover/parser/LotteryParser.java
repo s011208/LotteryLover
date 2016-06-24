@@ -17,7 +17,7 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
  * Created by yenhsunhuang on 2016/6/14.
  */
 public abstract class LotteryParser extends AsyncTask<Void, Void, int[]> {
-    public static final boolean DEBUG = Utilities.DEBUG;
+    public static final boolean DEBUG = false;
 
     public static final int RESULT_OK = Activity.RESULT_OK;
     public static final int RESULT_CANCELED = Activity.RESULT_CANCELED;

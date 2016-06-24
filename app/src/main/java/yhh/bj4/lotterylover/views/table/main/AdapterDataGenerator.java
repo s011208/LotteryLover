@@ -24,7 +24,7 @@ import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
  */
 public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTableItem>> {
     private static final String TAG = "AdapterDataGenerator";
-    private static final boolean DEBUG = Utilities.DEBUG;
+    private static final boolean DEBUG = false;
 
     public interface Callback {
         void onFinished(ArrayList<MainTableItem> data);
