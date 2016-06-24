@@ -106,8 +106,6 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
             }
             tempNormalCompareItem.clear();
             tempSpecialCompareItem.clear();
-            compareItem = null;
-            currentItem = null;
             item.clearCacheAndMakeNewSpannableString();
         }
         return null;

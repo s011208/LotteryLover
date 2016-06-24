@@ -2,7 +2,6 @@ package yhh.bj4.lotterylover.applicationproxy;
 
 import android.content.Context;
 
-import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.services.RetrieveDataService;
 

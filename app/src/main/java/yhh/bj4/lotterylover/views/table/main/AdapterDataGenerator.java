@@ -32,7 +32,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
 
     private static final int TABLE_OFFSET = 1;
 
-    private final int mLtoType, mListType;
+    private final int mListType;
     private final ArrayList<LotteryItem> mLotteryData = new ArrayList<>();
     private final Callback mCallback;
     private int mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber, mMaximumSpecialNumber;
@@ -40,7 +40,6 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
 
     public AdapterDataGenerator(int lto, int list, int color, List<LotteryItem> data, Callback cb) {
         mListType = list;
-        mLtoType = lto;
         mLotteryData.addAll(data);
         mCallback = cb;
         mWindowBackgroundColor = color;

@@ -93,7 +93,7 @@ public class InitLtoDataTask implements Runnable {
 
                 Context context = mContext;
                 if (context == null) return;
-                String key = null;
+                String key;
                 switch (mLtoType) {
                     case LotteryLover.LTO_TYPE_LTO:
                         key = LotteryLover.KEY_INIT_LTO;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import yhh.bj4.lotterylover.LotteryLover;
-import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.LtoParser;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;

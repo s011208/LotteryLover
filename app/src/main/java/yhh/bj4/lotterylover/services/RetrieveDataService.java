@@ -198,13 +198,13 @@ public class RetrieveDataService extends Service {
         return null;
     }
 
-    public static final void startServiceAndUpdate(Context context, int requestLtoType) {
+    public static void startServiceAndUpdate(Context context, int requestLtoType) {
         Intent startIntent = new Intent(context, RetrieveDataService.class);
         startIntent.putExtra(RetrieveDataService.INTENT_REQUEST_LTO_TYPE, requestLtoType);
         context.startService(startIntent);
     }
 
-    public static final void startService(Context context, String reason) {
+    public static void startService(Context context, String reason) {
         Intent startIntent = new Intent(context, RetrieveDataService.class);
         startIntent.putExtra(RetrieveDataService.INTENT_REASON, reason);
         context.startService(startIntent);

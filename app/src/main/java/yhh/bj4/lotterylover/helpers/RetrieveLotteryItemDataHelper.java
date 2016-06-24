@@ -26,7 +26,7 @@ import yhh.bj4.lotterylover.provider.AppSettings;
  */
 public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<LotteryItem>> {
     private static final boolean DEBUG = Utilities.DEBUG;
-    private static final String TAG = "RetrieveLotteryItemDataHelper";
+    private static final String TAG = "RetrieveLotteryItem";
 
     public interface Callback {
         void onFinished(List<LotteryItem> data);

@@ -1,6 +1,5 @@
 package yhh.bj4.lotterylover.views.table.main.item;
 
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;

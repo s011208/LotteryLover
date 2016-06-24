@@ -32,9 +32,8 @@ public class AppSettings {
     }
 
     public static int get(Context context, String key, int defaultValue) {
-        int rtn = defaultValue;
         Cursor c = context.getContentResolver().query(DATA_URI, new String[]{COLUMN_VALUE}, COLUMN_KEY + "='" + key + "'", null, null);
-        if (c == null) return rtn;
+        if (c == null) return defaultValue;
         try {
             while (c.moveToNext()) {
                 return c.getInt(0);
@@ -42,7 +41,7 @@ public class AppSettings {
         } finally {
             c.close();
         }
-        return rtn;
+        return defaultValue;
     }
 
     public static void put(Context context, String key, int value) {
@@ -60,9 +59,8 @@ public class AppSettings {
     }
 
     public static boolean get(Context context, String key, boolean defaultValue) {
-        boolean rtn = defaultValue;
         Cursor c = context.getContentResolver().query(DATA_URI, new String[]{COLUMN_VALUE}, COLUMN_KEY + "='" + key + "'", null, null);
-        if (c == null) return rtn;
+        if (c == null) return defaultValue;
         try {
             while (c.moveToNext()) {
                 return c.getInt(0) == LotteryProvider.TRUE;
@@ -70,6 +68,6 @@ public class AppSettings {
         } finally {
             c.close();
         }
-        return rtn;
+        return defaultValue;
     }
 }

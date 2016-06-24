@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import yhh.bj4.lotterylover.applicationproxy.ApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.MainApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.RemoteComponentsApplicationProxy;
-import yhh.bj4.lotterylover.services.RetrieveDataService;
 
 /**
  * Created by User on 2016/6/15.
@@ -51,10 +50,10 @@ public class LotteryLoverApplication extends Application {
     @Nullable
     private static String getProcessName(Context context, int pID) {
         ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo rapi : am.getRunningAppProcesses()) {
-            if (rapi.pid != pID) continue;
-            if (!TextUtils.isEmpty(rapi.processName) && rapi.processName.startsWith("yhh.bj4.lotterylover")) {
-                return rapi.processName;
+        for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : am.getRunningAppProcesses()) {
+            if (runningAppProcessInfo.pid != pID) continue;
+            if (!TextUtils.isEmpty(runningAppProcessInfo.processName) && runningAppProcessInfo.processName.startsWith("yhh.bj4.lotterylover")) {
+                return runningAppProcessInfo.processName;
             }
         }
         return null;

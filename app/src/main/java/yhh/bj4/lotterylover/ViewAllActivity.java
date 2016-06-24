@@ -50,7 +50,6 @@ public class ViewAllActivity extends AppCompatActivity
 
     private static final int REQUEST_SETTINGS = 1000;
 
-    private Spinner mActionBarSpinner;
     private RecyclerView mListTypeView;
     private MainTableFragment mMainTableFragment;
     private LinearLayout mLoadingProgressbar;
@@ -199,10 +198,10 @@ public class ViewAllActivity extends AppCompatActivity
                     ActionBar.LayoutParams.WRAP_CONTENT,
                     ActionBar.LayoutParams.MATCH_PARENT);
 
-            mActionBarSpinner = (Spinner) ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_action_bar_spinner, null);
-            mActionBarSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.action_bar_spinner_lto_type)));
-            mActionBarSpinner.setSelection(mLtoType);
-            mActionBarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            Spinner actionBarSpinner = (Spinner) ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_action_bar_spinner, null);
+            actionBarSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.action_bar_spinner_lto_type)));
+            actionBarSpinner.setSelection(mLtoType);
+            actionBarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
@@ -217,7 +216,7 @@ public class ViewAllActivity extends AppCompatActivity
 
                 }
             });
-            getSupportActionBar().setCustomView(mActionBarSpinner, params);
+            getSupportActionBar().setCustomView(actionBarSpinner, params);
             getSupportActionBar().setElevation(0);
         }
 
@@ -227,8 +226,8 @@ public class ViewAllActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        mListTypeView = (RecyclerView) findViewById(R.id.list_type_recyclerview);
-        mListTypeView.setAdapter(new ListTypeAdapter(this, new ListTypeAdapter.Callback() {
+        RecyclerView listTypeView = (RecyclerView) findViewById(R.id.list_type_recyclerview);
+        listTypeView.setAdapter(new ListTypeAdapter(this, new ListTypeAdapter.Callback() {
             @Override
             public void onListTypeChanged(int type) {
                 mListType = type;

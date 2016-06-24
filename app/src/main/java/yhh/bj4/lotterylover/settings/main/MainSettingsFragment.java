@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
 import yhh.bj4.lotterylover.LotteryLover;
@@ -54,6 +55,7 @@ public class MainSettingsFragment extends PreferenceFragment {
             try {
                 pref.setSummary(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
             } catch (PackageManager.NameNotFoundException e) {
+                Log.w("Settings", "unexpected error", e);
             }
         }
     }

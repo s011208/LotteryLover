@@ -38,7 +38,7 @@ public class ListTypeAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder textHolder = (ViewHolder) holder;
         textHolder.mText.setText(mItems[position]);
         if (mSelectedPosition == position) {
@@ -48,13 +48,14 @@ public class ListTypeAdapter extends RecyclerView.Adapter {
             textHolder.mText.setBackgroundColor(Utilities.getPrimaryColor(mContext));
             textHolder.mText.setTextColor(Color.WHITE);
         }
+        final int finalPosition = holder.getAdapterPosition();
         textHolder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 notifyItemChanged(mSelectedPosition);
-                mSelectedPosition = position;
+                mSelectedPosition = finalPosition;
                 notifyItemChanged(mSelectedPosition);
-                mCallback.onListTypeChanged(position);
+                mCallback.onListTypeChanged(mSelectedPosition);
             }
         });
     }

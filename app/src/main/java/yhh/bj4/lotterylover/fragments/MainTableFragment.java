@@ -235,7 +235,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected MainTableItem doInBackground(Void... params) {
                 int[] parameters = MainTableItem.initParameters(ltoType);
-                MainTableItem rtn = null;
+                MainTableItem rtn;
                 if (listType == LotteryLover.LIST_TYPE_OVERALL) {
                     return null;
                 } else if (listType == LotteryLover.LIST_TYPE_NUMERIC) {
@@ -332,7 +332,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(getActivity(), ltoType), ltoType);
                 Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(items);
                 if (combinedResult.first.isEmpty() || combinedResult.second.isEmpty()) return null;
-                MainTableItem rtn = null;
+                MainTableItem rtn;
                 if (parameters[3] <= 0) {
                     // combine
                     for (int i = 0; i < combinedResult.first.size(); ++i) {
