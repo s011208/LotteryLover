@@ -30,13 +30,6 @@
                 android:visibility="invisible"></RadioGroup>
         </FrameLayout>
 
-        <View
-            android:id="@+id/top_sep"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_below="@+id/header_container"
-            android:background="@android:color/holo_red_dark" />
-
         <FrameLayout
             android:id="@+id/footer_container"
             android:layout_width="match_parent"
@@ -58,20 +51,12 @@
                 android:visibility="invisible"></RadioGroup>
         </FrameLayout>
 
-        <View
-            android:id="@+id/bottom_sep"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_above="@+id/footer_container"
-            android:background="@android:color/holo_red_dark" />
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/main_table_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_sep"
-            android:layout_below="@+id/top_sep"
+            android:layout_above="@+id/footer_container"
+            android:layout_below="@+id/header_container"
             android:orientation="vertical"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
 

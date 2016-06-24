@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,14 +49,12 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private int mLtoType, mListType;
 
-    private ProgressBar mLoadingProgress;
     private RecyclerView mMainTable;
     private MainTableAdapter mMainTableAdapter;
 
     private HorizontalScrollView mScrollView;
 
     private TextView mHeader, mFooter;
-    private View mTopSep, mBottomSep;
 
     private float mOriginHeaderTextSize, mOriginFooterTextSize;
 
@@ -71,20 +70,15 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_NUMERIC, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_TOGETHER, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
-
+        mMainTable.setBackgroundResource(R.drawable.rv_bg);
         mHeader = (TextView) root.findViewById(R.id.header);
         mFooter = (TextView) root.findViewById(R.id.footer);
-
-        mTopSep = root.findViewById(R.id.top_sep);
-        mBottomSep = root.findViewById(R.id.bottom_sep);
 
         mOriginHeaderTextSize = mHeader.getTextSize();
         mOriginFooterTextSize = mFooter.getTextSize();
 
         mHeader.setVisibility(View.INVISIBLE);
         mFooter.setVisibility(View.INVISIBLE);
-        mTopSep.setVisibility(View.INVISIBLE);
-        mBottomSep.setVisibility(View.INVISIBLE);
 
         final float digitScaleSize = getDigitScaleSize();
         mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
@@ -148,9 +142,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 final int finalWidth = Math.min(width, mainTableWidth);
                 mHeader.setMinWidth(finalWidth);
                 mFooter.setMinWidth(finalWidth);
-
-                mTopSep.setMinimumWidth(finalWidth);
-                mBottomSep.setMinimumWidth(finalWidth);
                 return true;
             }
         });
@@ -209,7 +200,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected void onPreExecute() {
                 mHeader.setVisibility(View.INVISIBLE);
-                mTopSep.setVisibility(View.INVISIBLE);
                 mPlusGroup.setVisibility(View.INVISIBLE);
             }
 
@@ -218,7 +208,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 if (mainTableItem == null) {
                     mHeader.setText("");
                     if (listType == LotteryLover.LIST_TYPE_OVERALL) {
-                        mPlusGroup.setVisibility(View.INVISIBLE);
+                        mPlusGroup.setVisibility(View.GONE);
                         mHeader.setVisibility(View.INVISIBLE);
                     } else {
                         mPlusGroup.setVisibility(View.VISIBLE);
@@ -229,7 +219,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     mHeader.setVisibility(View.VISIBLE);
                     mHeader.setText(mainTableItem.makeSpannableString());
                 }
-                mTopSep.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -304,7 +293,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             @Override
             protected void onPreExecute() {
                 mFooter.setVisibility(View.INVISIBLE);
-                mBottomSep.setVisibility(View.INVISIBLE);
                 mMinusGroup.setVisibility(View.INVISIBLE);
             }
 
@@ -313,7 +301,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 if (mainTableItem == null) {
                     mFooter.setText("");
                     if (listType == LotteryLover.LIST_TYPE_OVERALL) {
-                        mMinusGroup.setVisibility(View.INVISIBLE);
+                        mMinusGroup.setVisibility(View.GONE);
                         mFooter.setVisibility(View.INVISIBLE);
                     } else {
                         mMinusGroup.setVisibility(View.VISIBLE);
