@@ -70,4 +70,24 @@ public class AppSettings {
         }
         return defaultValue;
     }
+
+    public static void put(Context context, String key, long value) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_KEY, key);
+        cv.put(COLUMN_VALUE, value);
+        context.getContentResolver().insert(DATA_URI, cv);
+    }
+
+    public static long get(Context context, String key, long defaultValue) {
+        Cursor c = context.getContentResolver().query(DATA_URI, new String[]{COLUMN_VALUE}, COLUMN_KEY + "='" + key + "'", null, null);
+        if (c == null) return defaultValue;
+        try {
+            while (c.moveToNext()) {
+                return c.getLong(0);
+            }
+        } finally {
+            c.close();
+        }
+        return defaultValue;
+    }
 }

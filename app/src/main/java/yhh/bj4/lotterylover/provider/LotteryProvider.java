@@ -238,7 +238,9 @@ public class LotteryProvider extends ContentProvider {
             default:
                 throw new RuntimeException("unexpected bulkInsert uri: " + uri);
         }
-        sendNotify(uri);
+        if (rtn > 0) {
+            sendNotify(uri);
+        }
         return rtn;
     }
 

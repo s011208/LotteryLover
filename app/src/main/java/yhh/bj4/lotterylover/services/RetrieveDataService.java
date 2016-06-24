@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -68,6 +69,10 @@ public class RetrieveDataService extends Service {
 
     private void handleLtoUpdate(final int requestLtoType, final int queryPage) {
         if (requestLtoType == -1) return;
+        if (!isExpired(requestLtoType)) {
+            Log.w(TAG, "requestLtoType: " + requestLtoType + ", not expired");
+            return;
+        }
         Log.d(TAG, "handleLtoUpdate, lto: " + requestLtoType + ", page: " + queryPage);
         mHandler.post(new Runnable() {
             @Override
@@ -120,6 +125,12 @@ public class RetrieveDataService extends Service {
                 }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
+    }
+
+    private boolean isExpired(int type) {
+        long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
+        Calendar now = Calendar.getInstance();
+        return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 6;
     }
 
     private boolean isWorkAround(int type, long seq, long pre) {

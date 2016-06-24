@@ -11,12 +11,15 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LotteryParser;
+import yhh.bj4.lotterylover.provider.AppSettings;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -125,6 +128,8 @@ public class LtoDofParser extends LotteryParser {
                 if (result != 0) {
                     FirebaseDatabaseHelper.setLtoValues(items);
                 }
+                AppSettings.put(mContext, LotteryLover.KEY_LTO_UPDATE_TIME(
+                        items.get(0).getClass().getSimpleName()), Calendar.getInstance().getTimeInMillis());
             }
         } catch (IOException e) {
             if (DEBUG) {

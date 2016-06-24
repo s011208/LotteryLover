@@ -75,8 +75,6 @@ public class ViewAllActivity extends AppCompatActivity
             } else if (LtoHK.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_HK;
             } else if (AppSettings.DATA_URI.equals(uri)) {
-                Log.e(TAG, "AppSettings, isShouldHideProgressbar(): " + isShouldHideProgressbar()
-                        + ", v: " + mLoadingProgressbar.getVisibility());
                 if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
                     Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
                     mLoadingProgressbar.setVisibility(View.GONE);
