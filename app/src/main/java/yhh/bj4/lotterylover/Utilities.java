@@ -23,22 +23,49 @@ import yhh.bj4.lotterylover.services.RetrieveDataService;
  */
 public class Utilities {
     public static final boolean DEBUG = true;
-    private static final String TAG = "Utilities";
-
     public static final long SECOND = 1000;
     public static final long MINUTE = 60 * SECOND;
     public static final long HOUR = 60 * MINUTE;
     public static final long DAY = 24 * HOUR;
-
     public static final int QUERY_LIMIT = 500;
-
+    private static final String TAG = "Utilities";
+    private static final SparseArray<Integer> sColorAttrsArray = new SparseArray<>();
     private static Calendar sCalendar = Calendar.getInstance();
+    private static Map<Integer, List<Integer>> sPlusAndLastDigitMap = new HashMap<>();
+    private static Map<Integer, List<Integer>> sLastDigitMap = new HashMap<>();
 
     static {
         sCalendar.set(Calendar.HOUR_OF_DAY, 0);
         sCalendar.set(Calendar.MINUTE, 0);
         sCalendar.set(Calendar.SECOND, 0);
         sCalendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    static {
+        for (int i = 0; i < 100; ++i) {
+            int digit = Utilities.getLastDigit(Utilities.addDigitsOnce(i));
+            List<Integer> listData = sPlusAndLastDigitMap.get(digit);
+            if (listData == null) {
+                listData = new ArrayList<>();
+            }
+            listData.add(i);
+            sPlusAndLastDigitMap.put(i, listData);
+        }
+    }
+
+    static {
+        for (int i = 0; i < 100; ++i) {
+            int digit = Utilities.getLastDigit(i);
+            List<Integer> listData = sLastDigitMap.get(digit);
+            if (listData == null) {
+                listData = new ArrayList<>();
+            }
+            listData.add(i);
+            sLastDigitMap.put(i, listData);
+        }
+    }
+
+    private Utilities() {
     }
 
     public static long convertStringDateToLong(String date) {
@@ -58,8 +85,6 @@ public class Utilities {
         }
         return rtn;
     }
-
-    private static final SparseArray<Integer> sColorAttrsArray = new SparseArray<>();
 
     public static int getColorAttribute(Context context, int key, int defaultColor) {
         if (sColorAttrsArray.get(key) != null) {
@@ -169,20 +194,6 @@ public class Utilities {
         return num / 10 + num % 10;
     }
 
-    private static Map<Integer, List<Integer>> sPlusAndLastDigitMap = new HashMap<>();
-
-    static {
-        for (int i = 0; i < 100; ++i) {
-            int digit = Utilities.getLastDigit(Utilities.addDigitsOnce(i));
-            List<Integer> listData = sPlusAndLastDigitMap.get(digit);
-            if (listData == null) {
-                listData = new ArrayList<>();
-            }
-            listData.add(i);
-            sPlusAndLastDigitMap.put(i, listData);
-        }
-    }
-
     /**
      * key = new index, value = old index
      *
@@ -201,20 +212,6 @@ public class Utilities {
             }
         }
         return rtn;
-    }
-
-    private static Map<Integer, List<Integer>> sLastDigitMap = new HashMap<>();
-
-    static {
-        for (int i = 0; i < 100; ++i) {
-            int digit = Utilities.getLastDigit(i);
-            List<Integer> listData = sLastDigitMap.get(digit);
-            if (listData == null) {
-                listData = new ArrayList<>();
-            }
-            listData.add(i);
-            sLastDigitMap.put(i, listData);
-        }
     }
 
     /**
@@ -274,6 +271,20 @@ public class Utilities {
         }
     }
 
-    private Utilities() {
+    public static String getListStringByType(int listType) {
+        switch (listType) {
+            case LotteryLover.LIST_TYPE_OVERALL:
+                return "Overall";
+            case LotteryLover.LIST_TYPE_NUMERIC:
+                return "Numeric";
+            case LotteryLover.LIST_TYPE_LAST_DIGIT:
+                return "Last digit";
+            case LotteryLover.LIST_TYPE_PLUS_AND_MINUS:
+                return "Plus and minus";
+            case LotteryLover.LIST_TYPE_PLUS_TOGETHER:
+                return "Plus digits";
+            default:
+                throw new RuntimeException("unexpected list type");
+        }
     }
 }

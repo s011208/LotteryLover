@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
+import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 import yhh.bj4.lotterylover.provider.AppSettings;
 
 /**
@@ -79,11 +80,16 @@ public class MainSettingsFragment extends PreferenceFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == selectedDigitSize) return;
                             dialog.dismiss();
-                            preference.setSummary(getActivity().getResources().getStringArray(R.array.settings_appearance_digit_size_list)[which]);
+                            final String newSummary = getActivity().getResources().getStringArray(R.array.settings_appearance_digit_size_list)[which];
+                            preference.setSummary(newSummary);
                             AppSettings.put(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, which);
                             if (getActivity() instanceof Callback) {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DIGIT_SCALE_SIZE);
                             }
+                            Bundle data = new Bundle();
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Digit scale");
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
+                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -103,11 +109,16 @@ public class MainSettingsFragment extends PreferenceFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == selectedOrder) return;
                             dialog.dismiss();
-                            preference.setSummary(getActivity().getResources().getStringArray(R.array.settings_display_order)[which]);
+                            final String newSummary = getActivity().getResources().getStringArray(R.array.settings_display_order)[which];
+                            preference.setSummary(newSummary);
                             AppSettings.put(getActivity(), LotteryLover.KEY_ORDER, which);
                             if (getActivity() instanceof Callback) {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_ORDER);
                             }
+                            Bundle data = new Bundle();
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Display order");
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
+                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -127,11 +138,16 @@ public class MainSettingsFragment extends PreferenceFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == selectedRowCount) return;
                             dialog.dismiss();
-                            preference.setSummary(getActivity().getResources().getStringArray(R.array.settings_display_rows)[which]);
+                            final String newSummary = getActivity().getResources().getStringArray(R.array.settings_display_rows)[which];
+                            preference.setSummary(newSummary);
                             AppSettings.put(getActivity(), LotteryLover.KEY_DISPLAY_ROWS, which);
                             if (getActivity() instanceof Callback) {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DISPLAY_ROWS);
                             }
+                            Bundle data = new Bundle();
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Display rows");
+                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
+                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -146,6 +162,9 @@ public class MainSettingsFragment extends PreferenceFragment {
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, emailMessage);
                 startActivity(emailIntent);
+                Bundle data = new Bundle();
+                data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Contact me");
+                FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
                 return true;
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(getActivity(), "unexpected error", Toast.LENGTH_LONG).show();

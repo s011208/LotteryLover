@@ -29,7 +29,9 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
 
+import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
+import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
@@ -194,6 +196,10 @@ public class ViewAllActivity extends AppCompatActivity
                     AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
                     if (isMainTableAvailable()) {
                         mMainTableFragment.setLtoType(mLtoType);
+                        Bundle data = new Bundle();
+                        data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+                        data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+                        FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_TABLE_INFORMATION, data);
                     }
                 }
 
@@ -220,6 +226,10 @@ public class ViewAllActivity extends AppCompatActivity
                 AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
                 if (isMainTableAvailable()) {
                     mMainTableFragment.setListType(mListType);
+                    Bundle data = new Bundle();
+                    data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+                    data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+                    FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_TABLE_INFORMATION, data);
                 }
             }
         }, mListType));
@@ -281,11 +291,19 @@ public class ViewAllActivity extends AppCompatActivity
             if (mMainTableFragment != null) {
                 mMainTableFragment.scrollToTop();
             }
+            Bundle data = new Bundle();
+            data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+            data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SCROLL_TO_TOP, data);
             return true;
         } else if (id == R.id.action_align_bottom) {
             if (mMainTableFragment != null) {
                 mMainTableFragment.scrollToBottom();
             }
+            Bundle data = new Bundle();
+            data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+            data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SCROLL_TO_BOTTOM, data);
             return true;
         }
 
