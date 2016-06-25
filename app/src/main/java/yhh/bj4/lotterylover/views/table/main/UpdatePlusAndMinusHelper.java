@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover.views.table.main;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -18,16 +19,10 @@ import yhh.bj4.lotterylover.views.table.main.item.TypePlusAndMinus;
 public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
     private static final boolean DEBUG = Utilities.DEBUG;
     private static final String TAG = "PlusAndMinusHelper";
-
-    public interface Callback {
-        void onFinished();
-    }
-
     private final ArrayList<LotteryItem> mLotteryItems = new ArrayList<>();
     private final ArrayList<MainTableItem> mResults = new ArrayList<>();
     private final int mValue, mQueryOrder;
     private final Callback mCallback;
-
     public UpdatePlusAndMinusHelper(ArrayList<LotteryItem> items, int value, ArrayList<MainTableItem> data, int order,
                                     Callback cb) {
         mLotteryItems.addAll(items);
@@ -57,7 +52,10 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                     // compare with next
                     compareItem = mLotteryItems.get(counter + 1);
                 } else {
-                    if (counter == 0) continue;
+                    if (counter == 0) {
+                        ++counter;
+                        continue;
+                    }
                     // compare with previous
                     compareItem = mLotteryItems.get(counter - 1);
                 }
@@ -115,5 +113,9 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         if (mCallback == null) return;
         mCallback.onFinished();
+    }
+
+    public interface Callback {
+        void onFinished();
     }
 }
