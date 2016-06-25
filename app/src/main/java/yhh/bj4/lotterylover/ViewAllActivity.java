@@ -278,6 +278,16 @@ public class ViewAllActivity extends AppCompatActivity
             Intent intent = new Intent(ViewAllActivity.this, SettingsActivity.class);
             startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
+        } else if (id == R.id.action_align_top) {
+            if (mMainTableFragment != null) {
+                mMainTableFragment.scrollToTop();
+            }
+            return true;
+        } else if (id == R.id.action_align_bottom) {
+            if (mMainTableFragment != null) {
+                mMainTableFragment.scrollToBottom();
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

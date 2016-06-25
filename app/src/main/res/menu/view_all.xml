@@ -2,8 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_align_top"
+        android:icon="@drawable/ic_format_vertical_align_top_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_align_top"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_align_bottom"
+        android:icon="@drawable/ic_format_vertical_align_bottom_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_align_bottom"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

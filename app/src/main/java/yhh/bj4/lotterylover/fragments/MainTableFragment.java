@@ -1,7 +1,6 @@
 package yhh.bj4.lotterylover.fragments;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -439,12 +437,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         }
     }
 
-    public interface Callback {
-        int getLtoType();
-
-        int getListType();
-    }
-
     public void updateDigitScaleSize() {
         final float digitScaleSize = getDigitScaleSize();
         mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
@@ -467,5 +459,21 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             updateMainTableAdapter();
             updateHeaderAndFooter();
         }
+    }
+
+    public void scrollToTop() {
+        if (mMainTable == null || mMainTableAdapter == null) return;
+        mMainTable.smoothScrollToPosition(0);
+    }
+
+    public void scrollToBottom() {
+        if (mMainTable == null || mMainTableAdapter == null) return;
+        mMainTable.smoothScrollToPosition(mMainTableAdapter.getItemCount());
+    }
+
+    public interface Callback {
+        int getLtoType();
+
+        int getListType();
     }
 }
