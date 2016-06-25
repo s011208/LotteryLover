@@ -48,7 +48,6 @@ public class ViewAllActivity extends AppCompatActivity
 
     private static final int REQUEST_SETTINGS = 1000;
 
-    private RecyclerView mListTypeView;
     private MainTableFragment mMainTableFragment;
     private LinearLayout mLoadingProgressbar;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
