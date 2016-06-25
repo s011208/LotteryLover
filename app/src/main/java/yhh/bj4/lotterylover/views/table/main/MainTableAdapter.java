@@ -89,11 +89,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                             Log.i(TAG, "AdapterDataGenerator cb, size: " + data.size());
                         }
                         if (mListType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
-                            if (mPlusAndMinus != 0) {
-                                updateAddAndMinus();
-                            } else {
-                                notifyDataSetChanged();
-                            }
+                            updateAddAndMinus();
                         } else {
                             notifyDataSetChanged();
                         }
