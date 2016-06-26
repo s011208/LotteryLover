@@ -455,6 +455,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     public void updateAllList() {
         if (mMainTableAdapter != null) {
+            mMainTableAdapter.setCombineSpecialNumber(
+                    AppSettings.get(getActivity(), LotteryLover.KEY_COMBINE_SPECIAL, false));
             mMainTableAdapter.notifyDataSetChanged();
             updateMainTableAdapter();
             updateHeaderAndFooter();

@@ -15,8 +15,14 @@ import yhh.bj4.lotterylover.Utilities;
  * Created by yenhsunhuang on 2016/6/17.
  */
 public class TypeOverall extends MainTableItem {
+    private boolean mCombineSpecialNumber;
+
     public TypeOverall(int viewType, long sequence, long drawingTime, String memo, String extra, int nnc, int snc, int mnn, int msn) {
         super(viewType, sequence, drawingTime, memo, extra, nnc, snc, mnn, msn);
+    }
+
+    public void setCombineSpecialNumber(boolean c) {
+        mCombineSpecialNumber = c;
     }
 
     @Override
@@ -34,20 +40,51 @@ public class TypeOverall extends MainTableItem {
         indexOfSep.add(builder.length());
         builder.append(SEP);
 
-        for (int i = 0; i < mNormalNumberData.size(); ++i) {
-            Integer value = mNormalNumberData.get(i);
-            indexOfNormal.add(builder.length());
-            builder.append(Utilities.getLotteryNumberString(value));
-            indexOfSep.add(builder.length());
-            builder.append(SEP);
-        }
+        if (mCombineSpecialNumber && mMaximumSpecialNumber == -1) {
+            int nextIndexOfSpecial = 0;
+            for (int i = 0; i < mNormalNumberData.size(); ++i) {
+                Integer value = mNormalNumberData.get(i);
+                for (int k = nextIndexOfSpecial; k < mSpecialNumberData.size(); ++k) {
+                    if (value > mSpecialNumberData.get(k)) {
+                        Integer specialValue = mSpecialNumberData.get(k);
+                        indexOfSpecial.add(builder.length());
+                        builder.append(Utilities.getLotteryNumberString(specialValue));
+                        indexOfSep.add(builder.length());
+                        builder.append(SEP);
+                        ++nextIndexOfSpecial;
+                    } else {
+                        break;
+                    }
+                }
+                indexOfNormal.add(builder.length());
+                builder.append(Utilities.getLotteryNumberString(value));
+                indexOfSep.add(builder.length());
+                builder.append(SEP);
+            }
+            for (int k = nextIndexOfSpecial; k < mSpecialNumberData.size(); ++k) {
+                Integer specialValue = mSpecialNumberData.get(k);
+                indexOfSpecial.add(builder.length());
+                builder.append(Utilities.getLotteryNumberString(specialValue));
+                indexOfSep.add(builder.length());
+                builder.append(SEP);
+                ++nextIndexOfSpecial;
+            }
+        } else {
+            for (int i = 0; i < mNormalNumberData.size(); ++i) {
+                Integer value = mNormalNumberData.get(i);
+                indexOfNormal.add(builder.length());
+                builder.append(Utilities.getLotteryNumberString(value));
+                indexOfSep.add(builder.length());
+                builder.append(SEP);
+            }
 
-        for (int i = 0; i < mSpecialNumberData.size(); ++i) {
-            Integer value = mSpecialNumberData.get(i);
-            indexOfSpecial.add(builder.length());
-            builder.append(Utilities.getLotteryNumberString(value));
-            indexOfSep.add(builder.length());
-            builder.append(SEP);
+            for (int i = 0; i < mSpecialNumberData.size(); ++i) {
+                Integer value = mSpecialNumberData.get(i);
+                indexOfSpecial.add(builder.length());
+                builder.append(Utilities.getLotteryNumberString(value));
+                indexOfSep.add(builder.length());
+                builder.append(SEP);
+            }
         }
 
         builder.deleteCharAt(builder.length() - 1);

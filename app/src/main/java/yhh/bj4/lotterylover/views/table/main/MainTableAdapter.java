@@ -47,6 +47,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private float mDigitScale = LotteryLover.DIGIT_SCALE_SIZE_NORMAL;
 
+    private boolean mCombineSpecialNumber = false;
+
     private ArrayList<MainTableItem> mData = new ArrayList<>();
 
     private Context mContext;
@@ -59,6 +61,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     public MainTableAdapter(Context context, int ltoType, int listType) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mCombineSpecialNumber = AppSettings.get(mContext, LotteryLover.KEY_COMBINE_SPECIAL, false);
         updateData(ltoType, listType);
     }
 
@@ -76,7 +79,8 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             @Override
             public void onFinished(List<LotteryItem> data) {
                 mLotteryItems.addAll(data);
-                new AdapterDataGenerator(mLtoType, mListType, Utilities.getWindowBackgroundColor(mContext), data, new AdapterDataGenerator.Callback() {
+                new AdapterDataGenerator(mLtoType, mListType, mCombineSpecialNumber, Utilities.getWindowBackgroundColor(mContext),
+                        data, new AdapterDataGenerator.Callback() {
                     @Override
                     public void onFinished(ArrayList<MainTableItem> data) {
                         mData.clear();
@@ -200,7 +204,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private void updateAddAndMinus() {
         int queryOrder = AppSettings.get(mContext, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
-        new UpdatePlusAndMinusHelper(mLotteryItems, mPlusAndMinus, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
+        new UpdatePlusAndMinusHelper(mLotteryItems, mPlusAndMinus, mCombineSpecialNumber, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
             @Override
             public void onFinished() {
                 if (DEBUG)
@@ -208,5 +212,9 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                 notifyDataSetChanged();
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void setCombineSpecialNumber(boolean num) {
+        mCombineSpecialNumber = num;
     }
 }

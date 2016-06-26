@@ -93,6 +93,14 @@ public abstract class MainTableItem {
         mNormalNumberData.set(index, value);
     }
 
+    public final void clearNormalNumber() {
+        mNormalNumberData.clear();
+    }
+
+    public final void clearSpecialNumber() {
+        mSpecialNumberData.clear();
+    }
+
     public final void setSpecialNumber(int index, int value) {
         mSpecialNumberData.set(index, value);
     }

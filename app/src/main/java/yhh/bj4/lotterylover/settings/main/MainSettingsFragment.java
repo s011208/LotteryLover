@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -28,6 +29,7 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_DISPLAY_ROW_COUNT = "settings_display_row_count";
     private static final String SETTINGS_ABOUT_APP_VERSION = "settings_about_app_version";
     private static final String SETTINGS_ABOUT_CONTACT_ME = "settings_about_contact_me";
+    private static final String SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER = "settings_display_combine_special_number";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,11 @@ public class MainSettingsFragment extends PreferenceFragment {
             } catch (PackageManager.NameNotFoundException e) {
                 Log.w("Settings", "unexpected error", e);
             }
+        }
+
+        pref = findPreference(SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER);
+        if (pref != null) {
+            ((CheckBoxPreference) pref).setChecked(AppSettings.get(getActivity(), LotteryLover.KEY_COMBINE_SPECIAL, false));
         }
     }
 
@@ -168,6 +175,11 @@ public class MainSettingsFragment extends PreferenceFragment {
                 return true;
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(getActivity(), "unexpected error", Toast.LENGTH_LONG).show();
+            }
+        } else if (SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER.equals(key)) {
+            AppSettings.put(getActivity(), LotteryLover.KEY_COMBINE_SPECIAL, ((CheckBoxPreference) preference).isChecked());
+            if (getActivity() instanceof Callback) {
+                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_COMBINE_SPECIAL);
             }
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);

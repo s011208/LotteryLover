@@ -15,6 +15,8 @@
     <string name="settings_display_category_title">Display</string>
     <string name="settings_display_order">Order</string>
     <string name="settings_display_row_count">Display rows</string>
+    <string name="settings_display_combine_special_number_title">Combine special number</string>
+    <string name="settings_display_combine_special_number_summary">"Combine special number in Overall and Plus &amp; Minus mode"</string>
 
     <string name="settings_about_category_title">About</string>
     <string name="settings_about_app_version">App version</string>

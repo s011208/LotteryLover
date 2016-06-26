@@ -270,6 +270,14 @@ public class ViewAllActivity extends AppCompatActivity
                     }
                 }
             }
+            if (changedItemList.contains(LotteryLover.KEY_COMBINE_SPECIAL)) {
+                if (mListType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS ||
+                        mListType == LotteryLover.LIST_TYPE_OVERALL) {
+                    if (isMainTableAvailable()) {
+                        mMainTableFragment.updateAllList();
+                    }
+                }
+            }
         }
     }
 

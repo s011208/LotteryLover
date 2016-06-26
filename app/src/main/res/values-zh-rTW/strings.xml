@@ -15,6 +15,9 @@
     <string name="settings_display_category_title">顯示內容</string>
     <string name="settings_display_order">排序</string>
     <string name="settings_display_row_count">顯示行數</string>
+    <string name="settings_display_combine_special_number_title">合併特別號</string>
+    <string name="settings_display_combine_special_number_summary">在列表與加減模式時合併特別號</string>
+
 
     <string name="settings_about_category_title">關於</string>
     <string name="settings_about_app_version">App 版本</string>

@@ -60,6 +60,8 @@ public class LotteryLover {
     public static final String KEY_INIT_LTO_DOF = "init_lto_dof";
     public static final String KEY_INIT_LTO_HK = "init_lto_hk";
 
+    public static final String KEY_COMBINE_SPECIAL = "combine_special";
+
     public static final String KEY_LTO_UPDATE_TIME(String className) {
         return "update_time_" + className;
     }

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import yhh.bj4.lotterylover.LotteryLover;
@@ -22,14 +23,16 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
     private final ArrayList<MainTableItem> mResults = new ArrayList<>();
     private final int mValue, mQueryOrder;
     private final Callback mCallback;
+    private final boolean mCombineSpecialNumber;
 
-    public UpdatePlusAndMinusHelper(ArrayList<LotteryItem> items, int value, ArrayList<MainTableItem> data, int order,
+    public UpdatePlusAndMinusHelper(ArrayList<LotteryItem> items, int value, boolean combineSpecialNumber, ArrayList<MainTableItem> data, int order,
                                     Callback cb) {
         mLotteryItems.addAll(items);
         mValue = value;
         mResults.addAll(data);
         mCallback = cb;
         mQueryOrder = order;
+        mCombineSpecialNumber = combineSpecialNumber;
     }
 
     @Override
@@ -62,30 +65,51 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                 if (compareItem == null) continue;
                 tempNormalCompareItem.addAll(compareItem.getNormalNumbers());
                 if (parameters[3] == -1) {
-                    tempNormalCompareItem.addAll(compareItem.getSpecialNumbers());
-                    for (int i = 0; i < currentItem.getNormalNumbers().size(); ++i) {
-                        int normalNumber = currentItem.getNormalNumbers().get(i);
-                        final int v = (normalNumber + mValue) % parameters[2];
-                        if (tempNormalCompareItem.contains(v)) {
-                            item.addHitIndexOfNormal(i);
-                            Integer indexValue = normalCount.get(i);
-                            if (indexValue == null) {
-                                normalCount.put(i, 1);
-                            } else {
-                                normalCount.put(i, indexValue + 1);
+                    if (mCombineSpecialNumber) {
+                        tempNormalCompareItem.addAll(compareItem.getSpecialNumbers());
+                        List<Integer> combinedList = new ArrayList<>();
+                        combinedList.addAll(currentItem.getNormalNumbers());
+                        combinedList.addAll(currentItem.getSpecialNumbers());
+                        Collections.sort(combinedList);
+                        for (int i = 0; i < combinedList.size(); ++i) {
+                            int normalNumber = combinedList.get(i);
+                            final int v = (normalNumber + mValue) % parameters[2];
+                            if (tempNormalCompareItem.contains(v)) {
+                                item.addHitIndexOfNormal(i);
+                                Integer indexValue = normalCount.get(i);
+                                if (indexValue == null) {
+                                    normalCount.put(i, 1);
+                                } else {
+                                    normalCount.put(i, indexValue + 1);
+                                }
                             }
                         }
-                    }
-                    for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
-                        int specialNumber = currentItem.getSpecialNumbers().get(i);
-                        final int v = (specialNumber + mValue) % parameters[2];
-                        if (tempNormalCompareItem.contains(v)) {
-                            item.addHitIndexOfSpecial(i);
-                            Integer indexValue = specialCount.get(i);
-                            if (indexValue == null) {
-                                specialCount.put(i, 1);
-                            } else {
-                                specialCount.put(i, indexValue + 1);
+                    } else {
+                        tempNormalCompareItem.addAll(compareItem.getSpecialNumbers());
+                        for (int i = 0; i < currentItem.getNormalNumbers().size(); ++i) {
+                            int normalNumber = currentItem.getNormalNumbers().get(i);
+                            final int v = (normalNumber + mValue) % parameters[2];
+                            if (tempNormalCompareItem.contains(v)) {
+                                item.addHitIndexOfNormal(i);
+                                Integer indexValue = normalCount.get(i);
+                                if (indexValue == null) {
+                                    normalCount.put(i, 1);
+                                } else {
+                                    normalCount.put(i, indexValue + 1);
+                                }
+                            }
+                        }
+                        for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
+                            int specialNumber = currentItem.getSpecialNumbers().get(i);
+                            final int v = (specialNumber + mValue) % parameters[2];
+                            if (tempNormalCompareItem.contains(v)) {
+                                item.addHitIndexOfSpecial(i);
+                                Integer indexValue = specialCount.get(i);
+                                if (indexValue == null) {
+                                    specialCount.put(i, 1);
+                                } else {
+                                    specialCount.put(i, indexValue + 1);
+                                }
                             }
                         }
                     }
@@ -121,12 +145,20 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                 ++counter;
             } else {
                 // collect data for monthly data
-                for (int i = 0; i < parameters[0]; ++i) {
-                    mainTableItem.setNormalNumber(i, normalCount.get(i) == null ? 0 : normalCount.get(i));
-                }
+                if (parameters[3] == -1 && mCombineSpecialNumber) {
+                    mainTableItem.clearNormalNumber();
+                    mainTableItem.clearSpecialNumber();
+                    for (int i = 0; i < parameters[0] + parameters[1]; ++i) {
+                        mainTableItem.addNormalNumber(i, normalCount.get(i) == null ? 0 : normalCount.get(i));
+                    }
+                } else {
+                    for (int i = 0; i < parameters[0]; ++i) {
+                        mainTableItem.setNormalNumber(i, normalCount.get(i) == null ? 0 : normalCount.get(i));
+                    }
 
-                for (int i = 0; i < parameters[1]; ++i) {
-                    mainTableItem.setSpecialNumber(i, specialCount.get(i) == null ? 0 : specialCount.get(i));
+                    for (int i = 0; i < parameters[1]; ++i) {
+                        mainTableItem.setSpecialNumber(i, specialCount.get(i) == null ? 0 : specialCount.get(i));
+                    }
                 }
                 // reset
                 normalCount.clear();

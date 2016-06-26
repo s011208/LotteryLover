@@ -37,12 +37,14 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
     private final Callback mCallback;
     private int mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber, mMaximumSpecialNumber;
     private final int mWindowBackgroundColor;
+    private final boolean mCombineSpecialNumber;
 
-    public AdapterDataGenerator(int lto, int list, int color, List<LotteryItem> data, Callback cb) {
+    public AdapterDataGenerator(int lto, int list, boolean combineSpecialNumber, int color, List<LotteryItem> data, Callback cb) {
         mListType = list;
         mLotteryData.addAll(data);
         mCallback = cb;
         mWindowBackgroundColor = color;
+        mCombineSpecialNumber = combineSpecialNumber;
     }
 
     @Override
@@ -83,6 +85,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             item.getSequence(), previousItemCalendar.getTimeInMillis(),
                             item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
+                    ((TypePlusAndMinus) monthlyItem).setCombineSpecialNumber(mCombineSpecialNumber);
                     monthlyItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
                     monthlyItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     for (int i = 0; i < mNormalNumberCount; ++i) {
@@ -102,6 +105,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            ((TypePlusAndMinus) mainTableItem).setCombineSpecialNumber(mCombineSpecialNumber);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             for (int i = 0; i < mNormalNumberCount; ++i) {
                 mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
@@ -518,6 +522,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            ((TypeOverall) mainTableItem).setCombineSpecialNumber(mCombineSpecialNumber);
             for (int i = 0; i < mNormalNumberCount; ++i) {
                 mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
             }
