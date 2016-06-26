@@ -1,9 +1,12 @@
 package yhh.bj4.lotterylover;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -286,5 +289,17 @@ public class Utilities {
             default:
                 throw new RuntimeException("unexpected list type");
         }
+    }
+
+    @Nullable
+    public static String getProcessName(Context context, int pID) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : am.getRunningAppProcesses()) {
+            if (runningAppProcessInfo.pid != pID) continue;
+            if (!TextUtils.isEmpty(runningAppProcessInfo.processName) && runningAppProcessInfo.processName.startsWith("yhh.bj4.lotterylover")) {
+                return runningAppProcessInfo.processName;
+            }
+        }
+        return null;
     }
 }
