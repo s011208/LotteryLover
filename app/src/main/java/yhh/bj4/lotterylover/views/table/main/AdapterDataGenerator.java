@@ -72,7 +72,32 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
 
     private ArrayList<MainTableItem> initListTypePlusAndMinus() {
         ArrayList<MainTableItem> rtn = new ArrayList<>();
+        // content data
+        Calendar currentItemCalendar = Calendar.getInstance(), previousItemCalendar = null;
         for (LotteryItem item : mLotteryData) {
+            currentItemCalendar.setTimeInMillis(item.getDrawingDateTime());
+            if (previousItemCalendar != null) {
+                if (currentItemCalendar.get(Calendar.MONTH) != previousItemCalendar.get(Calendar.MONTH)) {
+                    // add new empty month data
+                    MainTableItem monthlyItem = new TypePlusAndMinus(MainTableAdapter.TYPE_PLUS_AND_MINUS,
+                            item.getSequence(), previousItemCalendar.getTimeInMillis(),
+                            item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                            , mMaximumSpecialNumber);
+                    monthlyItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
+                    monthlyItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
+                    for (int i = 0; i < mNormalNumberCount; ++i) {
+                        monthlyItem.addNormalNumber(i, 0);
+                    }
+                    for (int i = 0; i < mSpecialNumberCount; ++i) {
+                        monthlyItem.addSpecialNumber(i, 0);
+                    }
+                    rtn.add(monthlyItem);
+                }
+                previousItemCalendar.setTimeInMillis(item.getDrawingDateTime());
+            } else {
+                previousItemCalendar = Calendar.getInstance();
+                previousItemCalendar.setTimeInMillis(item.getDrawingDateTime());
+            }
             MainTableItem mainTableItem = new TypePlusAndMinus(MainTableAdapter.TYPE_PLUS_AND_MINUS,
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
@@ -87,6 +112,9 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             mainTableItem.makeSpannableString();
             rtn.add(mainTableItem);
         }
+
+        // monthly data
+
         return rtn;
     }
 

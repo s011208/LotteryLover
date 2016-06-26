@@ -48,6 +48,7 @@ public class TypePlusAndMinus extends MainTableItem {
         List<Integer> indexOfSpecial = new ArrayList<>();
         List<Integer> indexOfHitNormal = new ArrayList<>();
         List<Integer> indexOfHitSpecial = new ArrayList<>();
+        int indexOfDrawingTime;
 
         StringBuilder builder = new StringBuilder();
         builder.append(SEP);
@@ -56,6 +57,7 @@ public class TypePlusAndMinus extends MainTableItem {
         indexOfSep.add(builder.length());
         builder.append(SEP);
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
+        indexOfDrawingTime = builder.length();
         indexOfSep.add(builder.length());
         builder.append(SEP);
 
@@ -90,6 +92,15 @@ public class TypePlusAndMinus extends MainTableItem {
         // first spe
         rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         rtn.setSpan(new RelativeSizeSpan(SEP_RELATIVE_SIZE), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // hide day of month
+        if (mItemType == ITEM_TYPE_SUB_TOTAL) {
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime - 3, indexOfDrawingTime, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
+            rtn.setSpan(new BackgroundColorSpan(mWindowBackgroundColor), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
         // rest of spe
         for (int i = 0; i < indexOfSep.size(); ++i) {

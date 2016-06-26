@@ -89,6 +89,14 @@ public abstract class MainTableItem {
         mSpecialNumberData.add(index, value);
     }
 
+    public final void setNormalNumber(int index, int value) {
+        mNormalNumberData.set(index, value);
+    }
+
+    public final void setSpecialNumber(int index, int value) {
+        mSpecialNumberData.set(index, value);
+    }
+
     public final void setCacheSpannableString(boolean b) {
         mCacheSpannableString = b;
     }

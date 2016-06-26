@@ -1,7 +1,6 @@
 package yhh.bj4.lotterylover.views.table.main;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
     private final ArrayList<MainTableItem> mResults = new ArrayList<>();
     private final int mValue, mQueryOrder;
     private final Callback mCallback;
+
     public UpdatePlusAndMinusHelper(ArrayList<LotteryItem> items, int value, ArrayList<MainTableItem> data, int order,
                                     Callback cb) {
         mLotteryItems.addAll(items);
@@ -68,6 +68,12 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                         final int v = (normalNumber + mValue) % parameters[2];
                         if (tempNormalCompareItem.contains(v)) {
                             item.addHitIndexOfNormal(i);
+                            Integer indexValue = normalCount.get(i);
+                            if (indexValue == null) {
+                                normalCount.put(i, 1);
+                            } else {
+                                normalCount.put(i, indexValue + 1);
+                            }
                         }
                     }
                     for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
@@ -75,6 +81,12 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                         final int v = (specialNumber + mValue) % parameters[2];
                         if (tempNormalCompareItem.contains(v)) {
                             item.addHitIndexOfSpecial(i);
+                            Integer indexValue = specialCount.get(i);
+                            if (indexValue == null) {
+                                specialCount.put(i, 1);
+                            } else {
+                                specialCount.put(i, indexValue + 1);
+                            }
                         }
                     }
                 } else {
@@ -84,6 +96,12 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                         final int v = (normalNumber + mValue) % parameters[2];
                         if (tempNormalCompareItem.contains(v)) {
                             item.addHitIndexOfNormal(i);
+                            Integer indexValue = normalCount.get(i);
+                            if (indexValue == null) {
+                                normalCount.put(i, 1);
+                            } else {
+                                normalCount.put(i, indexValue + 1);
+                            }
                         }
                     }
                     for (int i = 0; i < currentItem.getSpecialNumbers().size(); ++i) {
@@ -91,13 +109,25 @@ public class UpdatePlusAndMinusHelper extends AsyncTask<Void, Void, Void> {
                         final int v = (specialNumber + mValue) % parameters[2];
                         if (tempSpecialCompareItem.contains(v)) {
                             item.addHitIndexOfSpecial(i);
+                            Integer indexValue = specialCount.get(i);
+                            if (indexValue == null) {
+                                specialCount.put(i, 1);
+                            } else {
+                                specialCount.put(i, indexValue + 1);
+                            }
                         }
                     }
                 }
                 ++counter;
             } else {
                 // collect data for monthly data
+                for (int i = 0; i < parameters[0]; ++i) {
+                    mainTableItem.setNormalNumber(i, normalCount.get(i) == null ? 0 : normalCount.get(i));
+                }
 
+                for (int i = 0; i < parameters[1]; ++i) {
+                    mainTableItem.setSpecialNumber(i, specialCount.get(i) == null ? 0 : specialCount.get(i));
+                }
                 // reset
                 normalCount.clear();
                 specialCount.clear();
