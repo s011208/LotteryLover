@@ -52,9 +52,10 @@
         <item>Lto dof</item>
         <item>Lto hk</item>
         <item>Lto 539</item>
-        <item>Power ball</item>
-        <item>Mega Millions</item>
+        <item>US Power ball</item>
+        <item>US Mega Millions</item>
         <item>Japan Loto6</item>
+        <item>Singapore ToTo</item>
     </string-array>
 
     <string-array name="action_bar_list_type">

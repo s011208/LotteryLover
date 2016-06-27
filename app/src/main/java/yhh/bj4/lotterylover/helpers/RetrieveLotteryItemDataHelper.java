@@ -20,6 +20,7 @@ import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltoJ6.LtoJ6;
 import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
+import yhh.bj4.lotterylover.parser.ltoToTo.LtoToTo;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
@@ -162,6 +163,15 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_TOTO) {
+                while (cursor.moveToNext()) {
+                    rtn.add(new LtoToTo(cursor.getLong(indexOfSeq),
+                            cursor.getLong(indexOfDrawingTime),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfNormalNumber)),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfSpecialNumber)),
+                            cursor.getString(indexOfMemo),
+                            cursor.getString(indexOfExtra)));
+                }
             }
         } finally {
             cursor.close();
@@ -201,6 +211,9 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 break;
             case LotteryLover.LTO_TYPE_LTO_J6:
                 queryUri = LtoJ6.DATA_URI;
+                break;
+            case LotteryLover.LTO_TYPE_LTO_TOTO:
+                queryUri = LtoToTo.DATA_URI;
                 break;
         }
         int orderSettings = AppSettings.get(context, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
