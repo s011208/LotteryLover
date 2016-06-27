@@ -20,7 +20,8 @@
                 layout="@layout/main_table_adapter_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="2dp" />
 
             <RadioGroup
                 android:id="@+id/plus_rg_group"
@@ -41,7 +42,8 @@
                 layout="@layout/main_table_adapter_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="2dp" />
 
             <RadioGroup
                 android:id="@+id/minus_rg_group"
