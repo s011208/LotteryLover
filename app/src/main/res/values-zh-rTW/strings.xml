@@ -58,6 +58,7 @@
         <item>日本 Loto6</item>
         <item>新加坡 ToTo</item>
         <item>澳洲 Power ball</item>
+        <item>歐洲 Euro millions</item>
     </string-array>
 
     <string-array name="action_bar_list_type">

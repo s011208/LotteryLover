@@ -16,6 +16,7 @@ import yhh.bj4.lotterylover.parser.ltoToTo.LtoToToParser;
 import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPowParser;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
+import yhh.bj4.lotterylover.parser.ltoem.LtoEmParser;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPowParser;
 
 /**
@@ -100,6 +101,8 @@ public abstract class LotteryParser extends AsyncTask<Void, Void, int[]> {
                 return new LtoToToParser(context, page, cb);
             case LotteryLover.LTO_TYPE_LTO_AU_POW:
                 return new LtoAuPowParser(context, page, cb);
+            case LotteryLover.LTO_TYPE_LTO_EM:
+                return new LtoEmParser(context, page, cb);
             default:
                 throw new RuntimeException("wrong lto type");
         }

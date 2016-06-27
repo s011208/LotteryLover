@@ -28,6 +28,7 @@ import yhh.bj4.lotterylover.parser.ltoToTo.LtoToTo;
 import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.LotteryProvider;
 
@@ -120,6 +121,8 @@ public abstract class LotteryItem {
             return LtoToTo.getNormalNumbersCount();
         } else if (item instanceof LtoAuPow) {
             return LtoAuPow.getNormalNumbersCount();
+        } else if (item instanceof LtoEm) {
+            return LtoEm.getNormalNumbersCount();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -150,6 +153,8 @@ public abstract class LotteryItem {
             return LtoToTo.getSpecialNumbersCount();
         } else if (item instanceof LtoAuPow) {
             return LtoAuPow.getSpecialNumbersCount();
+        } else if (item instanceof LtoEm) {
+            return LtoEm.getSpecialNumbersCount();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -180,6 +185,8 @@ public abstract class LotteryItem {
             return LtoToTo.getMaximumNormalNumber();
         } else if (item instanceof LtoAuPow) {
             return LtoAuPow.getMaximumNormalNumber();
+        } else if (item instanceof LtoEm) {
+            return LtoEm.getMaximumNormalNumber();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -210,6 +217,8 @@ public abstract class LotteryItem {
             return LtoToTo.getMaximumSpecialNumber();
         } else if (item instanceof LtoAuPow) {
             return LtoAuPow.getMaximumSpecialNumber();
+        } else if (item instanceof LtoEm) {
+            return LtoEm.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -321,6 +330,8 @@ public abstract class LotteryItem {
                 return LtoToTo.DATA_URI;
             case LotteryLover.LTO_TYPE_LTO_AU_POW:
                 return LtoAuPow.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_EM:
+                return LtoEm.DATA_URI;
             default:
                 throw new RuntimeException("wrong lto type");
         }
@@ -352,6 +363,8 @@ public abstract class LotteryItem {
                 return Uri.parse(LtoToTo.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
             case LotteryLover.LTO_TYPE_LTO_AU_POW:
                 return Uri.parse(LtoAuPow.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_EM:
+                return Uri.parse(LtoEm.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
             default:
                 throw new RuntimeException("wrong lto type");
         }
@@ -383,6 +396,8 @@ public abstract class LotteryItem {
                 return LtoToTo.class.getSimpleName();
             case LotteryLover.LTO_TYPE_LTO_AU_POW:
                 return LtoAuPow.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_EM:
+                return LtoEm.class.getSimpleName();
             default:
                 throw new RuntimeException("wrong lto type");
         }

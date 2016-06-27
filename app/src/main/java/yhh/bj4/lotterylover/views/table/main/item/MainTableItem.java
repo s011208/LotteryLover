@@ -20,6 +20,7 @@ import yhh.bj4.lotterylover.parser.ltoToTo.LtoToTo;
 import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 
 /**
@@ -199,6 +200,11 @@ public abstract class MainTableItem {
             rtn[1] = LtoAuPow.getSpecialNumbersCount();
             rtn[2] = LtoAuPow.getMaximumNormalNumber();
             rtn[3] = LtoAuPow.getMaximumSpecialNumber();
+        } else if (ltoType == LotteryLover.LTO_TYPE_LTO_EM) {
+            rtn[0] = LtoEm.getNormalNumbersCount();
+            rtn[1] = LtoEm.getSpecialNumbersCount();
+            rtn[2] = LtoEm.getMaximumNormalNumber();
+            rtn[3] = LtoEm.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("unexpected instance");
         }
@@ -272,6 +278,11 @@ public abstract class MainTableItem {
             rtn[1] = LtoAuPow.getSpecialNumbersCount();
             rtn[2] = LtoAuPow.getMaximumNormalNumber();
             rtn[3] = LtoAuPow.getMaximumSpecialNumber();
+        } else if (item instanceof LtoEm) {
+            rtn[0] = LtoEm.getNormalNumbersCount();
+            rtn[1] = LtoEm.getSpecialNumbersCount();
+            rtn[2] = LtoEm.getMaximumNormalNumber();
+            rtn[3] = LtoEm.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("unexpected instance");
         }
