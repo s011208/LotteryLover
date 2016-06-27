@@ -17,6 +17,7 @@ import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltoJ6.LtoJ6;
 import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
@@ -44,6 +45,7 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_539_MATCHER = 7;
     private static final int LTO_POW_MATCHER = 8;
     private static final int LTO_MM_MATCHER = 9;
+    private static final int LTO_J6_MATCHER = 10;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
@@ -58,6 +60,7 @@ public class LotteryProvider extends ContentProvider {
         sMatcher.addURI(AUTHORITY, Lto539.TABLE_NAME, LTO_539_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoPow.TABLE_NAME, LTO_POW_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoMM.TABLE_NAME, LTO_MM_MATCHER);
+        sMatcher.addURI(AUTHORITY, LtoJ6.TABLE_NAME, LTO_J6_MATCHER);
     }
 
     private SQLiteDatabase mDatabase;
@@ -115,6 +118,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_MM_MATCHER:
                 rtn = mDatabase.query(LtoMM.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            case LTO_J6_MATCHER:
+                rtn = mDatabase.query(LtoJ6.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.query(AppSettings.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -162,6 +168,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_MM_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoMM.TABLE_NAME, null, values));
                 break;
+            case LTO_J6_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoJ6.TABLE_NAME, null, values));
+                break;
             case APP_SETTINGS_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.replace(AppSettings.TABLE_NAME, null, values));
                 break;
@@ -202,6 +211,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case LTO_MM_MATCHER:
                 rtn = mDatabase.delete(LtoMM.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LTO_J6_MATCHER:
+                rtn = mDatabase.delete(LtoJ6.TABLE_NAME, selection, selectionArgs);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.delete(AppSettings.TABLE_NAME, selection, selectionArgs);
@@ -244,6 +256,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_MM_MATCHER:
                 rtn = mDatabase.update(LtoMM.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case LTO_J6_MATCHER:
+                rtn = mDatabase.update(LtoJ6.TABLE_NAME, values, selection, selectionArgs);
+                break;
             case APP_SETTINGS_MATCHER:
                 mDatabase.replace(AppSettings.TABLE_NAME, null, values);
                 rtn = 1;
@@ -285,6 +300,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case LTO_MM_MATCHER:
                 rtn = bulkInsert(LtoMM.TABLE_NAME, values);
+                break;
+            case LTO_J6_MATCHER:
+                rtn = bulkInsert(LtoJ6.TABLE_NAME, values);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = bulkInsert(AppSettings.TABLE_NAME, values);

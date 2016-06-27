@@ -84,6 +84,8 @@ public class ViewAllActivity extends AppCompatActivity
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_POW;
             } else if (LtoMM.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_MM;
+            } else if (LtoMM.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_J6;
             } else if (AppSettings.DATA_URI.equals(uri)) {
                 if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
                     Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");

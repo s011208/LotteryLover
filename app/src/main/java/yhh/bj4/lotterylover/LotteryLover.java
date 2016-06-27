@@ -15,6 +15,7 @@ public class LotteryLover {
     public static final int LTO_TYPE_LTO_539 = 6;
     public static final int LTO_TYPE_LTO_POW = 7;
     public static final int LTO_TYPE_LTO_MM = 8;
+    public static final int LTO_TYPE_LTO_J6 = 9;
 
     public static final String KEY_LIST_TYPE = "list_type";
 
@@ -65,6 +66,7 @@ public class LotteryLover {
     public static final String KEY_INIT_LTO_539 = "init_lto_539";
     public static final String KEY_INIT_LTO_POW = "init_lto_pow";
     public static final String KEY_INIT_LTO_MM = "init_lto_mm";
+    public static final String KEY_INIT_LTO_J6 = "init_lto_j6";
 
     public static final String KEY_COMBINE_SPECIAL = "combine_special";
 
