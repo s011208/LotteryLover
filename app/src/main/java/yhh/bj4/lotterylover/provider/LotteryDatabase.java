@@ -10,6 +10,7 @@ import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
@@ -19,7 +20,7 @@ import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 3;
+    private static final int VERSION = 4;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -45,6 +46,9 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
         // v3
         createTableLtoPow(db);
+
+        // v4
+        createTableLtoMM(db);
     }
 
     @Override
@@ -55,6 +59,10 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         }
         if (oldVersion == 2) {
             createTableLtoPow(db);
+            ++oldVersion;
+        }
+        if (oldVersion == 3) {
+            createTableLtoMM(db);
             ++oldVersion;
         }
     }
@@ -93,5 +101,9 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     private void createTableLtoPow(SQLiteDatabase db) {
         db.execSQL(LtoPow.COMMAND_CREATE_TABLE(LtoPow.TABLE_NAME));
+    }
+
+    private void createTableLtoMM(SQLiteDatabase db) {
+        db.execSQL(LtoMM.COMMAND_CREATE_TABLE(LtoMM.TABLE_NAME));
     }
 }

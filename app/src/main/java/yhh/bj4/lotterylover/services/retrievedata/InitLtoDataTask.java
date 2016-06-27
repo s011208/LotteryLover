@@ -24,6 +24,7 @@ import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
@@ -121,6 +122,9 @@ public class InitLtoDataTask implements Runnable {
                     case LotteryLover.LTO_TYPE_LTO_POW:
                         key = LotteryLover.KEY_INIT_LTO_POW;
                         break;
+                    case LotteryLover.LTO_TYPE_LTO_MM:
+                        key = LotteryLover.KEY_INIT_LTO_MM;
+                        break;
                     default:
                         throw new RuntimeException("wrong lto type");
                 }
@@ -172,6 +176,9 @@ public class InitLtoDataTask implements Runnable {
                     break;
                 case LotteryLover.LTO_TYPE_LTO_POW:
                     providerItemList.add(new LtoPow(map));
+                    break;
+                case LotteryLover.LTO_TYPE_LTO_MM:
+                    providerItemList.add(new LtoMM(map));
                     break;
             }
         }

@@ -37,6 +37,7 @@ import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
@@ -81,6 +82,8 @@ public class ViewAllActivity extends AppCompatActivity
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_539;
             } else if (LtoPow.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_POW;
+            } else if (LtoMM.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_MM;
             } else if (AppSettings.DATA_URI.equals(uri)) {
                 if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
                     Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
