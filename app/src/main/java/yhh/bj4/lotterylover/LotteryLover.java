@@ -75,6 +75,7 @@ public class LotteryLover {
     public static final String KEY_INIT_LTO_EM = "init_lto_em";
 
     public static final String KEY_COMBINE_SPECIAL = "combine_special";
+    public static final String KEY_SHOW_SUB_TOTAL_ONLY = "show_sub_total_only";
 
     public static final String KEY_LTO_UPDATE_TIME(String className) {
         return "update_time_" + className;

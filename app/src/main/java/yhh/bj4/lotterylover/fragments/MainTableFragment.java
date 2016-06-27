@@ -49,6 +49,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private int mLtoType, mListType;
 
+    private boolean mIsShowSubTotalOnly = false;
+
     private RecyclerView mMainTable;
     private MainTableAdapter mMainTableAdapter;
 
@@ -141,13 +143,13 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private void updateMainTableAdapter() {
         if (mMainTableAdapter == null) {
-            mMainTableAdapter = new MainTableAdapter(getActivity(), mLtoType, mListType);
+            mMainTableAdapter = new MainTableAdapter(getActivity(), mLtoType, mListType, mIsShowSubTotalOnly);
             mMainTableAdapter.setDigitSize(getDigitScaleSize());
             mMainTableAdapter.setCallback(this);
             mMainTable.setAdapter(mMainTableAdapter);
             mMainTableAdapter.setAddAndMinus(mPlusAndMinusValue, false);
         } else {
-            mMainTableAdapter.updateData(mLtoType, mListType);
+            mMainTableAdapter.updateData(mLtoType, mListType, mIsShowSubTotalOnly);
         }
         mScrollView.smoothScrollTo(0, mScrollView.getScrollY());
     }
@@ -180,6 +182,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (activity != null && activity instanceof Callback) {
             mLtoType = ((Callback) activity).getLtoType();
             mListType = ((Callback) activity).getListType();
+            mIsShowSubTotalOnly = ((Callback) activity).isShowSubTotalOnly();
             if (DEBUG) {
                 Log.d(TAG, "onActivityCreated, mLtoType: " + mLtoType + ", mListType: " + mListType);
             }
@@ -211,6 +214,15 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         }
         updateMainTableAdapter();
         updateHeaderAndFooter();
+    }
+
+    public void setIsShowSubTotalOnly(boolean b) {
+        if (mIsShowSubTotalOnly == b) return;
+        mIsShowSubTotalOnly = b;
+        if (DEBUG) {
+            Log.d(TAG, "setIsShowSubTotalOnly: " + mIsShowSubTotalOnly);
+        }
+        updateMainTableAdapter();
     }
 
     private void updateHeaderAndFooter() {
@@ -509,5 +521,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         int getLtoType();
 
         int getListType();
+
+        boolean isShowSubTotalOnly();
     }
 }

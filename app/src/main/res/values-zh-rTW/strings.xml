@@ -7,6 +7,7 @@
     <string name="action_settings">設定</string>
     <string name="action_align_top">移至最上方</string>
     <string name="action_align_bottom">移至最下方</string>
+    <string name="action_show_monthly_sub_total_only">只顯示月結算</string>
 
     <!-- settings -->
     <string name="settings_appearance_category_title">外觀</string>

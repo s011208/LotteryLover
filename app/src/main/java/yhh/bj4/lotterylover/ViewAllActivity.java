@@ -304,6 +304,9 @@ public class ViewAllActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_all, menu);
+        MenuItem item = menu.findItem(R.id.action_show_subtotal_only);
+        item.setChecked(AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false));
+        item.setIcon(item.isChecked() ? R.drawable.ic_format_list_bulleted_black_24dp : R.drawable.ic_format_list_bulleted_white_24dp);
         return true;
     }
 
@@ -331,6 +334,16 @@ public class ViewAllActivity extends AppCompatActivity
             data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
             data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
             FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SCROLL_TO_BOTTOM, data);
+            return true;
+        } else if (id == R.id.action_show_subtotal_only) {
+            final boolean newValue = !item.isChecked();
+            item.setChecked(newValue);
+            item.setIcon(newValue ? R.drawable.ic_format_list_bulleted_black_24dp : R.drawable.ic_format_list_bulleted_white_24dp);
+            AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, newValue);
+            if (mMainTableFragment != null) {
+                // TODO block overall content list if can
+                mMainTableFragment.setIsShowSubTotalOnly(newValue);
+            }
             return true;
         }
 
@@ -370,5 +383,10 @@ public class ViewAllActivity extends AppCompatActivity
     @Override
     public int getListType() {
         return mListType;
+    }
+
+    @Override
+    public boolean isShowSubTotalOnly() {
+        return AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false);
     }
 }

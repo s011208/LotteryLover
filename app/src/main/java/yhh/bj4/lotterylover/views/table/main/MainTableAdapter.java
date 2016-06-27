@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import yhh.bj4.lotterylover.LotteryLover;
@@ -47,9 +48,10 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private float mDigitScale = LotteryLover.DIGIT_SCALE_SIZE_NORMAL;
 
-    private boolean mCombineSpecialNumber = false;
+    private boolean mCombineSpecialNumber = false, mShowMonthlyDataOnly = false;
 
-    private ArrayList<MainTableItem> mData = new ArrayList<>();
+    private ArrayList<MainTableItem> mShowData = new ArrayList<>();
+    private ArrayList<MainTableItem> mCachedData = new ArrayList<>();
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -58,21 +60,23 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private ArrayList<LotteryItem> mLotteryItems = new ArrayList<>();
 
-    public MainTableAdapter(Context context, int ltoType, int listType) {
+    public MainTableAdapter(Context context, int ltoType, int listType, boolean showMonthlyDataOnly) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mCombineSpecialNumber = AppSettings.get(mContext, LotteryLover.KEY_COMBINE_SPECIAL, false);
-        updateData(ltoType, listType);
+        updateData(ltoType, listType, showMonthlyDataOnly);
     }
 
     public void setCallback(Callback cb) {
         mCallback = cb;
     }
 
-    public void updateData(int ltoType, int listType) {
+    public void updateData(int ltoType, int listType, boolean showMonthlyDataOnly) {
         mListType = listType;
         mLtoType = ltoType;
-        mData.clear();
+        mShowMonthlyDataOnly = showMonthlyDataOnly;
+        mShowData.clear();
+        mCachedData.clear();
         mLotteryItems.clear();
         notifyDataSetChanged();
         if (mContext == null) return;
@@ -84,9 +88,22 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                         data, new AdapterDataGenerator.Callback() {
                     @Override
                     public void onFinished(ArrayList<MainTableItem> data) {
-                        mData.clear();
+                        mShowData.clear();
+                        mCachedData.clear();
                         if (data != null && !data.isEmpty()) {
-                            mData.addAll(data);
+                            if (mShowMonthlyDataOnly &&
+                                    mListType != LotteryLover.LIST_TYPE_PLUS_AND_MINUS &&
+                                    mListType != LotteryLover.LIST_TYPE_OVERALL) {
+                                Iterator<MainTableItem> itemIterator = data.iterator();
+                                while (itemIterator.hasNext()) {
+                                    MainTableItem item = itemIterator.next();
+                                    if (item.getItemType() != MainTableItem.ITEM_TYPE_SUB_TOTAL) {
+                                        itemIterator.remove();
+                                    }
+                                }
+                            }
+                            mCachedData.addAll(data);
+                            mShowData.addAll(data);
                         } else {
                             mLotteryItems.clear();
                         }
@@ -137,7 +154,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                 bindPlusTogetherContent(holder, position);
                 break;
             case TYPE_LAST_DIGIT:
-                bindLastNumberContent(holder, position);
+                bindLastDigitContent(holder, position);
                 break;
             case TYPE_PLUS_AND_MINUS:
                 bindPlusAndMinusContent(holder, position);
@@ -152,7 +169,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
-    private void bindLastNumberContent(RecyclerView.ViewHolder holder, int position) {
+    private void bindLastDigitContent(RecyclerView.ViewHolder holder, int position) {
         final TypeLastDigit item = (TypeLastDigit) getItem(position);
         OverallContentHolder contentHolder = (OverallContentHolder) holder;
         contentHolder.getTextView().setText(item.makeSpannableString());
@@ -182,11 +199,11 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mShowData.size();
     }
 
     public MainTableItem getItem(int position) {
-        return mData.get(position);
+        return mShowData.get(position);
     }
 
     @Override
@@ -207,11 +224,22 @@ public class MainTableAdapter extends RecyclerView.Adapter {
 
     private void updateAddAndMinus() {
         int queryOrder = AppSettings.get(mContext, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
-        new UpdatePlusAndMinusHelper(mLotteryItems, mPlusAndMinus, mCombineSpecialNumber, mData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
+        new UpdatePlusAndMinusHelper(mLotteryItems, mPlusAndMinus, mCombineSpecialNumber, mCachedData, queryOrder, new UpdatePlusAndMinusHelper.Callback() {
             @Override
             public void onFinished() {
                 if (DEBUG)
                     Log.d(TAG, "UpdatePlusAndMinusHelper, onFinished");
+                mShowData.clear();
+                mShowData.addAll(mCachedData);
+                if (mShowMonthlyDataOnly) {
+                    Iterator<MainTableItem> itemIterator = mShowData.iterator();
+                    while (itemIterator.hasNext()) {
+                        MainTableItem item = itemIterator.next();
+                        if (item.getItemType() != MainTableItem.ITEM_TYPE_SUB_TOTAL) {
+                            itemIterator.remove();
+                        }
+                    }
+                }
                 notifyDataSetChanged();
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
