@@ -21,6 +21,7 @@ import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
+import yhh.bj4.lotterylover.parser.lto539.lto.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
@@ -113,6 +114,9 @@ public class InitLtoDataTask implements Runnable {
                     case LotteryLover.LTO_TYPE_LTO_HK:
                         key = LotteryLover.KEY_INIT_LTO_HK;
                         break;
+                    case LotteryLover.LTO_TYPE_LTO_539:
+                        key = LotteryLover.KEY_INIT_LTO_539;
+                        break;
                     default:
                         throw new RuntimeException("wrong lto type");
                 }
@@ -158,6 +162,9 @@ public class InitLtoDataTask implements Runnable {
                     break;
                 case LotteryLover.LTO_TYPE_LTO_HK:
                     providerItemList.add(new LtoHK(map));
+                    break;
+                case LotteryLover.LTO_TYPE_LTO_539:
+                    providerItemList.add(new Lto539(map));
                     break;
             }
         }

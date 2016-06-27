@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.parser.lto7c;
+package yhh.bj4.lotterylover.parser.lto539.lto;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,12 +25,13 @@ import yhh.bj4.lotterylover.provider.AppSettings;
  * Created by yenhsunhuang on 2016/6/14.
  * http://www.pilio.idv.tw/ltobig/list.asp?indexpage=1&orderby=new
  */
-public class Lto7CParser extends LotteryParser {
+public class Lto539Parser extends LotteryParser {
 
+    private static final boolean DEBUG = true;
     private int mParsePage = 0;
     private Context mContext;
 
-    public Lto7CParser(Context context, int parsePage, Callback cb) {
+    public Lto539Parser(Context context, int parsePage, Callback cb) {
         super(cb);
         mParsePage = parsePage;
         mContext = context.getApplicationContext();
@@ -38,12 +39,12 @@ public class Lto7CParser extends LotteryParser {
 
     @Override
     public String getTag() {
-        return Lto7CParser.class.getSimpleName();
+        return Lto539Parser.class.getSimpleName();
     }
 
     @Override
     public String getBaseUrl() {
-        return "http://www.pilio.idv.tw/lto7c/listbbk.asp";
+        return "http://www.pilio.idv.tw/lto539/listbbk.asp";
     }
 
     @Override
@@ -86,19 +87,27 @@ public class Lto7CParser extends LotteryParser {
             Elements tableTr = doc.select("table tr");
             for (Element ele : tableTr) {
                 Elements tds = ele.select("td");
-                if (tds.size() != getTableTdCount()) continue;
+                if (tds.size() != getTableTdCount()) {
+                    if (DEBUG) {
+                        Log.v(TAG, "tds.size(): " + tds.size() + ", getTableTdCount(): " + getTableTdCount());
+                    }
+                    continue;
+                }
                 try {
                     long seq = Long.valueOf(tds.get(0).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
                     List<Integer> normalNumber = Utilities.convertStringNumberToList(tds.get(2).text());
-                    List<Integer> specialNumber = Utilities.convertStringNumberToList(tds.get(3).text());
-                    if (normalNumber.size() != Lto7C.getNormalNumbersCount() ||
-                            specialNumber.size() != Lto7C.getSpecialNumbersCount()) {
+                    List<Integer> specialNumber = new ArrayList<>();
+                    if (normalNumber.size() != Lto539.getNormalNumbersCount() ||
+                            specialNumber.size() != Lto539.getSpecialNumbersCount()) {
                         // TODO failed to get right results
+                        if (DEBUG) {
+                            Log.w(TAG, "failed to get right results");
+                        }
                         continue;
                     }
                     String memo = tds.get(4).text();
-                    items.add(new Lto7C(seq, drawingTime, normalNumber, specialNumber, memo, ""));
+                    items.add(new Lto539(seq, drawingTime, normalNumber, specialNumber, memo, ""));
                     if (DEBUG) {
                         Log.v(TAG, "----------");
                     }
@@ -109,7 +118,7 @@ public class Lto7CParser extends LotteryParser {
                     }
                 } catch (NumberFormatException e) {
                     if (DEBUG) {
-                        Log.v(TAG, "ignore wrong data set");
+                        Log.v(TAG, "ignore wrong data set", e);
                     }
                 }
             }
@@ -119,7 +128,10 @@ public class Lto7CParser extends LotteryParser {
                 for (int i = 0; i < items.size(); ++i) {
                     cvs[i] = items.get(i).toContentValues();
                 }
-                int result = mContext.getContentResolver().bulkInsert(Lto7C.DATA_URI, cvs);
+                int result = mContext.getContentResolver().bulkInsert(Lto539.DATA_URI, cvs);
+                if (DEBUG) {
+                    Log.d(TAG, "insert result: " + result);
+                }
                 if (result != 0) {
                     FirebaseDatabaseHelper.setLtoValues(items);
                 }

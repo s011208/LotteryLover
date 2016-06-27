@@ -120,6 +120,8 @@ public class RetrieveDataService extends Service {
                         } finally {
                             data.close();
                         }
+                        AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
+                                LotteryItem.getSimpleClassName(requestLtoType)), Calendar.getInstance().getTimeInMillis());
                         // notify update
                     }
                 }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -164,6 +166,9 @@ public class RetrieveDataService extends Service {
                 }
                 if (needToInit(LotteryLover.LTO_TYPE_LTO_HK) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_HK, false)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_HK);
+                }
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_539) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_539, false)) {
+                    updateLtoList.add(LotteryLover.LTO_TYPE_LTO_539);
                 }
                 for (Integer ltoType : updateLtoList) {
                     mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this));

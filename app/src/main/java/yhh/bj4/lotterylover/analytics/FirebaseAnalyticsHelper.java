@@ -10,15 +10,15 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  */
 public class FirebaseAnalyticsHelper {
 
-    public static final String EVENT_TABLE_INFORMATION = "Table information";
-    public static final String EVENT_SCROLL_TO_TOP = "Scroll to top";
-    public static final String EVENT_SCROLL_TO_BOTTOM = "Scroll to bottom";
+    public static final String EVENT_TABLE_INFORMATION = "Table_information";
+    public static final String EVENT_SCROLL_TO_TOP = "Scroll_to_top";
+    public static final String EVENT_SCROLL_TO_BOTTOM = "Scroll_to_bottom";
     public static final String EVENT_SETTINGS = "settings";
 
-    public static final String KEY_LIST_TYPE = "List type";
-    public static final String KEY_LTO_TYPE = "Lto type";
-    public static final String KEY_SETTINGS_NAME = "Settings name";
-    public static final String KEY_SETTINGS_VALUE = "Settings value";
+    public static final String KEY_LIST_TYPE = "List_type";
+    public static final String KEY_LTO_TYPE = "Lto_type";
+    public static final String KEY_SETTINGS_NAME = "Settings_name";
+    public static final String KEY_SETTINGS_VALUE = "Settings_value";
 
     private static FirebaseAnalytics sInstance;
 

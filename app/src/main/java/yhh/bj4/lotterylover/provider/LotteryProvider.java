@@ -14,6 +14,7 @@ import android.util.Log;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
+import yhh.bj4.lotterylover.parser.lto539.lto.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
@@ -38,17 +39,20 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_DOF_MATCHER = 4;
     private static final int LTO_2C_MATCHER = 5;
     private static final int LTO_7C_MATCHER = 6;
+    private static final int LTO_539_MATCHER = 7;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
     static {
+        sMatcher.addURI(AUTHORITY, AppSettings.TABLE_NAME, APP_SETTINGS_MATCHER);
         sMatcher.addURI(AUTHORITY, Lto.TABLE_NAME, LTO_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoBig.TABLE_NAME, LTO_BIG_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoHK.TABLE_NAME, LTO_HK_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoDof.TABLE_NAME, LTO_DOF_MATCHER);
         sMatcher.addURI(AUTHORITY, Lto2C.TABLE_NAME, LTO_2C_MATCHER);
         sMatcher.addURI(AUTHORITY, Lto7C.TABLE_NAME, LTO_7C_MATCHER);
-        sMatcher.addURI(AUTHORITY, AppSettings.TABLE_NAME, APP_SETTINGS_MATCHER);
+        sMatcher.addURI(AUTHORITY, Lto539.TABLE_NAME, LTO_539_MATCHER);
+
     }
 
     private SQLiteDatabase mDatabase;
@@ -97,6 +101,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_7C_MATCHER:
                 rtn = mDatabase.query(Lto7C.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            case LTO_539_MATCHER:
+                rtn = mDatabase.query(Lto539.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.query(AppSettings.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -135,6 +142,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_7C_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.insert(Lto7C.TABLE_NAME, null, values));
                 break;
+            case LTO_539_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(Lto539.TABLE_NAME, null, values));
+                break;
             case APP_SETTINGS_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.replace(AppSettings.TABLE_NAME, null, values));
                 break;
@@ -166,6 +176,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case LTO_7C_MATCHER:
                 rtn = mDatabase.delete(Lto7C.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LTO_539_MATCHER:
+                rtn = mDatabase.delete(Lto539.TABLE_NAME, selection, selectionArgs);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.delete(AppSettings.TABLE_NAME, selection, selectionArgs);
@@ -199,6 +212,9 @@ public class LotteryProvider extends ContentProvider {
             case LTO_7C_MATCHER:
                 rtn = mDatabase.update(Lto7C.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case LTO_539_MATCHER:
+                rtn = mDatabase.update(Lto539.TABLE_NAME, values, selection, selectionArgs);
+                break;
             case APP_SETTINGS_MATCHER:
                 mDatabase.replace(AppSettings.TABLE_NAME, null, values);
                 rtn = 1;
@@ -231,6 +247,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case LTO_7C_MATCHER:
                 rtn = bulkInsert(Lto7C.TABLE_NAME, values);
+                break;
+            case LTO_539_MATCHER:
+                rtn = bulkInsert(Lto539.TABLE_NAME, values);
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = bulkInsert(AppSettings.TABLE_NAME, values);
