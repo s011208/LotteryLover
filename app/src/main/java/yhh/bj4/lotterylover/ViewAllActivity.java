@@ -44,7 +44,7 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
-import yhh.bj4.lotterylover.settings.SettingsActivity;
+import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
 public class ViewAllActivity extends AppCompatActivity
@@ -268,7 +268,7 @@ public class ViewAllActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SETTINGS) {
             if (data == null || resultCode != Activity.RESULT_OK) return;
-            ArrayList<String> changedItemList = data.getStringArrayListExtra(SettingsActivity.CHANGED_LIST_KEY);
+            ArrayList<String> changedItemList = data.getStringArrayListExtra(MainSettingsActivity.CHANGED_LIST_KEY);
             if (DEBUG) {
                 for (String s : changedItemList) {
                     Log.d(TAG, "changedItemList:" + s);
@@ -314,7 +314,7 @@ public class ViewAllActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(ViewAllActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(ViewAllActivity.this, MainSettingsActivity.class);
             startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
         } else if (id == R.id.action_align_top) {
