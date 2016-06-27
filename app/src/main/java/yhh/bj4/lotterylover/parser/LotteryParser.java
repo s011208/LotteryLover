@@ -12,7 +12,7 @@ import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
-import yhh.bj4.lotterylover.parser.ltopow.ltoHK.LtoPowParser;
+import yhh.bj4.lotterylover.parser.ltopow.LtoPowParser;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.

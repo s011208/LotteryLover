@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.parser.ltopow.ltoHK;
+package yhh.bj4.lotterylover.parser.ltopow;
 
 import android.net.Uri;
 

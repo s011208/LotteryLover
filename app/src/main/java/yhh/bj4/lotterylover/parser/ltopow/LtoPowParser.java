@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.parser.ltopow.ltoHK;
+package yhh.bj4.lotterylover.parser.ltopow;
 
 import android.content.ContentValues;
 import android.content.Context;
