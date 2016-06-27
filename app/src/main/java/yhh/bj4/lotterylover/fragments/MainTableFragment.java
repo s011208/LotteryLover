@@ -42,6 +42,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private static final String TAG = "MainTableFragment";
     private static final boolean DEBUG = Utilities.DEBUG;
 
+    private static final String KEY_PLUS_AND_MINUS_VALUE = "pamv";
+
     private static final int MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS = 40;
     private static final int HEADER_AND_FOOTER_BACKGROUND_COLOR_RES = R.color.colorPrimary;
 
@@ -58,6 +60,22 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private RadioGroup mPlusGroup, mMinusGroup;
 
+    private int mPlusAndMinusValue;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mPlusAndMinusValue = savedInstanceState.getInt(KEY_PLUS_AND_MINUS_VALUE, 0);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_PLUS_AND_MINUS_VALUE, mPlusAndMinusValue);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +86,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_NUMERIC, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_TOGETHER, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_LAST_DIGIT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_AND_MINUS, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
         mMainTable.setBackgroundResource(R.drawable.rv_bg);
         mHeader = (TextView) root.findViewById(R.id.header);
         mFooter = (TextView) root.findViewById(R.id.footer);
@@ -89,8 +109,12 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             btn.setText("+" + i);
             btn.setTag(i);
             btn.setOnClickListener(this);
+            if (mPlusAndMinusValue == i) {
+                btn.setChecked(true);
+            }
             mPlusGroup.addView(btn);
         }
+        mPlusGroup.check(0);
 
         mMinusGroup = (RadioGroup) root.findViewById(R.id.minus_rg_group);
         for (int i = 1; i < 11; ++i) {
@@ -98,6 +122,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             btn.setText("-" + i);
             btn.setTag(-i);
             btn.setOnClickListener(this);
+            if (mPlusAndMinusValue == i * -1) {
+                btn.setChecked(true);
+            }
             mMinusGroup.addView(btn);
         }
 
@@ -109,7 +136,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             Log.d(TAG, "updatePlusAndMinus, value: " + value);
         }
         if (mMainTableAdapter == null) return;
-        mMainTableAdapter.setAddAndMinus(value);
+        mMainTableAdapter.setAddAndMinus(value, true);
     }
 
     private void updateMainTableAdapter() {
@@ -118,6 +145,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.setDigitSize(getDigitScaleSize());
             mMainTableAdapter.setCallback(this);
             mMainTable.setAdapter(mMainTableAdapter);
+            mMainTableAdapter.setAddAndMinus(mPlusAndMinusValue, false);
         } else {
             mMainTableAdapter.updateData(mLtoType, mListType);
         }
@@ -186,6 +214,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     }
 
     private void updateHeaderAndFooter() {
+        if (getActivity() == null) return;
         updateHeader();
         updateFooter();
     }
@@ -424,15 +453,18 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (v instanceof RadioButton) {
             final Integer tag = (Integer) v.getTag();
             if (tag == null) return;
+            if (mPlusAndMinusValue > 0) {
+                ((RadioButton) mPlusGroup.getChildAt(mPlusAndMinusValue - 1)).setChecked(false);
+            } else if (mPlusAndMinusValue < 0) {
+                ((RadioButton) mMinusGroup.getChildAt(-mPlusAndMinusValue - 1)).setChecked(false);
+            }
+            mPlusAndMinusValue = tag;
             updatePlusAndMinus(tag);
-            if (tag < 0) {
-                for (int i = 0; i < mPlusGroup.getChildCount(); ++i) {
-                    ((RadioButton) mPlusGroup.getChildAt(i)).setChecked(false);
-                }
-            } else {
-                for (int i = 0; i < mMinusGroup.getChildCount(); ++i) {
-                    ((RadioButton) mMinusGroup.getChildAt(i)).setChecked(false);
-                }
+
+            if (mPlusAndMinusValue > 0) {
+                ((RadioButton) mPlusGroup.getChildAt(mPlusAndMinusValue - 1)).setChecked(true);
+            } else if (mPlusAndMinusValue < 0) {
+                ((RadioButton) mMinusGroup.getChildAt(-mPlusAndMinusValue - 1)).setChecked(true);
             }
         }
     }

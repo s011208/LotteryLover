@@ -75,6 +75,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         mData.clear();
         mLotteryItems.clear();
         notifyDataSetChanged();
+        if (mContext == null) return;
         new RetrieveLotteryItemDataHelper(mContext, new RetrieveLotteryItemDataHelper.Callback() {
             @Override
             public void onFinished(List<LotteryItem> data) {
@@ -197,9 +198,11 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         mDigitScale = scale;
     }
 
-    public void setAddAndMinus(int value) {
+    public void setAddAndMinus(int value, boolean update) {
         mPlusAndMinus = value;
-        updateAddAndMinus();
+        if (update) {
+            updateAddAndMinus();
+        }
     }
 
     private void updateAddAndMinus() {
