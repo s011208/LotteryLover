@@ -23,6 +23,12 @@
             android:title="@string/settings_display_combine_special_number_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/settings_others_category_title">
+        <Preference
+            android:key="settings_others_lto_type_selector_title"
+            android:title="@string/settings_others_lto_type_selector_title"/>
+    </PreferenceCategory>
+
     <PreferenceCategory
         android:key="settings_about"
         android:title="@string/settings_about_category_title">

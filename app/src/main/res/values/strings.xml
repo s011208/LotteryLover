@@ -19,6 +19,9 @@
     <string name="settings_display_combine_special_number_title">Combine special number</string>
     <string name="settings_display_combine_special_number_summary">"Combine special number in Overall and Plus &amp; Minus mode"</string>
 
+    <string name="settings_others_category_title">Other settings</string>
+    <string name="settings_others_lto_type_selector_title">Lottery list settings</string>
+
     <string name="settings_about_category_title">About</string>
     <string name="settings_about_app_version">App version</string>
     <string name="settings_about_contact_me">Contact me</string>

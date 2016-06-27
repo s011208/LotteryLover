@@ -1,13 +1,13 @@
 package yhh.bj4.lotterylover.settings.main;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
-import android.os.Bundle;
+import android.preference.PreferenceFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.settings.BaseSettingsActivity;
 
 /**
@@ -19,9 +19,8 @@ public class MainSettingsActivity extends BaseSettingsActivity implements MainSe
     private final List<String> mChangedItemList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainSettingsFragment()).commitAllowingStateLoss();
+    public Fragment getContainerFragment() {
+        return new MainSettingsFragment();
     }
 
     @Override

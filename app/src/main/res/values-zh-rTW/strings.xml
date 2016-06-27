@@ -19,6 +19,8 @@
     <string name="settings_display_combine_special_number_title">合併特別號</string>
     <string name="settings_display_combine_special_number_summary">在列表與加減模式時合併特別號</string>
 
+    <string name="settings_others_category_title">其他設定</string>
+    <string name="settings_others_lto_type_selector_title">樂透列表設定</string>
 
     <string name="settings_about_category_title">關於</string>
     <string name="settings_about_app_version">App 版本</string>

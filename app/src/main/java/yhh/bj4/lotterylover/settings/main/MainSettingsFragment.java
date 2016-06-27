@@ -17,6 +17,7 @@ import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.settings.ltotype.LtoTypeSettingActivity;
 
 /**
  * Created by User on 2016/6/21.
@@ -30,6 +31,7 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_ABOUT_APP_VERSION = "settings_about_app_version";
     private static final String SETTINGS_ABOUT_CONTACT_ME = "settings_about_contact_me";
     private static final String SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER = "settings_display_combine_special_number";
+    private static final String SETTINGS_OTHERS_LTO_LIST = "settings_others_lto_type_selector_title";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -181,6 +183,9 @@ public class MainSettingsFragment extends PreferenceFragment {
             if (getActivity() instanceof Callback) {
                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_COMBINE_SPECIAL);
             }
+        } else if (SETTINGS_OTHERS_LTO_LIST.equals(key)) {
+            Intent intent = new Intent(getActivity(), LtoTypeSettingActivity.class);
+            startActivity(intent);
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
