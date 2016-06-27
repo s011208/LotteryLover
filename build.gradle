@@ -16,6 +16,12 @@ allprojects {
     repositories {
         jcenter()
     }
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://github.com/Goddchen/mvn-repo/raw/master/'
+        }
+    }
 }
 
 task clean(type: Delete) {

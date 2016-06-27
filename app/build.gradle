@@ -29,6 +29,7 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:9.0.2'
     compile 'com.google.firebase:firebase-database:9.0.2'
     compile 'com.google.firebase:firebase-ads:9.0.2'
+    compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
