@@ -53,12 +53,13 @@ public class TypePlusAndMinus extends MainTableItem {
         List<Integer> indexOfSpecial = new ArrayList<>();
         List<Integer> indexOfHitNormal = new ArrayList<>();
         List<Integer> indexOfHitSpecial = new ArrayList<>();
-        int indexOfDrawingTime;
+        int indexOfDrawingTime, indexOfSequence;
 
         StringBuilder builder = new StringBuilder();
         builder.append(SEP);
         builder.deleteCharAt(0);
         builder.append(Utilities.getLotterySequenceString(mSequence));
+        indexOfSequence = builder.length();
         indexOfSep.add(builder.length());
         builder.append(SEP);
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
@@ -158,6 +159,8 @@ public class TypePlusAndMinus extends MainTableItem {
         // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
             rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime - 3, indexOfDrawingTime, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence - 5, indexOfSequence, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         }
 
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {

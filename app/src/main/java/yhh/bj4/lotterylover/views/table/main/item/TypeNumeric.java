@@ -104,6 +104,7 @@ public class TypeNumeric extends MainTableItem {
         // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
             rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // rest of spe of normal
