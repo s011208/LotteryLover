@@ -170,6 +170,9 @@ public class RetrieveDataService extends Service {
                 if (needToInit(LotteryLover.LTO_TYPE_LTO_539) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_539, false)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_539);
                 }
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_POW) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_POW, false)) {
+                    updateLtoList.add(LotteryLover.LTO_TYPE_LTO_POW);
+                }
                 for (Integer ltoType : updateLtoList) {
                     mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this));
                 }

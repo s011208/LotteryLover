@@ -7,11 +7,12 @@ import android.os.AsyncTask;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.parser.lto.LtoParser;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2CParser;
-import yhh.bj4.lotterylover.parser.lto539.lto.Lto539Parser;
+import yhh.bj4.lotterylover.parser.lto539.Lto539Parser;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7CParser;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHKParser;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBigParser;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDofParser;
+import yhh.bj4.lotterylover.parser.ltopow.ltoHK.LtoPowParser;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -85,6 +86,8 @@ public abstract class LotteryParser extends AsyncTask<Void, Void, int[]> {
                 return new LtoHKParser(context, page, cb);
             case LotteryLover.LTO_TYPE_LTO_539:
                 return new Lto539Parser(context, page, cb);
+            case LotteryLover.LTO_TYPE_LTO_POW:
+                return new LtoPowParser(context, page, cb);
             default:
                 throw new RuntimeException("wrong lto type");
         }

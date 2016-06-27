@@ -7,18 +7,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
-import yhh.bj4.lotterylover.parser.lto539.lto.Lto539;
+import yhh.bj4.lotterylover.parser.lto539.Lto539;
 import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
 import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.parser.ltopow.ltoHK.LtoPow;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -41,12 +42,19 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
         // v2
         createTableLto539(db);
+
+        // v3
+        createTableLtoPow(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1) {
             createTableLto539(db);
+            ++oldVersion;
+        }
+        if (oldVersion == 2) {
+            createTableLtoPow(db);
             ++oldVersion;
         }
     }
@@ -80,6 +88,10 @@ public class LotteryDatabase extends SQLiteOpenHelper {
     }
 
     private void createTableLto539(SQLiteDatabase db) {
-        db.execSQL(Lto7C.COMMAND_CREATE_TABLE(Lto539.TABLE_NAME));
+        db.execSQL(Lto539.COMMAND_CREATE_TABLE(Lto539.TABLE_NAME));
+    }
+
+    private void createTableLtoPow(SQLiteDatabase db) {
+        db.execSQL(LtoPow.COMMAND_CREATE_TABLE(LtoPow.TABLE_NAME));
     }
 }
