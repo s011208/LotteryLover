@@ -61,8 +61,13 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
         final ArrayList<LotteryItem> rtn = new ArrayList<>();
         if (context == null) return rtn;
         if (mListType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
-            rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
-            rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
+            if (mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
+            } else {
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
+            }
             int orderSettings = AppSettings.get(context, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
             final boolean isAsc = orderSettings == LotteryLover.ORDER_BY_ASC;
             Collections.sort(rtn, new Comparator<LotteryItem>() {
