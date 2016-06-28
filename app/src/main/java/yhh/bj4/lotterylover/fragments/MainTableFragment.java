@@ -517,12 +517,12 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     public void scrollToTop() {
         if (mMainTable == null || mMainTableAdapter == null) return;
-        mMainTable.smoothScrollToPosition(0);
+        mMainTable.getLayoutManager().scrollToPosition(0);
     }
 
     public void scrollToBottom() {
         if (mMainTable == null || mMainTableAdapter == null) return;
-        mMainTable.smoothScrollToPosition(mMainTableAdapter.getItemCount());
+        mMainTable.getLayoutManager().scrollToPosition(mMainTableAdapter.getItemCount() - 1);
     }
 
     public interface Callback {
