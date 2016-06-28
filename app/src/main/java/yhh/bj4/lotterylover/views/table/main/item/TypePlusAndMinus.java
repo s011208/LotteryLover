@@ -185,21 +185,21 @@ public class TypePlusAndMinus extends MainTableItem {
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // hit normal
         for (int i = 0; i < indexOfHitNormal.size(); ++i) {
             final int startIndex = indexOfHitNormal.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             rtn.setSpan(new ForegroundColorSpan(HIT_INDEX_OF_NORMAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // hit special
         for (int i = 0; i < indexOfHitSpecial.size(); ++i) {
             final int startIndex = indexOfHitSpecial.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             rtn.setSpan(new ForegroundColorSpan(HIT_INDEX_OF_SPECIAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 

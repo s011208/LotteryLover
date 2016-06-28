@@ -63,7 +63,7 @@ public class TypeNumeric extends MainTableItem {
             if (isZero) {
                 indexOfZero.add(builder.length());
             }
-            builder.append(isZero ? "00" : Utilities.getLotteryNumberString(value));
+            builder.append(isZero ? Utilities.getLotteryNumberString(0) : Utilities.getLotteryNumberString(value));
             indexOfSepOfNormal.add(builder.length());
             builder.append(SEP);
         }
@@ -77,7 +77,7 @@ public class TypeNumeric extends MainTableItem {
                 if (isZero) {
                     indexOfZero.add(builder.length());
                 }
-                builder.append(isZero ? "00" : Utilities.getLotteryNumberString(value));
+                builder.append(isZero ? Utilities.getLotteryNumberString(0) : Utilities.getLotteryNumberString(value));
                 indexOfSepOfSpecial.add(builder.length());
                 builder.append(SEP);
             }
@@ -133,7 +133,7 @@ public class TypeNumeric extends MainTableItem {
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER) {
                 rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
@@ -143,7 +143,7 @@ public class TypeNumeric extends MainTableItem {
 
         for (int i = 0; i < indexOfZero.size(); ++i) {
             final int startIndex = indexOfZero.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 

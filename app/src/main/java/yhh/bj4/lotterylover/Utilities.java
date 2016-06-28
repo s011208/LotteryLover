@@ -37,6 +37,9 @@ public class Utilities {
     private static Map<Integer, List<Integer>> sPlusAndLastDigitMap = new HashMap<>();
     private static Map<Integer, List<Integer>> sLastDigitMap = new HashMap<>();
 
+    public static final int DIGIT_FORMAT_LENGTH = 2;
+    private static final String DIGIT_FORMAT = "%0" + DIGIT_FORMAT_LENGTH + "d";
+
     static {
         sCalendar.set(Calendar.HOUR_OF_DAY, 0);
         sCalendar.set(Calendar.MINUTE, 0);
@@ -133,7 +136,7 @@ public class Utilities {
     }
 
     public static String getLotteryNumberString(int num) {
-        return String.format("%02d", num);
+        return String.format(DIGIT_FORMAT, num);
     }
 
     public static String getLotterySequenceString(long num) {

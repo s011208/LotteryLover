@@ -116,7 +116,7 @@ public class TypeOverall extends MainTableItem {
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
-            final int endIndex = startIndex + 2;
+            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
             rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
