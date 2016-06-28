@@ -295,6 +295,8 @@ public class Utilities {
                 return "Plus and minus";
             case LotteryLover.LIST_TYPE_PLUS_TOGETHER:
                 return "Plus digits";
+            case LotteryLover.LIST_TYPE_COMBINE_LIST:
+                return "Combine list";
             default:
                 throw new RuntimeException("unexpected list type");
         }

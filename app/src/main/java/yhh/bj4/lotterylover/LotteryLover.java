@@ -29,6 +29,7 @@ public class LotteryLover {
     public static final int LIST_TYPE_PLUS_TOGETHER = 2;
     public static final int LIST_TYPE_LAST_DIGIT = 3;
     public static final int LIST_TYPE_PLUS_AND_MINUS = 4;
+    public static final int LIST_TYPE_COMBINE_LIST = 5;
 
     public static final String KEY_DIGIT_SCALE_SIZE = "digit_scale_size";
     public static final int DIGIT_SCALE_SIZE_TINY = 0;

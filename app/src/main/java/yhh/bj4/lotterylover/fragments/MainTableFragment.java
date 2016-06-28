@@ -246,7 +246,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             protected void onPostExecute(MainTableItem mainTableItem) {
                 if (mainTableItem == null) {
                     mHeader.setText("");
-                    if (listType == LotteryLover.LIST_TYPE_OVERALL) {
+                    if (listType == LotteryLover.LIST_TYPE_OVERALL ||
+                            listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
                         mPlusGroup.setVisibility(View.GONE);
                         mHeader.setVisibility(View.INVISIBLE);
                     } else {
@@ -316,6 +317,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     }
                 } else if (listType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
                     return null;
+                } else if (listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
+                    return null;
                 } else {
                     throw new RuntimeException("unexpected list type");
                 }
@@ -339,7 +342,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             protected void onPostExecute(MainTableItem mainTableItem) {
                 if (mainTableItem == null) {
                     mFooter.setText("");
-                    if (listType == LotteryLover.LIST_TYPE_OVERALL) {
+                    if (listType == LotteryLover.LIST_TYPE_OVERALL ||
+                            listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
                         mMinusGroup.setVisibility(View.GONE);
                         mFooter.setVisibility(View.INVISIBLE);
                     } else {
@@ -446,6 +450,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                         }
                     }
                 } else if (listType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
+                    return null;
+                } else if (listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
                     return null;
                 } else {
                     throw new RuntimeException("unexpected list type");

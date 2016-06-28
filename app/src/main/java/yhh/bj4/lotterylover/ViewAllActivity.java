@@ -61,6 +61,8 @@ public class ViewAllActivity extends AppCompatActivity
     private LinearLayout mLoadingProgressbar;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
+    private RecyclerView mListTypeView;
+    private ListTypeAdapter mListTypeAdapter;
 
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -221,6 +223,7 @@ public class ViewAllActivity extends AppCompatActivity
                     AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
                     if (isMainTableAvailable()) {
                         mMainTableFragment.setLtoType(mLtoType);
+                        mListTypeAdapter.setLtoType(mLtoType);
                         Bundle data = new Bundle();
                         data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
                         data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
@@ -243,8 +246,8 @@ public class ViewAllActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        RecyclerView listTypeView = (RecyclerView) findViewById(R.id.list_type_recyclerview);
-        listTypeView.setAdapter(new ListTypeAdapter(this, new ListTypeAdapter.Callback() {
+        mListTypeView = (RecyclerView) findViewById(R.id.list_type_recyclerview);
+        mListTypeAdapter = new ListTypeAdapter(this, new ListTypeAdapter.Callback() {
             @Override
             public void onListTypeChanged(int type) {
                 mListType = type;
@@ -257,7 +260,8 @@ public class ViewAllActivity extends AppCompatActivity
                     FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_TABLE_INFORMATION, data);
                 }
             }
-        }, mListType));
+        }, mListType, mLtoType);
+        mListTypeView.setAdapter(mListTypeAdapter);
     }
 
     @Override

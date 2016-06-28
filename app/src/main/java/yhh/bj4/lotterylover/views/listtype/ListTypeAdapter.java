@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 
@@ -24,12 +25,41 @@ public class ListTypeAdapter extends RecyclerView.Adapter {
     private final String[] mItems;
     private int mSelectedPosition = 0;
     private Callback mCallback;
+    private int mLtoType;
 
-    public ListTypeAdapter(Context context, Callback cb, int selectedPosition) {
+    public ListTypeAdapter(Context context, Callback cb, int selectedPosition, int ltoType) {
         mContext = context;
         mCallback = cb;
         mItems = context.getResources().getStringArray(R.array.action_bar_list_type);
         mSelectedPosition = selectedPosition;
+        mLtoType = ltoType;
+        updateSelectedPosition();
+    }
+
+    public void setLtoType(int type) {
+        mLtoType = type;
+        updateSelectedPosition();
+        notifyDataSetChanged();
+    }
+
+    public boolean updateSelectedPosition() {
+        if (mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3 || mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+            if (mSelectedPosition == LotteryLover.LIST_TYPE_LAST_DIGIT ||
+                    mSelectedPosition == LotteryLover.LIST_TYPE_NUMERIC ||
+                    mSelectedPosition == LotteryLover.LIST_TYPE_PLUS_AND_MINUS ||
+                    mSelectedPosition == LotteryLover.LIST_TYPE_PLUS_TOGETHER) {
+                mSelectedPosition = LotteryLover.LIST_TYPE_OVERALL;
+                mCallback.onListTypeChanged(mSelectedPosition);
+                return true;
+            }
+        } else {
+            if (mSelectedPosition == LotteryLover.LIST_TYPE_COMBINE_LIST) {
+                mSelectedPosition = LotteryLover.LIST_TYPE_OVERALL;
+                mCallback.onListTypeChanged(mSelectedPosition);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -58,6 +88,21 @@ public class ListTypeAdapter extends RecyclerView.Adapter {
                 mCallback.onListTypeChanged(mSelectedPosition);
             }
         });
+        if (mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3 || mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+            if (position == LotteryLover.LIST_TYPE_COMBINE_LIST || position == LotteryLover.LIST_TYPE_OVERALL) {
+                textHolder.mText.setEnabled(true);
+            } else {
+                textHolder.mText.setEnabled(false);
+                textHolder.mText.setBackgroundColor(Utilities.getPrimaryDarkColor(mContext));
+            }
+        } else {
+            if (position == LotteryLover.LIST_TYPE_COMBINE_LIST) {
+                textHolder.mText.setEnabled(false);
+                textHolder.mText.setBackgroundColor(Utilities.getPrimaryDarkColor(mContext));
+            } else {
+                textHolder.mText.setEnabled(true);
+            }
+        }
     }
 
     @Override
