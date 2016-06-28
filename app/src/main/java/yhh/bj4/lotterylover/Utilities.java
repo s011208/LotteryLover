@@ -313,4 +313,19 @@ public class Utilities {
         }
         return null;
     }
+
+    private static String ODD = "", PLURAL = "";
+
+    public static void initVariables(Context context) {
+        ODD = context.getResources().getString(R.string.odd);
+        PLURAL = context.getResources().getString(R.string.plural);
+    }
+
+    public static String oddString() {
+        return ODD;
+    }
+
+    public static String pluralString() {
+        return PLURAL;
+    }
 }

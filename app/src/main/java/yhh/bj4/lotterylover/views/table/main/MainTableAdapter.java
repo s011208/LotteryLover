@@ -19,6 +19,7 @@ import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.table.main.holder.OverallContentHolder;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
+import yhh.bj4.lotterylover.views.table.main.item.TypeCombinedList;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
@@ -37,6 +38,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     public static final int TYPE_PLUS_TOGETHER = 2;
     public static final int TYPE_LAST_DIGIT = 3;
     public static final int TYPE_PLUS_AND_MINUS = 4;
+    public static final int TYPE_COMBINE_LIST = 5;
 
     public interface Callback {
         void onFinishLoadingData();
@@ -121,7 +123,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                     }
                 }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
-        }, ltoType).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, ltoType, listType).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -133,6 +135,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_NUMERIC:
             case TYPE_LAST_DIGIT:
             case TYPE_PLUS_AND_MINUS:
+            case TYPE_COMBINE_LIST:
                 holder = new OverallContentHolder(mInflater.inflate(R.layout.main_table_adapter_text, null), mDigitScale);
                 break;
 
@@ -159,7 +162,17 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_PLUS_AND_MINUS:
                 bindPlusAndMinusContent(holder, position);
                 break;
+            case TYPE_COMBINE_LIST:
+                bindCombinedListContent(holder, position);
+                break;
         }
+    }
+
+    private void bindCombinedListContent(RecyclerView.ViewHolder holder, int position) {
+        final TypeCombinedList item = (TypeCombinedList) getItem(position);
+        OverallContentHolder contentHolder = (OverallContentHolder) holder;
+        contentHolder.getTextView().setText(item.makeSpannableString());
+        contentHolder.updateScaleIfNecessary(mDigitScale);
     }
 
     private void bindPlusAndMinusContent(RecyclerView.ViewHolder holder, int position) {

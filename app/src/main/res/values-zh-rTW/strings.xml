@@ -77,4 +77,7 @@
 
     <!-- view all activity -->
     <string name="loading">讀取資料</string>
+
+    <string name="odd">單</string>
+    <string name="plural">雙</string>
 </resources>

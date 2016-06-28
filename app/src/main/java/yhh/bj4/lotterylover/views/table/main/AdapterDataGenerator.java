@@ -13,6 +13,7 @@ import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
+import yhh.bj4.lotterylover.views.table.main.item.TypeCombinedList;
 import yhh.bj4.lotterylover.views.table.main.item.TypeLastDigit;
 import yhh.bj4.lotterylover.views.table.main.item.TypeNumeric;
 import yhh.bj4.lotterylover.views.table.main.item.TypeOverall;
@@ -68,6 +69,34 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             case LotteryLover.LIST_TYPE_PLUS_AND_MINUS:
                 rtn.addAll(initListTypePlusAndMinus());
                 break;
+            case LotteryLover.LIST_TYPE_COMBINE_LIST:
+                rtn.addAll(initListTypeCombine());
+                break;
+        }
+        return rtn;
+    }
+
+    // for list 4 & list 3 only
+    private ArrayList<MainTableItem> initListTypeCombine() {
+        ArrayList<MainTableItem> rtn = new ArrayList<>();
+        for (LotteryItem item : mLotteryData) {
+            MainTableItem mainTableItem = new TypeCombinedList(MainTableAdapter.TYPE_COMBINE_LIST,
+                    item.getSequence(), item.getDrawingDateTime(),
+                    item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                    , mMaximumSpecialNumber);
+            mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+            if (item.getNormalNumbers().size() == 3) {
+                mainTableItem.addNormalNumber(0, -1);
+                for (int i = 0; i < 3; ++i) {
+                    mainTableItem.addNormalNumber(i + 1, item.getNormalNumbers().get(i));
+                }
+            } else {
+                for (int i = 0; i < 4; ++i) {
+                    mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
+                }
+            }
+            mainTableItem.makeSpannableString();
+            rtn.add(mainTableItem);
         }
         return rtn;
     }

@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import yhh.bj4.lotterylover.LotteryLover;
@@ -44,11 +46,13 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
     private final WeakReference<Context> mContext;
     private final Callback mCallback;
     private final int mLtoType;
+    private final int mListType;
 
-    public RetrieveLotteryItemDataHelper(Context context, Callback cb, int ltoType) {
+    public RetrieveLotteryItemDataHelper(Context context, Callback cb, int ltoType, int listType) {
         mContext = new WeakReference<>(context);
         mCallback = cb;
         mLtoType = ltoType;
+        mListType = listType;
     }
 
     @Override
@@ -56,8 +60,29 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
         final Context context = mContext.get();
         final ArrayList<LotteryItem> rtn = new ArrayList<>();
         if (context == null) return rtn;
-        Cursor cursor = getDataCursor(context, mLtoType);
-        rtn.addAll(getDataFromCursor(cursor, mLtoType));
+        if (mListType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
+            rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
+            rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
+            int orderSettings = AppSettings.get(context, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
+            final boolean isAsc = orderSettings == LotteryLover.ORDER_BY_ASC;
+            Collections.sort(rtn, new Comparator<LotteryItem>() {
+                @Override
+                public int compare(LotteryItem lhs, LotteryItem rhs) {
+                    if (isAsc) {
+                        if (lhs.getSequence() < rhs.getSequence()) return -1;
+                        else if (lhs.getSequence() > rhs.getSequence()) return 1;
+                        else return 0;
+                    } else {
+                        if (lhs.getSequence() < rhs.getSequence()) return 1;
+                        else if (lhs.getSequence() > rhs.getSequence()) return -1;
+                        else return 0;
+                    }
+                }
+            });
+        } else {
+            Cursor cursor = getDataCursor(context, mLtoType);
+            rtn.addAll(getDataFromCursor(cursor, mLtoType));
+        }
         if (DEBUG)
             Log.d(TAG, "doInBackground, rtn size: " + rtn.size());
         return rtn;

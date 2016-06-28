@@ -77,4 +77,7 @@
 
     <!-- view all activity -->
     <string name="loading">Loading data</string>
+
+    <string name="odd">1</string>
+    <string name="plural">0</string>
 </resources>

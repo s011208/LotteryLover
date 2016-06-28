@@ -2,6 +2,7 @@ package yhh.bj4.lotterylover.applicationproxy;
 
 import android.content.Context;
 
+import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 
 /**
@@ -15,6 +16,7 @@ public class MainApplicationProxy extends ApplicationProxy {
     @Override
     public void onCreate() {
         FirebaseAnalyticsHelper.init(getContext().getApplicationContext());
+        Utilities.initVariables(getContext().getApplicationContext());
     }
 
     @Override
