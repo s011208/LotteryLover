@@ -147,8 +147,6 @@ public class RetrieveDataService extends Service {
     }
 
     private boolean isExpired(int type) {
-        if (type == LotteryLover.LTO_TYPE_LTO_LIST3 || type == LotteryLover.LTO_TYPE_LTO_LIST4)
-            return true;
         long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
         Calendar now = Calendar.getInstance();
         return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 6;
