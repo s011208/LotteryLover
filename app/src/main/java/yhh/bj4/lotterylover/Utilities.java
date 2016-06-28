@@ -278,6 +278,8 @@ public class Utilities {
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_TOTO);
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_AU_POW);
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_EM);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST3);
+            RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST4);
         }
     }
 

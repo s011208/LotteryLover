@@ -19,6 +19,7 @@ import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.firebase.FirebaseDatabaseHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -31,6 +32,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
 
@@ -141,6 +143,12 @@ public class InitLtoDataTask implements Runnable {
                     case LotteryLover.LTO_TYPE_LTO_EM:
                         key = LotteryLover.KEY_INIT_LTO_EM;
                         break;
+                    case LotteryLover.LTO_TYPE_LTO_LIST3:
+                        key = LotteryLover.KEY_INIT_LTO_LIST3;
+                        break;
+                    case LotteryLover.LTO_TYPE_LTO_LIST4:
+                        key = LotteryLover.KEY_INIT_LTO_LIST4;
+                        break;
                     default:
                         throw new RuntimeException("wrong lto type");
                 }
@@ -207,6 +215,12 @@ public class InitLtoDataTask implements Runnable {
                     break;
                 case LotteryLover.LTO_TYPE_LTO_EM:
                     providerItemList.add(new LtoEm(map));
+                    break;
+                case LotteryLover.LTO_TYPE_LTO_LIST3:
+                    providerItemList.add(new LtoList3(map));
+                    break;
+                case LotteryLover.LTO_TYPE_LTO_LIST4:
+                    providerItemList.add(new LtoList4(map));
                     break;
                 default:
                     throw new RuntimeException("unexpected type");

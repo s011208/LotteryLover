@@ -62,6 +62,8 @@
         <item>新加坡 ToTo</item>
         <item>澳洲 Power ball</item>
         <item>歐洲 Euro millions</item>
+        <item>三星彩</item>
+        <item>四星彩</item>
     </string-array>
 
     <string-array name="action_bar_list_type">

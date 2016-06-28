@@ -13,6 +13,7 @@ import java.util.List;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -25,6 +26,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
 
@@ -192,6 +194,24 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                             cursor.getString(indexOfMemo),
                             cursor.getString(indexOfExtra)));
                 }
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
+                while (cursor.moveToNext()) {
+                    rtn.add(new LtoList3(cursor.getLong(indexOfSeq),
+                            cursor.getLong(indexOfDrawingTime),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfNormalNumber)),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfSpecialNumber)),
+                            cursor.getString(indexOfMemo),
+                            cursor.getString(indexOfExtra)));
+                }
+            } else if (ltoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+                while (cursor.moveToNext()) {
+                    rtn.add(new LtoList4(cursor.getLong(indexOfSeq),
+                            cursor.getLong(indexOfDrawingTime),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfNormalNumber)),
+                            LotteryItem.fromJsonToList(cursor.getString(indexOfSpecialNumber)),
+                            cursor.getString(indexOfMemo),
+                            cursor.getString(indexOfExtra)));
+                }
             }
         } finally {
             cursor.close();
@@ -240,6 +260,12 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 break;
             case LotteryLover.LTO_TYPE_LTO_EM:
                 queryUri = LtoEm.DATA_URI;
+                break;
+            case LotteryLover.LTO_TYPE_LTO_LIST3:
+                queryUri = LtoList3.DATA_URI;
+                break;
+            case LotteryLover.LTO_TYPE_LTO_LIST4:
+                queryUri = LtoList4.DATA_URI;
                 break;
             default:
                 throw new RuntimeException("unexpected type");

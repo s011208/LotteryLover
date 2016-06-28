@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -42,6 +43,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
@@ -94,6 +96,10 @@ public class ViewAllActivity extends AppCompatActivity
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_AU_POW;
             } else if (LtoEm.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_EM;
+            } else if (LtoList3.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3;
+            } else if (LtoList4.DATA_URI.equals(uri)) {
+                updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4;
             } else if (AppSettings.DATA_URI.equals(uri)) {
                 if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
                     Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");

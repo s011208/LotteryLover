@@ -9,6 +9,7 @@ import java.util.List;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -21,6 +22,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 
 /**
@@ -205,6 +207,16 @@ public abstract class MainTableItem {
             rtn[1] = LtoEm.getSpecialNumbersCount();
             rtn[2] = LtoEm.getMaximumNormalNumber();
             rtn[3] = LtoEm.getMaximumSpecialNumber();
+        } else if (ltoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
+            rtn[0] = LtoList3.getNormalNumbersCount();
+            rtn[1] = LtoList3.getSpecialNumbersCount();
+            rtn[2] = LtoList3.getMaximumNormalNumber();
+            rtn[3] = LtoList3.getMaximumSpecialNumber();
+        } else if (ltoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+            rtn[0] = LtoList4.getNormalNumbersCount();
+            rtn[1] = LtoList4.getSpecialNumbersCount();
+            rtn[2] = LtoList4.getMaximumNormalNumber();
+            rtn[3] = LtoList4.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("unexpected instance");
         }
@@ -283,6 +295,16 @@ public abstract class MainTableItem {
             rtn[1] = LtoEm.getSpecialNumbersCount();
             rtn[2] = LtoEm.getMaximumNormalNumber();
             rtn[3] = LtoEm.getMaximumSpecialNumber();
+        } else if (item instanceof LtoList3) {
+            rtn[0] = LtoList3.getNormalNumbersCount();
+            rtn[1] = LtoList3.getSpecialNumbersCount();
+            rtn[2] = LtoList3.getMaximumNormalNumber();
+            rtn[3] = LtoList3.getMaximumSpecialNumber();
+        } else if (item instanceof LtoList4) {
+            rtn[0] = LtoList4.getNormalNumbersCount();
+            rtn[1] = LtoList4.getSpecialNumbersCount();
+            rtn[2] = LtoList4.getMaximumNormalNumber();
+            rtn[3] = LtoList4.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("unexpected instance");
         }

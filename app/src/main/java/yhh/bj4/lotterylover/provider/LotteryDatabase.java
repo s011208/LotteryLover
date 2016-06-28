@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -17,6 +18,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 
 /**
@@ -24,7 +26,7 @@ import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 8;
+    private static final int VERSION = 9;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -65,6 +67,10 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
         // v8
         createTableLtoEM(db);
+
+        // v9
+        createTableLtoList4(db);
+        createTableLtoList3(db);
     }
 
     @Override
@@ -95,6 +101,11 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         }
         if (oldVersion == 7) {
             createTableLtoEM(db);
+            ++oldVersion;
+        }
+        if (oldVersion == 8) {
+            createTableLtoList4(db);
+            createTableLtoList3(db);
             ++oldVersion;
         }
     }
@@ -153,5 +164,13 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     private void createTableLtoEM(SQLiteDatabase db) {
         db.execSQL(LtoEm.COMMAND_CREATE_TABLE(LtoEm.TABLE_NAME));
+    }
+
+    private void createTableLtoList4(SQLiteDatabase db) {
+        db.execSQL(LtoList4.COMMAND_CREATE_TABLE(LtoList4.TABLE_NAME));
+    }
+
+    private void createTableLtoList3(SQLiteDatabase db) {
+        db.execSQL(LtoList3.COMMAND_CREATE_TABLE(LtoList3.TABLE_NAME));
     }
 }

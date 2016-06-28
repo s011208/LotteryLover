@@ -62,6 +62,8 @@
         <item>Singapore ToTo</item>
         <item>AU Power ball</item>
         <item>Euro millions</item>
+        <item>List 3</item>
+        <item>List 4</item>
     </string-array>
 
     <string-array name="action_bar_list_type">

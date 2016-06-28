@@ -17,6 +17,7 @@ import java.util.Map;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
 import yhh.bj4.lotterylover.parser.lto539.Lto539;
@@ -29,6 +30,7 @@ import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
 import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
 import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.LotteryProvider;
 
@@ -123,6 +125,10 @@ public abstract class LotteryItem {
             return LtoAuPow.getNormalNumbersCount();
         } else if (item instanceof LtoEm) {
             return LtoEm.getNormalNumbersCount();
+        } else if (item instanceof LtoList3) {
+            return LtoList3.getNormalNumbersCount();
+        } else if (item instanceof LtoList4) {
+            return LtoList4.getNormalNumbersCount();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -155,6 +161,10 @@ public abstract class LotteryItem {
             return LtoAuPow.getSpecialNumbersCount();
         } else if (item instanceof LtoEm) {
             return LtoEm.getSpecialNumbersCount();
+        } else if (item instanceof LtoList3) {
+            return LtoList3.getSpecialNumbersCount();
+        } else if (item instanceof LtoList4) {
+            return LtoList4.getSpecialNumbersCount();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -187,6 +197,10 @@ public abstract class LotteryItem {
             return LtoAuPow.getMaximumNormalNumber();
         } else if (item instanceof LtoEm) {
             return LtoEm.getMaximumNormalNumber();
+        } else if (item instanceof LtoList3) {
+            return LtoList3.getMaximumNormalNumber();
+        } else if (item instanceof LtoList4) {
+            return LtoList4.getMaximumNormalNumber();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -219,6 +233,10 @@ public abstract class LotteryItem {
             return LtoAuPow.getMaximumSpecialNumber();
         } else if (item instanceof LtoEm) {
             return LtoEm.getMaximumSpecialNumber();
+        } else if (item instanceof LtoList3) {
+            return LtoList3.getMaximumSpecialNumber();
+        } else if (item instanceof LtoList4) {
+            return LtoList4.getMaximumSpecialNumber();
         } else {
             throw new RuntimeException("must provide valid item");
         }
@@ -243,9 +261,11 @@ public abstract class LotteryItem {
         return rtn;
     }
 
-    public static String fromListToJson(List<Integer> number) {
+    public static String fromListToJson(List<Integer> number, boolean sort) {
         JSONArray json = new JSONArray();
-        Collections.sort(number);
+        if (sort) {
+            Collections.sort(number);
+        }
         for (Integer i : number) {
             json.put(i);
         }
@@ -280,11 +300,15 @@ public abstract class LotteryItem {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_SEQUENCE, mSequence);
         cv.put(COLUMN_DRAWING_DATE_TIME, mDrawingDateTime);
-        cv.put(COLUMN_NORMAL_NUMBERS, fromListToJson(mNormalNumbers));
-        cv.put(COLUMN_SPECIAL_NUMBERS, fromListToJson(mSpecialNumbers));
+        cv.put(COLUMN_NORMAL_NUMBERS, fromListToJson(mNormalNumbers, sortNumbers()));
+        cv.put(COLUMN_SPECIAL_NUMBERS, fromListToJson(mSpecialNumbers, sortNumbers()));
         cv.put(COLUMN_MEMO, mMemo);
         cv.put(COLUMN_EXTRA, mExtraMessage);
         return cv;
+    }
+
+    public boolean sortNumbers() {
+        return true;
     }
 
     @Override
@@ -297,8 +321,8 @@ public abstract class LotteryItem {
         Map<String, Object> result = new HashMap<>();
         result.put(COLUMN_SEQUENCE, String.valueOf(mSequence));
         result.put(COLUMN_DRAWING_DATE_TIME, String.valueOf(mDrawingDateTime));
-        result.put(COLUMN_NORMAL_NUMBERS, fromListToJson(mNormalNumbers));
-        result.put(COLUMN_SPECIAL_NUMBERS, fromListToJson(mSpecialNumbers));
+        result.put(COLUMN_NORMAL_NUMBERS, fromListToJson(mNormalNumbers, sortNumbers()));
+        result.put(COLUMN_SPECIAL_NUMBERS, fromListToJson(mSpecialNumbers, sortNumbers()));
         result.put(COLUMN_MEMO, mMemo);
         result.put(COLUMN_EXTRA, mExtraMessage);
         return result;
@@ -332,6 +356,10 @@ public abstract class LotteryItem {
                 return LtoAuPow.DATA_URI;
             case LotteryLover.LTO_TYPE_LTO_EM:
                 return LtoEm.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_LIST3:
+                return LtoList3.DATA_URI;
+            case LotteryLover.LTO_TYPE_LTO_LIST4:
+                return LtoList4.DATA_URI;
             default:
                 throw new RuntimeException("wrong lto type");
         }
@@ -365,6 +393,10 @@ public abstract class LotteryItem {
                 return Uri.parse(LtoAuPow.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
             case LotteryLover.LTO_TYPE_LTO_EM:
                 return Uri.parse(LtoEm.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_LIST3:
+                return Uri.parse(LtoList3.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
+            case LotteryLover.LTO_TYPE_LTO_LIST4:
+                return Uri.parse(LtoList4.DATA_URI.toString() + "?" + LotteryProvider.PARAMETER_NOTIFY + "=false");
             default:
                 throw new RuntimeException("wrong lto type");
         }
@@ -398,6 +430,10 @@ public abstract class LotteryItem {
                 return LtoAuPow.class.getSimpleName();
             case LotteryLover.LTO_TYPE_LTO_EM:
                 return LtoEm.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_LIST3:
+                return LtoList3.class.getSimpleName();
+            case LotteryLover.LTO_TYPE_LTO_LIST4:
+                return LtoList4.class.getSimpleName();
             default:
                 throw new RuntimeException("wrong lto type");
         }
