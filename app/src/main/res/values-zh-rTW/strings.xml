@@ -18,6 +18,13 @@
     <string name="settings_display_row_count">顯示行數</string>
     <string name="settings_display_combine_special_number_title">合併特別號</string>
     <string name="settings_display_combine_special_number_summary">在列表與加減模式時合併特別號</string>
+    <string name="settings_display_orientation_title">螢幕顯示方向</string>
+
+    <string-array name="settings_display_orientation_list">
+        <item>不限制</item>
+        <item>橫向</item>
+        <item>直向</item>
+    </string-array>
 
     <string name="settings_others_category_title">其他設定</string>
     <string name="settings_others_lto_type_selector_title">樂透列表設定</string>

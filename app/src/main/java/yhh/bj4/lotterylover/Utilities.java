@@ -1,7 +1,9 @@
 package yhh.bj4.lotterylover;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
@@ -330,5 +332,17 @@ public class Utilities {
 
     public static String pluralString() {
         return PLURAL;
+    }
+
+    public static void setActivityOrientation(Activity activity) {
+        if (activity == null) return;
+        int orientationSetting = AppSettings.get(activity, LotteryLover.KEY_DISPLAY_ORIENTATION, LotteryLover.VALUE_BY_DEVICE);
+        if (orientationSetting == LotteryLover.VALUE_BY_DEVICE) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        } else if (orientationSetting == LotteryLover.VALUE_LANDSCAPE) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (orientationSetting == LotteryLover.VALUE_PROTRAIT) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

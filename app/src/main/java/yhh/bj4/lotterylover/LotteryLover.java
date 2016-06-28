@@ -85,4 +85,9 @@ public class LotteryLover {
     public static final String KEY_LTO_UPDATE_TIME(String className) {
         return "update_time_" + className;
     }
+
+    public static final String KEY_DISPLAY_ORIENTATION = "display_orientation";
+    public static final int VALUE_BY_DEVICE = 0;
+    public static final int VALUE_LANDSCAPE = 1;
+    public static final int VALUE_PROTRAIT = 2;
 }

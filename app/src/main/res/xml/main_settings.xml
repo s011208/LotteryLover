@@ -21,12 +21,16 @@
             android:key="settings_display_combine_special_number"
             android:summary="@string/settings_display_combine_special_number_summary"
             android:title="@string/settings_display_combine_special_number_title" />
+
+        <Preference
+            android:key="settings_display_orientation"
+            android:title="@string/settings_display_orientation_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_others_category_title">
         <Preference
             android:key="settings_others_lto_type_selector_title"
-            android:title="@string/settings_others_lto_type_selector_title"/>
+            android:title="@string/settings_others_lto_type_selector_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -2,16 +2,16 @@ package yhh.bj4.lotterylover.settings;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import yhh.bj4.lotterylover.BaseActivity;
 import yhh.bj4.lotterylover.R;
 
 /**
  * Created by User on 2016/6/21.
  */
-public abstract class BaseSettingsActivity extends AppCompatActivity {
+public abstract class BaseSettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

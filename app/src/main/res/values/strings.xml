@@ -18,6 +18,12 @@
     <string name="settings_display_row_count">Display rows</string>
     <string name="settings_display_combine_special_number_title">Combine special number</string>
     <string name="settings_display_combine_special_number_summary">"Combine special number in Overall and Plus &amp; Minus mode"</string>
+    <string name="settings_display_orientation_title">Screen orientation</string>
+    <string-array name="settings_display_orientation_list">
+        <item>By device</item>
+        <item>Landscape</item>
+        <item>Portrait</item>
+    </string-array>
 
     <string name="settings_others_category_title">Other settings</string>
     <string name="settings_others_lto_type_selector_title">Lottery list settings</string>

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
+import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.ltotype.LtoTypeSettingActivity;
@@ -32,6 +33,7 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_ABOUT_CONTACT_ME = "settings_about_contact_me";
     private static final String SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER = "settings_display_combine_special_number";
     private static final String SETTINGS_OTHERS_LTO_LIST = "settings_others_lto_type_selector_title";
+    private static final String SETTINGS_DISPLAY_SCREEN_ORIENTATION = "settings_display_orientation";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,11 @@ public class MainSettingsFragment extends PreferenceFragment {
         pref = findPreference(SETTINGS_DISPLAY_COMBINE_SPECIAL_NUMBER);
         if (pref != null) {
             ((CheckBoxPreference) pref).setChecked(AppSettings.get(getActivity(), LotteryLover.KEY_COMBINE_SPECIAL, false));
+        }
+
+        pref = findPreference(SETTINGS_DISPLAY_SCREEN_ORIENTATION);
+        if (pref != null) {
+            pref.setSummary(getResources().getStringArray(R.array.settings_display_orientation_list)[AppSettings.get(getActivity(), LotteryLover.KEY_DISPLAY_ORIENTATION, LotteryLover.VALUE_BY_DEVICE)]);
         }
     }
 
@@ -186,6 +193,20 @@ public class MainSettingsFragment extends PreferenceFragment {
         } else if (SETTINGS_OTHERS_LTO_LIST.equals(key)) {
             Intent intent = new Intent(getActivity(), LtoTypeSettingActivity.class);
             startActivity(intent);
+        } else if (SETTINGS_DISPLAY_SCREEN_ORIENTATION.equals(key)) {
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.settings_display_orientation_title)
+                    .setItems(R.array.settings_display_orientation_list, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            preference.setSummary(getResources().getStringArray(R.array.settings_display_orientation_list)[which]);
+                            AppSettings.put(getActivity(), LotteryLover.KEY_DISPLAY_ORIENTATION, which);
+                            if (getActivity() instanceof Callback) {
+                                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DISPLAY_ORIENTATION);
+                            }
+                            Utilities.setActivityOrientation(getActivity());
+                        }
+                    }).show();
+            return true;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }

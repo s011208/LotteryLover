@@ -49,7 +49,7 @@ import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
-public class ViewAllActivity extends AppCompatActivity
+public class ViewAllActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainTableFragment.Callback {
 
     private static final String TAG = "ViewAllActivity";
@@ -306,6 +306,9 @@ public class ViewAllActivity extends AppCompatActivity
                         mMainTableFragment.updateAllList();
                     }
                 }
+            }
+            if (changedItemList.contains(LotteryLover.KEY_DISPLAY_ORIENTATION)) {
+                Utilities.setActivityOrientation(this);
             }
         }
     }
