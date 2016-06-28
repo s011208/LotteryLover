@@ -44,7 +44,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private static final String KEY_PLUS_AND_MINUS_VALUE = "pamv";
 
-    private static final int MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS = 40;
     private static final int HEADER_AND_FOOTER_BACKGROUND_COLOR_RES = R.color.colorPrimary;
 
     private int mLtoType, mListType;
@@ -64,6 +63,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private int mPlusAndMinusValue;
 
+    private int mMaximumOfCachedSize;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +83,15 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.main_table_fragment, null);
+        mMaximumOfCachedSize = getActivity().getResources().getInteger(R.integer.maximum_cached_item_of_main_table);
         mScrollView = (HorizontalScrollView) root;
         mMainTable = (RecyclerView) root.findViewById(R.id.main_table_recyclerview);
         mMainTable.addItemDecoration(new DividerItemDecoration(getActivity()));
-        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
-        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_NUMERIC, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
-        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_TOGETHER, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
-        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_LAST_DIGIT, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
-        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_AND_MINUS, MAXIMUM_CACHE_SIZE_OF_EACH_ITEMS);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, mMaximumOfCachedSize);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_NUMERIC, mMaximumOfCachedSize);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_TOGETHER, mMaximumOfCachedSize);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_LAST_DIGIT, mMaximumOfCachedSize);
+        mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_PLUS_AND_MINUS, mMaximumOfCachedSize);
         mMainTable.setBackgroundResource(R.drawable.rv_bg);
         mHeader = (TextView) root.findViewById(R.id.header);
         mFooter = (TextView) root.findViewById(R.id.footer);

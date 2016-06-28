@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="maximum_cached_item_of_main_table">65</integer>
+</resources>
