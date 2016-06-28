@@ -91,7 +91,7 @@ public class LtoList4Parser extends LotteryParser {
                     continue;
                 }
                 try {
-                    long seq = Long.valueOf(tds.get(0).text());
+                    long seq = Utilities.convertStringDateToLong(tds.get(1).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
                     List<Integer> normalNumber = new ArrayList<>();
                     int value = Integer.valueOf(tds.get(2).text());
@@ -118,6 +118,10 @@ public class LtoList4Parser extends LotteryParser {
                         }
                     }
                 } catch (NumberFormatException e) {
+                    if (DEBUG) {
+                        Log.v(TAG, "ignore wrong data set", e);
+                    }
+                } catch (IndexOutOfBoundsException e) {
                     if (DEBUG) {
                         Log.v(TAG, "ignore wrong data set", e);
                     }

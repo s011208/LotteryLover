@@ -27,7 +27,6 @@ import yhh.bj4.lotterylover.provider.AppSettings;
  */
 public class Lto539Parser extends LotteryParser {
 
-    private static final boolean DEBUG = true;
     private int mParsePage = 0;
     private Context mContext;
 

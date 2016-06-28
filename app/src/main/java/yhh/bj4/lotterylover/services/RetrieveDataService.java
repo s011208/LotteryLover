@@ -89,36 +89,53 @@ public class RetrieveDataService extends Service {
                             return;
                         }
                         // check data integrity
-                        Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
-                                LotteryItem.COLUMN_SEQUENCE
-                        }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc");
-                        if (data == null) return;
-                        try {
-                            long previous = 0;
-                            while (data.moveToNext()) {
-                                long seq = data.getLong(0);
-                                if (previous == 0) {
-                                    if (seq != 1) {
-                                        Log.d(TAG, "seq != 1: " + seq);
+                        if (requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST3 ||
+                                requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+                            Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
+                                    LotteryItem.COLUMN_SEQUENCE
+                            }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc limit 1");
+                            if (data == null) return;
+                            try {
+                                data.moveToNext();
+                                if (requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
+                                    if (data.getLong(0) == 1134921600000l) return;
+                                } else if (requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
+                                    if (data.getLong(0) == 1049644800000l) return;
+                                }
+                                handleLtoUpdate(requestLtoType, page + 1);
+                            } finally {
+                                data.close();
+                            }
+                        } else {
+                            Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
+                                    LotteryItem.COLUMN_SEQUENCE
+                            }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc");
+                            if (data == null) return;
+                            try {
+                                long previous = 0;
+                                while (data.moveToNext()) {
+                                    long seq = data.getLong(0);
+                                    if (previous == 0) {
+                                        if (seq != 1) {
+                                            handleLtoUpdate(requestLtoType, page + 1);
+                                            return;
+                                        }
+                                        previous = seq;
+                                        continue;
+                                    }
+                                    if (seq - previous != 1) {
+                                        if (isWorkAround(requestLtoType, seq, previous)) {
+                                            previous = seq;
+                                            continue;
+                                        }
                                         handleLtoUpdate(requestLtoType, page + 1);
                                         return;
                                     }
                                     previous = seq;
-                                    continue;
                                 }
-                                if (seq - previous != 1) {
-                                    if (isWorkAround(requestLtoType, seq, previous)) {
-                                        previous = seq;
-                                        continue;
-                                    }
-                                    Log.d(TAG, "minus != 1: " + seq + ", p: " + previous);
-                                    handleLtoUpdate(requestLtoType, page + 1);
-                                    return;
-                                }
-                                previous = seq;
+                            } finally {
+                                data.close();
                             }
-                        } finally {
-                            data.close();
                         }
                         AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
                                 LotteryItem.getSimpleClassName(requestLtoType)), Calendar.getInstance().getTimeInMillis());
@@ -130,6 +147,8 @@ public class RetrieveDataService extends Service {
     }
 
     private boolean isExpired(int type) {
+        if (type == LotteryLover.LTO_TYPE_LTO_LIST3 || type == LotteryLover.LTO_TYPE_LTO_LIST4)
+            return true;
         long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
         Calendar now = Calendar.getInstance();
         return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 6;

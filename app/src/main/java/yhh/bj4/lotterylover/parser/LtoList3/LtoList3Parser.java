@@ -25,6 +25,8 @@ import yhh.bj4.lotterylover.parser.LotteryParser;
  */
 public class LtoList3Parser extends LotteryParser {
 
+    private static final boolean DEBUG = true;
+
     private int mParsePage = 0;
     private Context mContext;
 
@@ -91,11 +93,11 @@ public class LtoList3Parser extends LotteryParser {
                     continue;
                 }
                 try {
-                    long seq = Long.valueOf(tds.get(0).text());
+                    long seq = Utilities.convertStringDateToLong(tds.get(1).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
                     List<Integer> normalNumber = new ArrayList<>();
                     int value = Integer.valueOf(tds.get(2).text());
-                    for (int i=0; i<3; ++i) {
+                    for (int i = 0; i < 3; ++i) {
                         normalNumber.add(value % 10);
                         value /= 10;
                     }
@@ -117,6 +119,10 @@ public class LtoList3Parser extends LotteryParser {
                         }
                     }
                 } catch (NumberFormatException e) {
+                    if (DEBUG) {
+                        Log.v(TAG, "ignore wrong data set", e);
+                    }
+                } catch (IndexOutOfBoundsException e) {
                     if (DEBUG) {
                         Log.v(TAG, "ignore wrong data set", e);
                     }
