@@ -14,6 +14,7 @@ public class FirebaseAnalyticsHelper {
     public static final String EVENT_SCROLL_TO_TOP = "Scroll_to_top";
     public static final String EVENT_SCROLL_TO_BOTTOM = "Scroll_to_bottom";
     public static final String EVENT_SETTINGS = "settings";
+    public static final String EVENT_SETTINGS_BUTTON = "settings_button";
 
     public static final String KEY_LIST_TYPE = "List_type";
     public static final String KEY_LTO_TYPE = "Lto_type";
