@@ -107,6 +107,7 @@ public class MainSettingsFragment extends PreferenceFragment {
                             data.putString(Analytics.KEY_SETTINGS_NAME, "Digit scale");
                             data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
                             AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, "Digit scale", newSummary);
                         }
                     }).create();
             dialog.show();
@@ -136,6 +137,7 @@ public class MainSettingsFragment extends PreferenceFragment {
                             data.putString(Analytics.KEY_SETTINGS_NAME, "Display order");
                             data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
                             AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, "Display order", newSummary);
                         }
                     }).create();
             dialog.show();
@@ -165,6 +167,7 @@ public class MainSettingsFragment extends PreferenceFragment {
                             data.putString(Analytics.KEY_SETTINGS_NAME, "Display rows");
                             data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
                             AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, "Display rows", newSummary);
                         }
                     }).create();
             dialog.show();
@@ -182,6 +185,7 @@ public class MainSettingsFragment extends PreferenceFragment {
                 Bundle data = new Bundle();
                 data.putString(Analytics.KEY_SETTINGS_NAME, "Contact me");
                 AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
+                AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, "Contact me", null);
                 return true;
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(getActivity(), "unexpected error", Toast.LENGTH_LONG).show();

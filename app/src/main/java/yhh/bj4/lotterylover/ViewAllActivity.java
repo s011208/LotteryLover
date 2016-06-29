@@ -228,6 +228,7 @@ public class ViewAllActivity extends BaseActivity
                         data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
                         data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
                         AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
+                        AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
                     }
                 }
 
@@ -258,6 +259,7 @@ public class ViewAllActivity extends BaseActivity
                     data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
                     data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
                     AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
+                    AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
                 }
             }
         }, mListType, mLtoType);
@@ -328,6 +330,7 @@ public class ViewAllActivity extends BaseActivity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, new Bundle());
+            AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, null, null);
             Intent intent = new Intent(ViewAllActivity.this, MainSettingsActivity.class);
             startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
@@ -339,6 +342,7 @@ public class ViewAllActivity extends BaseActivity
             data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
             data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
             AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_TOP, data);
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_TOP, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
             return true;
         } else if (id == R.id.action_align_bottom) {
             if (mMainTableFragment != null) {
@@ -348,6 +352,7 @@ public class ViewAllActivity extends BaseActivity
             data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
             data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
             AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_BOTTOM, data);
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_BOTTOM, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
             return true;
         } else if (id == R.id.action_show_subtotal_only) {
             final boolean newValue = !item.isChecked();

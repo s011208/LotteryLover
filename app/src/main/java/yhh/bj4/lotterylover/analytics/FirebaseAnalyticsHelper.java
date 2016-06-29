@@ -21,4 +21,12 @@ public class FirebaseAnalyticsHelper extends Analytics {
     public void logEvent(String key, Bundle data) {
         mInstance.logEvent(key, data);
     }
+
+    @Override
+    public void logEvent(String cat, String act, String lab) {
+        Bundle data = new Bundle();
+        data.putString(Analytics.ACTION, act);
+        data.putString(Analytics.LABEL, lab);
+        logEvent(Analytics.CATEGORY + "_" + cat, data);
+    }
 }

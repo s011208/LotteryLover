@@ -18,8 +18,14 @@ public abstract class Analytics {
     public static final String KEY_SETTINGS_NAME = "Settings_name";
     public static final String KEY_SETTINGS_VALUE = "Settings_value";
 
+    public static final String CATEGORY = "Category";
+    public static final String ACTION = "Action";
+    public static final String LABEL = "Label";
+
     public Analytics(Context context) {
     }
 
     public abstract void logEvent(String key, Bundle data);
+
+    public abstract void logEvent(String cat, String act, String lab);
 }

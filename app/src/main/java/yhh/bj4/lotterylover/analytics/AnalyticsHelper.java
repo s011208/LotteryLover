@@ -24,11 +24,18 @@ public class AnalyticsHelper {
     private AnalyticsHelper(Context context) {
         mContext = context.getApplicationContext();
         mAnalyticsList.add(new FirebaseAnalyticsHelper(mContext));
+        mAnalyticsList.add(new GoogleAnalyticsHelper(mContext));
     }
 
     public void logEvent(String key, Bundle data) {
         for (Analytics ana : mAnalyticsList) {
             ana.logEvent(key, data);
+        }
+    }
+
+    public void logEvent(String cat, String act, String lab) {
+        for (Analytics ana : mAnalyticsList) {
+            ana.logEvent(cat, act, lab);
         }
     }
 }
