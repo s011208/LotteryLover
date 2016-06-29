@@ -73,7 +73,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
         mCallback = cb;
     }
 
-    public void updateData(int ltoType, int listType, boolean showMonthlyDataOnly) {
+    public void updateData(final int ltoType, final int listType, boolean showMonthlyDataOnly) {
         mListType = listType;
         mLtoType = ltoType;
         mShowMonthlyDataOnly = showMonthlyDataOnly;
@@ -86,16 +86,17 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             @Override
             public void onFinished(List<LotteryItem> data) {
                 mLotteryItems.addAll(data);
-                new AdapterDataGenerator(mLtoType, mListType, mCombineSpecialNumber, Utilities.getWindowBackgroundColor(mContext),
+                new AdapterDataGenerator(ltoType, listType, mCombineSpecialNumber, Utilities.getWindowBackgroundColor(mContext),
                         data, new AdapterDataGenerator.Callback() {
                     @Override
                     public void onFinished(ArrayList<MainTableItem> data) {
+                        if (listType != mListType || ltoType != mLtoType) return;
                         mShowData.clear();
                         mCachedData.clear();
                         if (data != null && !data.isEmpty()) {
                             if (mShowMonthlyDataOnly &&
-                                    mListType != LotteryLover.LIST_TYPE_PLUS_AND_MINUS &&
-                                    mListType != LotteryLover.LIST_TYPE_OVERALL) {
+                                    listType != LotteryLover.LIST_TYPE_PLUS_AND_MINUS &&
+                                    listType != LotteryLover.LIST_TYPE_OVERALL) {
                                 Iterator<MainTableItem> itemIterator = data.iterator();
                                 while (itemIterator.hasNext()) {
                                     MainTableItem item = itemIterator.next();
@@ -112,7 +113,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                         if (DEBUG) {
                             Log.i(TAG, "AdapterDataGenerator cb, size: " + data.size());
                         }
-                        if (mListType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
+                        if (listType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
                             updateAddAndMinus();
                         } else {
                             notifyDataSetChanged();

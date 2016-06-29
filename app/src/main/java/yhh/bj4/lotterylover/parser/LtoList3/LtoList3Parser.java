@@ -25,8 +25,6 @@ import yhh.bj4.lotterylover.parser.LotteryParser;
  */
 public class LtoList3Parser extends LotteryParser {
 
-    private static final boolean DEBUG = true;
-
     private int mParsePage = 0;
     private Context mContext;
 

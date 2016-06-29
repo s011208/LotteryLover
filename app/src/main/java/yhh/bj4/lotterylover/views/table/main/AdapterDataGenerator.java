@@ -546,20 +546,25 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
 
     private ArrayList<MainTableItem> initListTypeOverall() {
         ArrayList<MainTableItem> rtn = new ArrayList<>();
-        for (LotteryItem item : mLotteryData) {
-            MainTableItem mainTableItem = new TypeOverall(MainTableAdapter.TYPE_OVER_ALL_CONTENT,
-                    item.getSequence(), item.getDrawingDateTime(),
-                    item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
-                    , mMaximumSpecialNumber);
-            ((TypeOverall) mainTableItem).setCombineSpecialNumber(mCombineSpecialNumber);
-            for (int i = 0; i < mNormalNumberCount; ++i) {
-                mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
+        try {
+            for (LotteryItem item : mLotteryData) {
+                MainTableItem mainTableItem = new TypeOverall(MainTableAdapter.TYPE_OVER_ALL_CONTENT,
+                        item.getSequence(), item.getDrawingDateTime(),
+                        item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
+                        , mMaximumSpecialNumber);
+                ((TypeOverall) mainTableItem).setCombineSpecialNumber(mCombineSpecialNumber);
+                for (int i = 0; i < mNormalNumberCount; ++i) {
+                    mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
+                }
+                for (int i = 0; i < mSpecialNumberCount; ++i) {
+                    mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
+                }
+                mainTableItem.makeSpannableString();
+                rtn.add(mainTableItem);
             }
-            for (int i = 0; i < mSpecialNumberCount; ++i) {
-                mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
-            }
-            mainTableItem.makeSpannableString();
-            rtn.add(mainTableItem);
+        } catch (Exception e) {
+            Log.w(TAG, "mListType: " + mListType, e);
+            throw new RuntimeException(e);
         }
         return rtn;
     }
