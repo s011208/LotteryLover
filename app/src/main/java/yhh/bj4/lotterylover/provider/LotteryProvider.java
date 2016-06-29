@@ -219,12 +219,20 @@ public class LotteryProvider extends ContentProvider {
                 rtn = ContentUris.withAppendedId(uri, mDatabase.insert(LtoList4.TABLE_NAME, null, values));
                 break;
             case APP_SETTINGS_MATCHER:
-                rtn = ContentUris.withAppendedId(uri, mDatabase.replace(AppSettings.TABLE_NAME, null, values));
+                mDatabase.replace(AppSettings.TABLE_NAME, null, values);
+                Uri.Builder builder = new Uri.Builder().scheme("content").authority(AUTHORITY)
+                        .appendPath(AppSettings.TABLE_NAME)
+                        .appendPath(values.getAsString(AppSettings.COLUMN_KEY));
+                String notify = uri.getQueryParameter(PARAMETER_NOTIFY);
+                if (notify != null) {
+                    builder.appendQueryParameter(PARAMETER_NOTIFY, notify);
+                }
+                rtn = builder.build();
                 break;
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
         }
-        sendNotify(uri);
+        sendNotify(rtn);
         return rtn;
     }
 

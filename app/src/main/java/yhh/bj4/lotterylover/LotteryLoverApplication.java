@@ -17,7 +17,6 @@ public class LotteryLoverApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AnalyticsHelper.getHelper(getApplicationContext());
         mApplicationProxy = createApplicationProxy();
         if (mApplicationProxy != null) {
             mApplicationProxy.onCreate();

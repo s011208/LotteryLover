@@ -12,7 +12,7 @@ public class AppSettings {
     public static final String TABLE_NAME = "AppSettings";
     public static final Uri DATA_URI = LotteryProvider.getUri(TABLE_NAME);
 
-    private static final String COLUMN_KEY = "k";
+    public static final String COLUMN_KEY = "k";
     private static final String COLUMN_VALUE = "v";
 
     public static final String COMMAND_CREATE_TABLE =

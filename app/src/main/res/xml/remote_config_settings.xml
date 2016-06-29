@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>is_read_config</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>config_version</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>show_monthly_data_only_always</key>
+        <value>true</value>
+    </entry>
+</defaultsMap>

@@ -46,6 +46,7 @@ import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.remoteconfig.RemoteConfigHelper;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
@@ -102,11 +103,14 @@ public class ViewAllActivity extends BaseActivity
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3;
             } else if (LtoList4.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4;
-            } else if (AppSettings.DATA_URI.equals(uri)) {
+            } else if (uri.toString().startsWith(AppSettings.DATA_URI.toString())) {
                 if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
                     Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
                     mLoadingProgressbar.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                }
+                if (LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS.equals(uri.getLastPathSegment())) {
+                    invalidateOptionsMenu();
                 }
             }
             if (updateList) {
@@ -133,7 +137,6 @@ public class ViewAllActivity extends BaseActivity
             mLoadingProgressbar.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
         }
-
         registerObserver();
     }
 
@@ -162,6 +165,7 @@ public class ViewAllActivity extends BaseActivity
     @Override
     protected void onResume() {
         FirebaseCrash.log("ViewAllActivity onResume " + this);
+        RemoteConfigHelper.getInstance(this).fetch();
         super.onResume();
     }
 
@@ -220,7 +224,9 @@ public class ViewAllActivity extends BaseActivity
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
-                    AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
+                    if (mLtoType != AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, LotteryLover.LTO_TYPE_LTO)) {
+                        AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
+                    }
                     if (isMainTableAvailable()) {
                         mMainTableFragment.setLtoType(mLtoType);
                         mListTypeAdapter.setLtoType(mLtoType);
@@ -317,11 +323,11 @@ public class ViewAllActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_all, menu);
         MenuItem item = menu.findItem(R.id.action_show_subtotal_only);
         item.setChecked(AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false));
         item.setIcon(item.isChecked() ? R.drawable.ic_format_list_bulleted_black_24dp : R.drawable.ic_format_list_bulleted_white_24dp);
+        item.setShowAsAction(AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS, true) ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
         return true;
     }
 

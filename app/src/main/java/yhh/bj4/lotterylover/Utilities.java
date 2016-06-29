@@ -341,7 +341,7 @@ public class Utilities {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else if (orientationSetting == LotteryLover.VALUE_LANDSCAPE) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else if (orientationSetting == LotteryLover.VALUE_PROTRAIT) {
+        } else if (orientationSetting == LotteryLover.VALUE_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }

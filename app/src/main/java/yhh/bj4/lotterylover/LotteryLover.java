@@ -89,5 +89,8 @@ public class LotteryLover {
     public static final String KEY_DISPLAY_ORIENTATION = "display_orientation";
     public static final int VALUE_BY_DEVICE = 0;
     public static final int VALUE_LANDSCAPE = 1;
-    public static final int VALUE_PROTRAIT = 2;
+    public static final int VALUE_PORTRAIT = 2;
+
+    public static final String KEY_REMOTE_CONFIG_VERSION = "key_remote_config_version";
+    public static final String KEY_SHOW_MONTHLY_DATA_ALWAYS = "show_monthly_data_only_always";
 }
