@@ -16,7 +16,8 @@ import android.widget.Toast;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
-import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
+import yhh.bj4.lotterylover.analytics.Analytics;
+import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.ltotype.LtoTypeSettingActivity;
 
@@ -103,9 +104,9 @@ public class MainSettingsFragment extends PreferenceFragment {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DIGIT_SCALE_SIZE);
                             }
                             Bundle data = new Bundle();
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Digit scale");
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
-                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
+                            data.putString(Analytics.KEY_SETTINGS_NAME, "Digit scale");
+                            data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -132,9 +133,9 @@ public class MainSettingsFragment extends PreferenceFragment {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_ORDER);
                             }
                             Bundle data = new Bundle();
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Display order");
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
-                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
+                            data.putString(Analytics.KEY_SETTINGS_NAME, "Display order");
+                            data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -161,9 +162,9 @@ public class MainSettingsFragment extends PreferenceFragment {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DISPLAY_ROWS);
                             }
                             Bundle data = new Bundle();
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Display rows");
-                            data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_VALUE, newSummary);
-                            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
+                            data.putString(Analytics.KEY_SETTINGS_NAME, "Display rows");
+                            data.putString(Analytics.KEY_SETTINGS_VALUE, newSummary);
+                            AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
                         }
                     }).create();
             dialog.show();
@@ -179,8 +180,8 @@ public class MainSettingsFragment extends PreferenceFragment {
                 emailIntent.putExtra(Intent.EXTRA_TEXT, emailMessage);
                 startActivity(emailIntent);
                 Bundle data = new Bundle();
-                data.putString(FirebaseAnalyticsHelper.KEY_SETTINGS_NAME, "Contact me");
-                FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS, data);
+                data.putString(Analytics.KEY_SETTINGS_NAME, "Contact me");
+                AnalyticsHelper.getHelper(getActivity()).logEvent(Analytics.EVENT_SETTINGS, data);
                 return true;
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(getActivity(), "unexpected error", Toast.LENGTH_LONG).show();

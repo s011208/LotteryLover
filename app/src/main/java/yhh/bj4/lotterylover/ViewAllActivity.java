@@ -28,7 +28,8 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
 
-import yhh.bj4.lotterylover.analytics.FirebaseAnalyticsHelper;
+import yhh.bj4.lotterylover.analytics.Analytics;
+import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
@@ -224,9 +225,9 @@ public class ViewAllActivity extends BaseActivity
                         mMainTableFragment.setLtoType(mLtoType);
                         mListTypeAdapter.setLtoType(mLtoType);
                         Bundle data = new Bundle();
-                        data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
-                        data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-                        FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_TABLE_INFORMATION, data);
+                        data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+                        data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+                        AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
                     }
                 }
 
@@ -254,9 +255,9 @@ public class ViewAllActivity extends BaseActivity
                 if (isMainTableAvailable()) {
                     mMainTableFragment.setListType(mListType);
                     Bundle data = new Bundle();
-                    data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
-                    data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-                    FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_TABLE_INFORMATION, data);
+                    data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+                    data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+                    AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
                 }
             }
         }, mListType, mLtoType);
@@ -326,7 +327,7 @@ public class ViewAllActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SETTINGS_BUTTON, new Bundle());
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, new Bundle());
             Intent intent = new Intent(ViewAllActivity.this, MainSettingsActivity.class);
             startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
@@ -335,18 +336,18 @@ public class ViewAllActivity extends BaseActivity
                 mMainTableFragment.scrollToTop();
             }
             Bundle data = new Bundle();
-            data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
-            data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SCROLL_TO_TOP, data);
+            data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+            data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_TOP, data);
             return true;
         } else if (id == R.id.action_align_bottom) {
             if (mMainTableFragment != null) {
                 mMainTableFragment.scrollToBottom();
             }
             Bundle data = new Bundle();
-            data.putString(FirebaseAnalyticsHelper.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
-            data.putString(FirebaseAnalyticsHelper.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-            FirebaseAnalyticsHelper.logEvent(FirebaseAnalyticsHelper.EVENT_SCROLL_TO_BOTTOM, data);
+            data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
+            data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SCROLL_TO_BOTTOM, data);
             return true;
         } else if (id == R.id.action_show_subtotal_only) {
             final boolean newValue = !item.isChecked();

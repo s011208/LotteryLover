@@ -3,6 +3,7 @@ package yhh.bj4.lotterylover;
 import android.app.Application;
 import android.os.Process;
 
+import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.applicationproxy.ApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.MainApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.RemoteComponentsApplicationProxy;
@@ -16,6 +17,7 @@ public class LotteryLoverApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AnalyticsHelper.getHelper(getApplicationContext());
         mApplicationProxy = createApplicationProxy();
         if (mApplicationProxy != null) {
             mApplicationProxy.onCreate();
