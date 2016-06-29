@@ -465,7 +465,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     @Override
     public void onFinishLoadingData() {
-//        updateHeaderAndFooterWidth();
+        updateHeaderAndFooterWidth();
     }
 
     @Override
@@ -497,7 +497,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.setDigitSize(digitScaleSize);
             mMainTableAdapter.notifyDataSetChanged();
         }
-//        updateHeaderAndFooterWidth();
+        updateHeaderAndFooterWidth();
     }
 
     private float getDigitScaleSize() {
