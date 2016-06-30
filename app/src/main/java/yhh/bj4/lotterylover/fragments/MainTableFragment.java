@@ -149,21 +149,23 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     }
 
     private void loadBackgroundFromFirebase() {
+        final Activity activity = getActivity();
+        if (activity == null) return;
         StorageReference rootRef = StorageHelper.getRootStorageRef().child("test");
         final long ONE_MEGABYTE = 1024 * 1024;
         rootRef.child("test_bg.png").getBytes(ONE_MEGABYTE)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        Toast.makeText(getActivity(), "load storage reference success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "load storage reference success", Toast.LENGTH_LONG).show();
                         Bitmap bg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        mMainTable.setBackgroundDrawable(new BitmapDrawable(getActivity().getResources(), bg));
+                        mMainTable.setBackgroundDrawable(new BitmapDrawable(activity.getResources(), bg));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "load storage reference failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "load storage reference failed", Toast.LENGTH_LONG).show();
                         Log.w(TAG, "failed", e);
                     }
                 });
@@ -178,8 +180,10 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     }
 
     private void updateMainTableAdapter() {
+        final Activity activity = getActivity();
+        if (activity == null) return;
         if (mMainTableAdapter == null) {
-            mMainTableAdapter = new MainTableAdapter(getActivity(), mLtoType, mListType, mIsShowSubTotalOnly);
+            mMainTableAdapter = new MainTableAdapter(activity, mLtoType, mListType, mIsShowSubTotalOnly);
             mMainTableAdapter.setDigitSize(getDigitScaleSize());
             mMainTableAdapter.setCallback(this);
             mMainTable.setAdapter(mMainTableAdapter);
@@ -188,8 +192,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.updateData(mLtoType, mListType, mIsShowSubTotalOnly);
         }
         mScrollView.smoothScrollTo(0, mScrollView.getScrollY());
-        if (getActivity() != null && getActivity() instanceof Callback) {
-            ((Callback) getActivity()).onStartUpdate();
+        if (activity != null && activity instanceof Callback) {
+            ((Callback) activity).onStartUpdate();
         }
     }
 
@@ -302,8 +306,10 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
             @Override
             protected MainTableItem doInBackground(Void... params) {
+                final Activity activity = getActivity();
+                if (activity == null) return null;
                 int[] parameters = MainTableItem.initParameters(ltoType);
-                ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(getActivity(), ltoType), ltoType);
+                ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(activity, ltoType), ltoType);
                 final int digitLength = Utilities.getMaximumDigitLengthOfSum(items, parameters[3]);
                 MainTableItem rtn;
                 if (listType == LotteryLover.LIST_TYPE_OVERALL) {
@@ -403,8 +409,10 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
             @Override
             protected MainTableItem doInBackground(Void... params) {
+                final Activity activity = getActivity();
+                if (activity == null) return null;
                 int[] parameters = MainTableItem.initParameters(ltoType);
-                ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(getActivity(), ltoType), ltoType);
+                ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(activity, ltoType), ltoType);
                 final int digitLength = Utilities.getMaximumDigitLengthOfSum(items, parameters[3]);
                 Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(items);
                 if (combinedResult.first.isEmpty() || combinedResult.second.isEmpty()) return null;
@@ -512,8 +520,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     @Override
     public void onFinishLoadingData() {
         updateHeaderAndFooterWidth();
-        if (getActivity() != null && getActivity() instanceof Callback) {
-            ((Callback) getActivity()).onFinishUpdate();
+        final Activity activity = getActivity();
+        if (activity != null && activity instanceof Callback) {
+            ((Callback) activity).onFinishUpdate();
         }
     }
 
@@ -550,14 +559,17 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     }
 
     private float getDigitScaleSize() {
-        if (getActivity() == null) return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
-        return Utilities.getDigitSizeScale(AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL));
+        final Activity activity = getActivity();
+        if (activity == null) return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
+        return Utilities.getDigitSizeScale(AppSettings.get(activity, LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL));
     }
 
     public void updateAllList() {
+        Activity activity = getActivity();
+        if (activity == null) return;
         if (mMainTableAdapter != null) {
             mMainTableAdapter.setCombineSpecialNumber(
-                    AppSettings.get(getActivity(), LotteryLover.KEY_COMBINE_SPECIAL, false));
+                    AppSettings.get(activity, LotteryLover.KEY_COMBINE_SPECIAL, false));
             mMainTableAdapter.notifyDataSetChanged();
             updateMainTableAdapter();
             updateHeaderAndFooter();
