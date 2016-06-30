@@ -86,4 +86,7 @@
 
     <string name="odd">1</string>
     <string name="plural">0</string>
+
+    <!-- FCM service -->
+    <string name="update_task_dialog_title">Version %s is available</string>
 </resources>

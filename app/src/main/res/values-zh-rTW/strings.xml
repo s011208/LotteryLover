@@ -87,4 +87,7 @@
 
     <string name="odd">單</string>
     <string name="plural">雙</string>
+
+    <!-- FCM service -->
+    <string name="update_task_dialog_title">版本 %s 可以更新</string>
 </resources>
