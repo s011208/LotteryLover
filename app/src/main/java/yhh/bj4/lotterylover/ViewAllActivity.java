@@ -67,6 +67,7 @@ public class ViewAllActivity extends BaseActivity
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
     private RecyclerView mListTypeView;
     private ListTypeAdapter mListTypeAdapter;
+    private AdView mAdView;
 
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -147,7 +148,7 @@ public class ViewAllActivity extends BaseActivity
     }
 
     private void initAds() {
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         if (mAdView == null) return;
         if (Utilities.isEnableAds(ViewAllActivity.this) == false) {
             mAdView.setVisibility(View.GONE);
@@ -181,12 +182,18 @@ public class ViewAllActivity extends BaseActivity
         FirebaseCrash.log("ViewAllActivity onResume " + this);
         RemoteConfigHelper.getInstance(this).fetch();
         super.onResume();
+        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+            mAdView.resume();
+        }
     }
 
     @Override
     protected void onPause() {
         FirebaseCrash.log("ViewAllActivity onPause " + this);
         super.onPause();
+        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+            mAdView.pause();
+        }
     }
 
     @Override
@@ -194,6 +201,9 @@ public class ViewAllActivity extends BaseActivity
         FirebaseCrash.log("ViewAllActivity onDestroy " + this);
         unregisterObserver();
         super.onDestroy();
+        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+            mAdView.destroy();
+        }
     }
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
