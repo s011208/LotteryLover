@@ -28,6 +28,7 @@ public class RemoteConfigHelper {
     public static final String KEY_IS_READ_FROM_CONFIG = "is_read_config";
     public static final String KEY_CONFIG_VERSION = "config_version";
     public static final String KEY_SHOW_ADS = "show_ads";
+    public static final String KEY_SET_TABLE_BACKGROUND_FROM_WEB = "set_table_background_from_web";
 
     private static RemoteConfigHelper sRemoteConfigHelper;
 
@@ -77,8 +78,9 @@ public class RemoteConfigHelper {
 
     private void updateValues() {
         FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        final long remoteConfigVersion = firebaseRemoteConfig.getLong(KEY_CONFIG_VERSION);
+        Log.i(TAG, "remote config version: " + remoteConfigVersion);
         if (firebaseRemoteConfig.getBoolean(KEY_IS_READ_FROM_CONFIG)) {
-            final long remoteConfigVersion = firebaseRemoteConfig.getLong(KEY_CONFIG_VERSION);
             if (firebaseRemoteConfig.getLong(KEY_CONFIG_VERSION) > AppSettings.get(mContext, LotteryLover.KEY_REMOTE_CONFIG_VERSION, 0) ||
                     firebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
                 AppSettings.put(mContext, LotteryLover.KEY_REMOTE_CONFIG_VERSION, remoteConfigVersion);
@@ -91,10 +93,15 @@ public class RemoteConfigHelper {
                 if (AppSettings.get(mContext, LotteryLover.KEY_SHOW_ADS, false) != showAds) {
                     AppSettings.put(mContext, LotteryLover.KEY_SHOW_ADS, showAds);
                 }
+                final boolean setTableBackground = firebaseRemoteConfig.getBoolean(KEY_SET_TABLE_BACKGROUND_FROM_WEB);
+                if (AppSettings.get(mContext, LotteryLover.KEY_SET_TABLE_BACKGROUND_FROM_WEB, false) != setTableBackground) {
+                    AppSettings.put(mContext, LotteryLover.KEY_SET_TABLE_BACKGROUND_FROM_WEB, setTableBackground);
+                }
                 Log.d(TAG, "KEY_SHOW_MONTHLY_DATA_ALWAYS: " + showMonthlyDataAlways);
                 Log.d(TAG, "read from fetch config");
                 Log.d(TAG, "KEY_CONFIG_VERSION: " + firebaseRemoteConfig.getLong(KEY_CONFIG_VERSION));
                 Log.d(TAG, "KEY_SHOW_ADS: " + showAds);
+                Log.d(TAG, "KEY_SET_TABLE_BACKGROUND_FROM_WEB: " + setTableBackground);
             } else {
                 Log.d(TAG, "old remote config version, ignore, version: " + remoteConfigVersion);
             }

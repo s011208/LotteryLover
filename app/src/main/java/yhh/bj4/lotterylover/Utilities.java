@@ -350,4 +350,8 @@ public class Utilities {
     public static boolean isEnableAds(Context context) {
         return AppSettings.get(context, LotteryLover.KEY_SHOW_ADS, false);
     }
+
+    public static boolean isEnableToLoadTableBackgroundFromWeb(Context context) {
+        return AppSettings.get(context, LotteryLover.KEY_SET_TABLE_BACKGROUND_FROM_WEB, false);
+    }
 }

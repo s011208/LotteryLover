@@ -141,6 +141,10 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             }
             mMinusGroup.addView(btn);
         }
+        if (Utilities.isEnableToLoadTableBackgroundFromWeb(getActivity())) {
+            loadBackgroundFromFirebase();
+        }
+
         return root;
     }
 
