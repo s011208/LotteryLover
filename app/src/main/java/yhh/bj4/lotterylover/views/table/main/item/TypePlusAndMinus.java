@@ -76,7 +76,7 @@ public class TypePlusAndMinus extends MainTableItem {
                     } else {
                         indexOfNormal.add(builder.length());
                     }
-                    builder.append(Utilities.getLotteryNumberString(value));
+                    builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                     indexOfSep.add(builder.length());
                     builder.append(SEP);
                 }
@@ -92,7 +92,7 @@ public class TypePlusAndMinus extends MainTableItem {
                             } else {
                                 indexOfSpecial.add(builder.length());
                             }
-                            builder.append(Utilities.getLotteryNumberString(specialValue));
+                            builder.append(Utilities.getLotteryNumberString(specialValue, mDigitLength));
                             indexOfSep.add(builder.length());
                             builder.append(SEP);
                             ++nextIndexOfSpecial;
@@ -105,7 +105,7 @@ public class TypePlusAndMinus extends MainTableItem {
                     } else {
                         indexOfNormal.add(builder.length());
                     }
-                    builder.append(Utilities.getLotteryNumberString(value));
+                    builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                     indexOfSep.add(builder.length());
                     builder.append(SEP);
                 }
@@ -116,7 +116,7 @@ public class TypePlusAndMinus extends MainTableItem {
                     } else {
                         indexOfSpecial.add(builder.length());
                     }
-                    builder.append(Utilities.getLotteryNumberString(specialValue));
+                    builder.append(Utilities.getLotteryNumberString(specialValue, mDigitLength));
                     indexOfSep.add(builder.length());
                     builder.append(SEP);
                     ++nextIndexOfSpecial;
@@ -130,7 +130,7 @@ public class TypePlusAndMinus extends MainTableItem {
                 } else {
                     indexOfNormal.add(builder.length());
                 }
-                builder.append(Utilities.getLotteryNumberString(value));
+                builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
             }
@@ -142,7 +142,7 @@ public class TypePlusAndMinus extends MainTableItem {
                 } else {
                     indexOfSpecial.add(builder.length());
                 }
-                builder.append(Utilities.getLotteryNumberString(value));
+                builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
             }
@@ -185,21 +185,21 @@ public class TypePlusAndMinus extends MainTableItem {
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
-            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
+            final int endIndex = startIndex + mDigitLength;
             rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // hit normal
         for (int i = 0; i < indexOfHitNormal.size(); ++i) {
             final int startIndex = indexOfHitNormal.get(i);
-            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
+            final int endIndex = startIndex + mDigitLength;
             rtn.setSpan(new ForegroundColorSpan(HIT_INDEX_OF_NORMAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // hit special
         for (int i = 0; i < indexOfHitSpecial.size(); ++i) {
             final int startIndex = indexOfHitSpecial.get(i);
-            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
+            final int endIndex = startIndex + mDigitLength;
             rtn.setSpan(new ForegroundColorSpan(HIT_INDEX_OF_SPECIAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 

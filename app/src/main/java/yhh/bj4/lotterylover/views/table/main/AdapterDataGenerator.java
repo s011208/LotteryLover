@@ -53,18 +53,20 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         final ArrayList<MainTableItem> rtn = new ArrayList<>();
         if (mLotteryData == null || mLotteryData.isEmpty()) return rtn;
         initParameters();
+        final int maximumDigitOfSum = Utilities.getMaximumDigitLengthOfSum(mLotteryData, mMaximumSpecialNumber);
+
         switch (mListType) {
             case LotteryLover.LIST_TYPE_OVERALL:
                 rtn.addAll(initListTypeOverall());
                 break;
             case LotteryLover.LIST_TYPE_NUMERIC:
-                rtn.addAll(initListTypeNumeric());
+                rtn.addAll(initListTypeNumeric(maximumDigitOfSum));
                 break;
             case LotteryLover.LIST_TYPE_PLUS_TOGETHER:
-                rtn.addAll(initListTypePlusTogether());
+                rtn.addAll(initListTypePlusTogether(maximumDigitOfSum));
                 break;
             case LotteryLover.LIST_TYPE_LAST_DIGIT:
-                rtn.addAll(initListTypeLastDigit());
+                rtn.addAll(initListTypeLastDigit(maximumDigitOfSum));
                 break;
             case LotteryLover.LIST_TYPE_PLUS_AND_MINUS:
                 rtn.addAll(initListTypePlusAndMinus());
@@ -151,7 +153,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         return rtn;
     }
 
-    private ArrayList<MainTableItem> initListTypeLastDigit() {
+    private ArrayList<MainTableItem> initListTypeLastDigit(int maximumDigitOfSum) {
         ArrayList<MainTableItem> rtn = new ArrayList<>();
         // add content data
         for (LotteryItem item : mLotteryData) {
@@ -159,6 +161,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            mainTableItem.setDigitLength(maximumDigitOfSum);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             Map<Integer, Integer> newNormalIndex = Utilities.getLastDigitMap(mMaximumNormalNumber);
@@ -234,6 +237,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
+                    mainTableItem.setDigitLength(maximumDigitOfSum);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
@@ -289,7 +293,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         return rtn;
     }
 
-    private ArrayList<MainTableItem> initListTypePlusTogether() {
+    private ArrayList<MainTableItem> initListTypePlusTogether(int maximumDigitOfSum) {
         ArrayList<MainTableItem> rtn = new ArrayList<>();
         // add content data
         for (LotteryItem item : mLotteryData) {
@@ -297,6 +301,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            mainTableItem.setDigitLength(maximumDigitOfSum);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             Map<Integer, Integer> newNormalIndex = Utilities.getPlusAndLastDigitMap(mMaximumNormalNumber);
@@ -372,6 +377,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
+                    mainTableItem.setDigitLength(maximumDigitOfSum);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
@@ -427,7 +433,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         return rtn;
     }
 
-    private ArrayList<MainTableItem> initListTypeNumeric() {
+    private ArrayList<MainTableItem> initListTypeNumeric(int maximumDigitOfSum) {
         ArrayList<MainTableItem> rtn = new ArrayList<>();
         // add content data
         for (LotteryItem item : mLotteryData) {
@@ -435,6 +441,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getSequence(), item.getDrawingDateTime(),
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
+            mainTableItem.setDigitLength(maximumDigitOfSum);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
@@ -505,6 +512,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
+                    mainTableItem.setDigitLength(maximumDigitOfSum);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 

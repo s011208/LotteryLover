@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +40,6 @@ public class Utilities {
     private static Calendar sCalendar = Calendar.getInstance();
     private static Map<Integer, List<Integer>> sPlusAndLastDigitMap = new HashMap<>();
     private static Map<Integer, List<Integer>> sLastDigitMap = new HashMap<>();
-
-    public static final int DIGIT_FORMAT_LENGTH = 2;
-    private static final String DIGIT_FORMAT = "%0" + DIGIT_FORMAT_LENGTH + "d";
 
     static {
         sCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -138,8 +136,8 @@ public class Utilities {
 
     }
 
-    public static String getLotteryNumberString(int num) {
-        return String.format(DIGIT_FORMAT, num);
+    public static String getLotteryNumberString(int num, int digitLength) {
+        return String.format("%0" + digitLength + "d", num);
     }
 
     public static String getLotterySequenceString(long num) {
@@ -353,5 +351,57 @@ public class Utilities {
 
     public static boolean isEnableToLoadTableBackgroundFromWeb(Context context) {
         return AppSettings.get(context, LotteryLover.KEY_SET_TABLE_BACKGROUND_FROM_WEB, false);
+    }
+
+    public static int getMaximumDigitLengthOfSum(ArrayList<LotteryItem> lotteryData, final int maximumSpecialNumber) {
+        int largestNumber = 0;
+        Map<Integer, Integer> sumMap = new HashMap<>();
+        for (LotteryItem item : lotteryData) {
+            for (Integer value : item.getNormalNumbers()) {
+                Integer mapSum = sumMap.get(value);
+                if (mapSum == null) {
+                    sumMap.put(value, 1);
+                } else {
+                    sumMap.put(value, mapSum + 1);
+                }
+            }
+        }
+        Iterator<Integer> mapIterator;
+        if (maximumSpecialNumber == -1) {
+            mapIterator = sumMap.keySet().iterator();
+            while (mapIterator.hasNext()) {
+                final int key = mapIterator.next();
+                largestNumber = Math.max(sumMap.get(key), largestNumber);
+            }
+
+            sumMap = new HashMap<>();
+        }
+
+        for (LotteryItem item : lotteryData) {
+            for (Integer value : item.getSpecialNumbers()) {
+                Integer mapSum = sumMap.get(value);
+                if (mapSum == null) {
+                    sumMap.put(value, 1);
+                } else {
+                    sumMap.put(value, mapSum + 1);
+                }
+            }
+        }
+        mapIterator = sumMap.keySet().iterator();
+        while (mapIterator.hasNext()) {
+            final int key = mapIterator.next();
+            largestNumber = Math.max(sumMap.get(key), largestNumber);
+        }
+
+        int rtn = 0;
+        while (largestNumber != 0) {
+            largestNumber /= 10;
+            ++rtn;
+        }
+
+        if (rtn < 2) {
+            rtn = 2;
+        }
+        return rtn;
     }
 }

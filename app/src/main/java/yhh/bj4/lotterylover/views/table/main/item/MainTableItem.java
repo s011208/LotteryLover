@@ -56,6 +56,7 @@ public abstract class MainTableItem {
     final int mViewType;
     int mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber, mMaximumSpecialNumber;
     int mWindowBackgroundColor = Color.WHITE;
+    int mDigitLength = 2;
 
     private SpannableString mSpannableString;
     private boolean mCacheSpannableString = true;
@@ -116,6 +117,10 @@ public abstract class MainTableItem {
 
     public final void setCacheSpannableString(boolean b) {
         mCacheSpannableString = b;
+    }
+
+    public final void setDigitLength(int length) {
+        mDigitLength = length;
     }
 
     @Override

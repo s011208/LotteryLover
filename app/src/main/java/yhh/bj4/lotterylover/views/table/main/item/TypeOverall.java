@@ -51,7 +51,7 @@ public class TypeOverall extends MainTableItem {
                     if (value > mSpecialNumberData.get(k)) {
                         Integer specialValue = mSpecialNumberData.get(k);
                         indexOfSpecial.add(builder.length());
-                        builder.append(Utilities.getLotteryNumberString(specialValue));
+                        builder.append(Utilities.getLotteryNumberString(specialValue, mDigitLength));
                         indexOfSep.add(builder.length());
                         builder.append(SEP);
                         ++nextIndexOfSpecial;
@@ -60,14 +60,14 @@ public class TypeOverall extends MainTableItem {
                     }
                 }
                 indexOfNormal.add(builder.length());
-                builder.append(Utilities.getLotteryNumberString(value));
+                builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
             }
             for (int k = nextIndexOfSpecial; k < mSpecialNumberData.size(); ++k) {
                 Integer specialValue = mSpecialNumberData.get(k);
                 indexOfSpecial.add(builder.length());
-                builder.append(Utilities.getLotteryNumberString(specialValue));
+                builder.append(Utilities.getLotteryNumberString(specialValue, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
                 ++nextIndexOfSpecial;
@@ -76,7 +76,7 @@ public class TypeOverall extends MainTableItem {
             for (int i = 0; i < mNormalNumberData.size(); ++i) {
                 Integer value = mNormalNumberData.get(i);
                 indexOfNormal.add(builder.length());
-                builder.append(Utilities.getLotteryNumberString(value));
+                builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
             }
@@ -84,7 +84,7 @@ public class TypeOverall extends MainTableItem {
             for (int i = 0; i < mSpecialNumberData.size(); ++i) {
                 Integer value = mSpecialNumberData.get(i);
                 indexOfSpecial.add(builder.length());
-                builder.append(Utilities.getLotteryNumberString(value));
+                builder.append(Utilities.getLotteryNumberString(value, mDigitLength));
                 indexOfSep.add(builder.length());
                 builder.append(SEP);
             }
@@ -116,7 +116,7 @@ public class TypeOverall extends MainTableItem {
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
-            final int endIndex = startIndex + Utilities.DIGIT_FORMAT_LENGTH;
+            final int endIndex = startIndex + mDigitLength;
             rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
