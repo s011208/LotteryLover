@@ -145,9 +145,12 @@ public class ViewAllActivity extends BaseActivity
     }
 
     private void initAds() {
-        if (Utilities.ENABLE_ADS == false) return;
         AdView mAdView = (AdView) findViewById(R.id.adView);
         if (mAdView == null) return;
+        if (Utilities.isEnableAds(ViewAllActivity.this) == false) {
+            mAdView.setVisibility(View.GONE);
+            return;
+        }
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-6361389364792908/9700783026");
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);

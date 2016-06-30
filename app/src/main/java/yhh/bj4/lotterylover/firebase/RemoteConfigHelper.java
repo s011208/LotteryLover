@@ -27,6 +27,7 @@ public class RemoteConfigHelper {
     public static final String KEY_SHOW_MONTHLY_DATA_ALWAYS = "show_monthly_data_only_always";
     public static final String KEY_IS_READ_FROM_CONFIG = "is_read_config";
     public static final String KEY_CONFIG_VERSION = "config_version";
+    public static final String KEY_SHOW_ADS = "show_ads";
 
     private static RemoteConfigHelper sRemoteConfigHelper;
 
@@ -86,9 +87,14 @@ public class RemoteConfigHelper {
                 if (AppSettings.get(mContext, LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS, true) != showMonthlyDataAlways) {
                     AppSettings.put(mContext, LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS, showMonthlyDataAlways);
                 }
+                final boolean showAds = firebaseRemoteConfig.getBoolean(KEY_SHOW_ADS);
+                if (AppSettings.get(mContext, LotteryLover.KEY_SHOW_ADS, false) != showAds) {
+                    AppSettings.put(mContext, LotteryLover.KEY_SHOW_ADS, showAds);
+                }
                 Log.d(TAG, "KEY_SHOW_MONTHLY_DATA_ALWAYS: " + showMonthlyDataAlways);
                 Log.d(TAG, "read from fetch config");
                 Log.d(TAG, "KEY_CONFIG_VERSION: " + firebaseRemoteConfig.getLong(KEY_CONFIG_VERSION));
+                Log.d(TAG, "KEY_SHOW_ADS: " + showAds);
             } else {
                 Log.d(TAG, "old remote config version, ignore, version: " + remoteConfigVersion);
             }

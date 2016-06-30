@@ -93,4 +93,5 @@ public class LotteryLover {
 
     public static final String KEY_REMOTE_CONFIG_VERSION = "key_remote_config_version";
     public static final String KEY_SHOW_MONTHLY_DATA_ALWAYS = "show_monthly_data_only_always";
+    public static final String KEY_SHOW_ADS = "show_ads";
 }

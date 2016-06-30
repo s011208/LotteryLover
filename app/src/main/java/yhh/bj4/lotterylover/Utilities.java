@@ -29,8 +29,6 @@ import yhh.bj4.lotterylover.services.RetrieveDataService;
 public class Utilities {
     public static final boolean DEBUG = true;
 
-    public static final boolean ENABLE_ADS = true;
-
     public static final long SECOND = 1000;
     public static final long MINUTE = 60 * SECOND;
     public static final long HOUR = 60 * MINUTE;
@@ -347,5 +345,9 @@ public class Utilities {
         } else if (orientationSetting == LotteryLover.VALUE_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    public static boolean isEnableAds(Context context) {
+        return AppSettings.get(context, LotteryLover.KEY_SHOW_ADS, false);
     }
 }
