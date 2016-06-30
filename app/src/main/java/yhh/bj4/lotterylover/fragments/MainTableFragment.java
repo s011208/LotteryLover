@@ -188,6 +188,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.updateData(mLtoType, mListType, mIsShowSubTotalOnly);
         }
         mScrollView.smoothScrollTo(0, mScrollView.getScrollY());
+        if (getActivity() != null && getActivity() instanceof Callback) {
+            ((Callback) getActivity()).onStartUpdate();
+        }
     }
 
     private void updateHeaderAndFooterWidth() {
@@ -509,6 +512,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     @Override
     public void onFinishLoadingData() {
         updateHeaderAndFooterWidth();
+        if (getActivity() != null && getActivity() instanceof Callback) {
+            ((Callback) getActivity()).onFinishUpdate();
+        }
     }
 
     @Override
@@ -574,5 +580,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         int getListType();
 
         boolean isShowSubTotalOnly();
+
+        void onStartUpdate();
+
+        void onFinishUpdate();
     }
 }

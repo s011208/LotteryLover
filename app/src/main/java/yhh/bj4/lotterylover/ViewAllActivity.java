@@ -107,10 +107,12 @@ public class ViewAllActivity extends BaseActivity
             } else if (LtoList4.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4;
             } else if (uri.toString().startsWith(AppSettings.DATA_URI.toString())) {
-                if (isShouldHideProgressbar() && mLoadingProgressbar.getVisibility() == View.VISIBLE) {
-                    Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
-                    mLoadingProgressbar.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                if (Utilities.areAllLtoItemsAreInit(ViewAllActivity.this)) {
+                    if (!isMainTableAvailable()) {
+                        Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
+                        mLoadingProgressbar.setVisibility(View.INVISIBLE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                    }
                 }
                 if (LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS.equals(uri.getLastPathSegment())) {
                     invalidateOptionsMenu();
@@ -136,8 +138,8 @@ public class ViewAllActivity extends BaseActivity
             mMainTableFragment = new MainTableFragment();
         }
 
-        if (isShouldHideProgressbar()) {
-            mLoadingProgressbar.setVisibility(View.GONE);
+        if (Utilities.areAllLtoItemsAreInit(this)) {
+            mLoadingProgressbar.setVisibility(View.INVISIBLE);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
         }
         registerObserver();
@@ -157,11 +159,7 @@ public class ViewAllActivity extends BaseActivity
     }
 
     private boolean isMainTableAvailable() {
-        return mLoadingProgressbar.getVisibility() != View.VISIBLE;
-    }
-
-    private boolean isShouldHideProgressbar() {
-        return Utilities.areAllLtoItemsAreInit(this);
+        return getSupportFragmentManager().findFragmentByTag(MainTableFragment.class.getSimpleName()) != null;
     }
 
     private void registerObserver() {
@@ -429,5 +427,17 @@ public class ViewAllActivity extends BaseActivity
     @Override
     public boolean isShowSubTotalOnly() {
         return AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false);
+    }
+
+    @Override
+    public void onStartUpdate() {
+        if (mLoadingProgressbar == null) return;
+        mLoadingProgressbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onFinishUpdate() {
+        if (mLoadingProgressbar == null) return;
+        mLoadingProgressbar.setVisibility(View.INVISIBLE);
     }
 }
