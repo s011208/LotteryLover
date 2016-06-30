@@ -24,14 +24,16 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
 import yhh.bj4.lotterylover.analytics.Analytics;
 import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
-import yhh.bj4.lotterylover.firebase.FMHelperService;
+import yhh.bj4.lotterylover.firebase.RemoteConfigHelper;
 import yhh.bj4.lotterylover.fragments.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
@@ -48,7 +50,6 @@ import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
-import yhh.bj4.lotterylover.firebase.RemoteConfigHelper;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
@@ -140,6 +141,16 @@ public class ViewAllActivity extends BaseActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
         }
         registerObserver();
+        initAds();
+    }
+
+    private void initAds() {
+        if (Utilities.ENABLE_ADS == false) return;
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        if (mAdView == null) return;
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-6361389364792908/9700783026");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private boolean isMainTableAvailable() {

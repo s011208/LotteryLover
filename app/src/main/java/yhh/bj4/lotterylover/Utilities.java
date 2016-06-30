@@ -28,6 +28,9 @@ import yhh.bj4.lotterylover.services.RetrieveDataService;
  */
 public class Utilities {
     public static final boolean DEBUG = true;
+
+    public static final boolean ENABLE_ADS = true;
+
     public static final long SECOND = 1000;
     public static final long MINUTE = 60 * SECOND;
     public static final long HOUR = 60 * MINUTE;
