@@ -4,7 +4,6 @@ import android.content.Context;
 
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
-import yhh.bj4.lotterylover.remoteconfig.RemoteConfigHelper;
 
 /**
  * Created by yenhsunhuang on 2016/6/23.

@@ -1,8 +1,12 @@
 package yhh.bj4.lotterylover.fragments;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -17,6 +21,11 @@ import android.widget.HorizontalScrollView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +34,7 @@ import java.util.Map;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.firebase.StorageHelper;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.provider.AppSettings;
@@ -131,8 +141,28 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             }
             mMinusGroup.addView(btn);
         }
-
         return root;
+    }
+
+    private void loadBackgroundFromFirebase() {
+        StorageReference rootRef = StorageHelper.getRootStorageRef().child("test");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        rootRef.child("test_bg.png").getBytes(ONE_MEGABYTE)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Toast.makeText(getActivity(), "load storage reference success", Toast.LENGTH_LONG).show();
+                        Bitmap bg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        mMainTable.setBackgroundDrawable(new BitmapDrawable(getActivity().getResources(), bg));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "load storage reference failed", Toast.LENGTH_LONG).show();
+                        Log.w(TAG, "failed", e);
+                    }
+                });
     }
 
     private void updatePlusAndMinus(int value) {

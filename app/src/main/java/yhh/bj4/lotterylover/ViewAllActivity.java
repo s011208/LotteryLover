@@ -46,7 +46,7 @@ import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
-import yhh.bj4.lotterylover.remoteconfig.RemoteConfigHelper;
+import yhh.bj4.lotterylover.firebase.RemoteConfigHelper;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 

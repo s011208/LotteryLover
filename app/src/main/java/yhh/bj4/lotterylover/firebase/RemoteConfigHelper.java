@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.remoteconfig;
+package yhh.bj4.lotterylover.firebase;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
