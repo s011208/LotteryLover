@@ -117,17 +117,17 @@ public class Utilities {
     }
 
     public static int getPrimaryColor(Context context) {
-        if (context == null) return Color.rgb(0xff, 0x8a, 0x53);
+        if (context == null) return Color.rgb(0xff, 0xb0, 0x1c);
         return getColorAttribute(context, android.R.attr.colorPrimary, context.getResources().getColor(R.color.colorPrimary));
     }
 
     public static int getPrimaryDarkColor(Context context) {
-        if (context == null) return Color.rgb(0xb5, 0x61, 0x3b);
+        if (context == null) return Color.rgb(0x80, 0x53, 0x00);
         return getColorAttribute(context, android.R.attr.colorPrimaryDark, context.getResources().getColor(R.color.colorPrimaryDark));
     }
 
     public static int getPrimaryLightColor(Context context) {
-        if (context == null) return Color.rgb(0xff, 0xb1, 0x8d);
+        if (context == null) return Color.rgb(0xff, 0xcf, 0x78);
         return context.getResources().getColor(R.color.colorPrimaryLight);
     }
 
