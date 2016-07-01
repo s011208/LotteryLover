@@ -197,27 +197,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         }
     }
 
-    private void updateHeaderAndFooterWidth() {
-        mMainTable.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                final int width = ((View) mHeader.getParent()).getWidth();
-                final int mainTableWidth = mMainTable.getWidth();
-                if (DEBUG)
-                    Log.v(TAG, "width: " + width + ", mainTableWidth: " + mainTableWidth);
-                if (width == 0 || mainTableWidth == 0) return true;
-                if (mMainTable.getViewTreeObserver().isAlive()) {
-                    mMainTable.getViewTreeObserver().removeOnPreDrawListener(this);
-                }
-
-                final int finalWidth = Math.min(width, mainTableWidth);
-                mHeader.setMinWidth(finalWidth);
-                mFooter.setMinWidth(finalWidth);
-                return true;
-            }
-        });
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -519,7 +498,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     @Override
     public void onFinishLoadingData() {
-        updateHeaderAndFooterWidth();
         final Activity activity = getActivity();
         if (activity != null && activity instanceof Callback) {
             ((Callback) activity).onFinishUpdate();
@@ -555,7 +533,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.setDigitSize(digitScaleSize);
             mMainTableAdapter.notifyDataSetChanged();
         }
-        updateHeaderAndFooterWidth();
     }
 
     private float getDigitScaleSize() {

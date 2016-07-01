@@ -18,7 +18,7 @@
             <include
                 android:id="@+id/header"
                 layout="@layout/main_table_adapter_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp" />
@@ -40,7 +40,7 @@
             <include
                 android:id="@+id/footer"
                 layout="@layout/main_table_adapter_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp" />
