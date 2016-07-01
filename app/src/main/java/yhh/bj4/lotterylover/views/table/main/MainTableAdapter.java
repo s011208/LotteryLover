@@ -122,9 +122,9 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                             mCallback.onFinishLoadingData();
                         }
                     }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             }
-        }, ltoType, listType).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, ltoType, listType).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                 }
                 notifyDataSetChanged();
             }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void setCombineSpecialNumber(boolean num) {
