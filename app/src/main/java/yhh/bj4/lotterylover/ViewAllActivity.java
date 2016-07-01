@@ -62,6 +62,7 @@ public class ViewAllActivity extends BaseActivity
     private static final boolean DEBUG = Utilities.DEBUG;
 
     private static final int REQUEST_SETTINGS = 1000;
+    private static final String KEY_CURRENT_NAV_ITEM_ID = "key_current_nav_item_id";
 
     private MainTableFragment mMainTableFragment;
     private LinearLayout mLoadingProgressbar;
@@ -70,6 +71,7 @@ public class ViewAllActivity extends BaseActivity
     private RecyclerView mListTypeView;
     private ListTypeAdapter mListTypeAdapter;
     private AdView mAdView;
+    private int mCurrentNavItemId = R.id.nav_list;
 
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -112,9 +114,11 @@ public class ViewAllActivity extends BaseActivity
             } else if (uri.toString().startsWith(AppSettings.DATA_URI.toString())) {
                 if (Utilities.areAllLtoItemsAreInit(ViewAllActivity.this)) {
                     if (!isMainTableAvailable()) {
-                        Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
                         mLoadingProgressbar.setVisibility(View.INVISIBLE);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                        if (mCurrentNavItemId == R.id.nav_list) {
+                            Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+                        }
                     }
                 }
                 if (LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS.equals(uri.getLastPathSegment())) {
@@ -143,8 +147,11 @@ public class ViewAllActivity extends BaseActivity
 
         if (Utilities.areAllLtoItemsAreInit(this)) {
             mLoadingProgressbar.setVisibility(View.INVISIBLE);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+            if (mCurrentNavItemId == R.id.nav_list) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+            }
         }
+
         registerObserver();
         initAds();
     }
@@ -212,9 +219,11 @@ public class ViewAllActivity extends BaseActivity
         if (savedInstanceState == null) {
             mListType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
             mLtoType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
+            mCurrentNavItemId = R.id.nav_list;
         } else {
             mListType = savedInstanceState.getInt(LotteryLover.KEY_LIST_TYPE, mListType);
             mLtoType = savedInstanceState.getInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
+            mCurrentNavItemId = savedInstanceState.getInt(KEY_CURRENT_NAV_ITEM_ID, R.id.nav_list);
         }
     }
 
@@ -223,12 +232,13 @@ public class ViewAllActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putInt(LotteryLover.KEY_LIST_TYPE, mListType);
         outState.putInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
+        outState.putInt(KEY_CURRENT_NAV_ITEM_ID, mCurrentNavItemId);
     }
 
     private void initViewComponents(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setCheckedItem(mCurrentNavItemId);
         mLoadingProgressbar = (LinearLayout) findViewById(R.id.loading_progressbar);
     }
 
@@ -406,9 +416,12 @@ public class ViewAllActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         final int id = item.getItemId();
-
+        mCurrentNavItemId = id;
         if (id == R.id.nav_list) {
-
+            if (Utilities.areAllLtoItemsAreInit(this)) {
+                mLoadingProgressbar.setVisibility(View.INVISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+            }
         } else if (id == R.id.nav_calendar) {
 
         } else if (id == R.id.nav_analyze) {
