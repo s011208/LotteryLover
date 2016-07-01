@@ -181,17 +181,37 @@ public class TypePlusTogether extends MainTableItem {
             rtn.setSpan(new RelativeSizeSpan(SEP_RELATIVE_SIZE), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
+        final int digitLengthDiff = mDigitLength - 2;
         // normal number
-        // do nothing
+        if (mItemType != ITEM_TYPE_FOOTER && digitLengthDiff > 0) {
+            for (int i = 0; i < indexOfNormal.size(); ++i) {
+                final int startIndex = indexOfNormal.get(i);
+                final int endIndex = startIndex + digitLengthDiff;
+                rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
 
         // special number
         for (int i = 0; i < indexOfSpecial.size(); ++i) {
             final int startIndex = indexOfSpecial.get(i);
             final int endIndex = startIndex + mDigitLength;
-            if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER) {
+            if (mItemType == ITEM_TYPE_HEADER) {
+                if (digitLengthDiff > 0) {
+                    rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex + digitLengthDiff, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else {
+                    rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            } else if (mItemType == ITEM_TYPE_FOOTER) {
                 rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
-                rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (digitLengthDiff > 0) {
+                    rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex + digitLengthDiff, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else {
+                    rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                }
             }
         }
 
