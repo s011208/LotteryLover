@@ -87,6 +87,14 @@
     <string name="odd">1</string>
     <string name="plural">0</string>
 
+    <string name="view_all_activity_drawer_list">List</string>
+    <string name="view_all_activity_drawer_calendar">Calendar</string>
+    <string name="view_all_activity_drawer_analyze">Analytic</string>
+    <string name="view_all_activity_drawer_category_other_title">About</string>
+    <string name="view_all_activity_drawer_rating_us">Rating us</string>
+
+    <string name="view_all_activity_toast_cannot_find_store">Can not open store page</string>
+
     <!-- FCM service -->
     <string name="update_task_dialog_title">Version %s is available</string>
 </resources>

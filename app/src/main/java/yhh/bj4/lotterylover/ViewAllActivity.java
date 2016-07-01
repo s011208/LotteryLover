@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -403,20 +405,23 @@ public class ViewAllActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_list) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_calendar) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_analyze) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_rating_us) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.d(TAG, "Cannot find activity", e);
+                Toast.makeText(ViewAllActivity.this, R.string.view_all_activity_toast_cannot_find_store, Toast.LENGTH_LONG).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

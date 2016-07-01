@@ -88,6 +88,13 @@
     <string name="odd">單</string>
     <string name="plural">雙</string>
 
+    <string name="view_all_activity_drawer_list">列表</string>
+    <string name="view_all_activity_drawer_calendar">日曆</string>
+    <string name="view_all_activity_drawer_analyze">分析</string>
+    <string name="view_all_activity_drawer_category_other_title">關於</string>
+    <string name="view_all_activity_drawer_rating_us">給我們分數</string>
+
+    <string name="view_all_activity_toast_cannot_find_store">無法打開評分頁面</string>
     <!-- FCM service -->
     <string name="update_task_dialog_title">版本 %s 可以更新</string>
 </resources>
