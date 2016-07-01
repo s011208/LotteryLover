@@ -1,10 +1,12 @@
 package yhh.bj4.lotterylover.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -75,6 +77,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private int mMaximumOfCachedSize;
 
+    private int mScrollViewWidth = 0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,20 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         final View root = inflater.inflate(R.layout.main_table_fragment, null);
         mMaximumOfCachedSize = getActivity().getResources().getInteger(R.integer.maximum_cached_item_of_main_table);
         mScrollView = (HorizontalScrollView) root;
+        mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onGlobalLayout() {
+                if (mScrollView.getViewTreeObserver().isAlive()) {
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+                        mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                }
+                mScrollViewWidth = mScrollView.getWidth();
+            }
+        });
         mMainTable = (RecyclerView) root.findViewById(R.id.main_table_recyclerview);
         mMainTable.addItemDecoration(new DividerItemDecoration(getActivity()));
         mMainTable.getRecycledViewPool().setMaxRecycledViews(MainTableAdapter.TYPE_OVER_ALL_CONTENT, mMaximumOfCachedSize);
@@ -192,9 +210,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.updateData(mLtoType, mListType, mIsShowSubTotalOnly);
         }
         mScrollView.smoothScrollTo(0, mScrollView.getScrollY());
-        if (activity != null && activity instanceof Callback) {
-            ((Callback) activity).onStartUpdate();
-        }
     }
 
     @Override
@@ -209,8 +224,18 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 Log.d(TAG, "onActivityCreated, mLtoType: " + mLtoType + ", mListType: " + mListType);
             }
         }
+        updateTable(true);
+    }
+
+    private void updateTable(final boolean updateHeaderAndFooter) {
+        final Activity activity = getActivity();
+        if (activity != null && activity instanceof Callback) {
+            ((Callback) activity).onStartUpdate();
+        }
         updateMainTableAdapter();
-        updateHeaderAndFooter();
+        if (updateHeaderAndFooter) {
+            updateHeaderAndFooter();
+        }
     }
 
     @Override
@@ -224,8 +249,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (DEBUG) {
             Log.d(TAG, "setLtoType: " + type);
         }
-        updateMainTableAdapter();
-        updateHeaderAndFooter();
+        updateTable(true);
     }
 
     public void setListType(int type) {
@@ -234,8 +258,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (DEBUG) {
             Log.d(TAG, "setListType: " + type);
         }
-        updateMainTableAdapter();
-        updateHeaderAndFooter();
+        updateTable(true);
     }
 
     public void setIsShowSubTotalOnly(boolean b) {
@@ -244,7 +267,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         if (DEBUG) {
             Log.d(TAG, "setIsShowSubTotalOnly: " + mIsShowSubTotalOnly);
         }
-        updateMainTableAdapter();
+        updateTable(false);
     }
 
     private void updateHeaderAndFooter() {
@@ -548,8 +571,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             mMainTableAdapter.setCombineSpecialNumber(
                     AppSettings.get(activity, LotteryLover.KEY_COMBINE_SPECIAL, false));
             mMainTableAdapter.notifyDataSetChanged();
-            updateMainTableAdapter();
-            updateHeaderAndFooter();
+            updateTable(true);
         }
     }
 
