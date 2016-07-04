@@ -2,15 +2,19 @@ package yhh.bj4.lotterylover;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -403,5 +407,16 @@ public class Utilities {
             rtn = 2;
         }
         return rtn;
+    }
+
+    public static void startRatingUsAction(Activity activity) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + activity.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG, "Cannot find activity", e);
+            Toast.makeText(activity, R.string.view_all_activity_toast_cannot_find_store, Toast.LENGTH_LONG).show();
+        }
     }
 }

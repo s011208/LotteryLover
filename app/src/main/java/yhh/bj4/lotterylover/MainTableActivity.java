@@ -1,7 +1,6 @@
 package yhh.bj4.lotterylover;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -24,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -55,14 +53,13 @@ import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
-public class ViewAllActivity extends BaseActivity
+public class MainTableActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainTableFragment.Callback {
 
-    private static final String TAG = "ViewAllActivity";
+    private static final String TAG = "MainTableActivity";
     private static final boolean DEBUG = Utilities.DEBUG;
 
     private static final int REQUEST_SETTINGS = 1000;
-    private static final String KEY_CURRENT_NAV_ITEM_ID = "key_current_nav_item_id";
 
     private MainTableFragment mMainTableFragment;
     private LinearLayout mLoadingProgressbar;
@@ -71,7 +68,6 @@ public class ViewAllActivity extends BaseActivity
     private RecyclerView mListTypeView;
     private ListTypeAdapter mListTypeAdapter;
     private AdView mAdView;
-    private int mCurrentNavItemId = R.id.nav_list;
 
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -112,13 +108,11 @@ public class ViewAllActivity extends BaseActivity
             } else if (LtoList4.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4;
             } else if (uri.toString().startsWith(AppSettings.DATA_URI.toString())) {
-                if (Utilities.areAllLtoItemsAreInit(ViewAllActivity.this)) {
+                if (Utilities.areAllLtoItemsAreInit(MainTableActivity.this)) {
                     if (!isMainTableAvailable()) {
                         mLoadingProgressbar.setVisibility(View.INVISIBLE);
-                        if (mCurrentNavItemId == R.id.nav_list) {
-                            Utilities.updateAllLtoData(ViewAllActivity.this, "just finish loading");
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
-                        }
+                        Utilities.updateAllLtoData(MainTableActivity.this, "just finish loading");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
                     }
                 }
                 if (LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS.equals(uri.getLastPathSegment())) {
@@ -147,9 +141,7 @@ public class ViewAllActivity extends BaseActivity
 
         if (Utilities.areAllLtoItemsAreInit(this)) {
             mLoadingProgressbar.setVisibility(View.INVISIBLE);
-            if (mCurrentNavItemId == R.id.nav_list) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
-            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
         }
 
         registerObserver();
@@ -159,7 +151,7 @@ public class ViewAllActivity extends BaseActivity
     private void initAds() {
         mAdView = (AdView) findViewById(R.id.adView);
         if (mAdView == null) return;
-        if (Utilities.isEnableAds(ViewAllActivity.this) == false) {
+        if (Utilities.isEnableAds(MainTableActivity.this) == false) {
             mAdView.setVisibility(View.GONE);
             return;
         }
@@ -191,7 +183,7 @@ public class ViewAllActivity extends BaseActivity
         FirebaseCrash.log("ViewAllActivity onResume " + this);
         RemoteConfigHelper.getInstance(this).fetch();
         super.onResume();
-        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+        if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
             mAdView.resume();
         }
     }
@@ -200,7 +192,7 @@ public class ViewAllActivity extends BaseActivity
     protected void onPause() {
         FirebaseCrash.log("ViewAllActivity onPause " + this);
         super.onPause();
-        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+        if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
             mAdView.pause();
         }
     }
@@ -210,20 +202,18 @@ public class ViewAllActivity extends BaseActivity
         FirebaseCrash.log("ViewAllActivity onDestroy " + this);
         unregisterObserver();
         super.onDestroy();
-        if (mAdView != null && Utilities.isEnableAds(ViewAllActivity.this)) {
+        if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
             mAdView.destroy();
         }
     }
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mListType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
-            mLtoType = AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
-            mCurrentNavItemId = R.id.nav_list;
+            mListType = AppSettings.get(MainTableActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
+            mLtoType = AppSettings.get(MainTableActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
         } else {
             mListType = savedInstanceState.getInt(LotteryLover.KEY_LIST_TYPE, mListType);
             mLtoType = savedInstanceState.getInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
-            mCurrentNavItemId = savedInstanceState.getInt(KEY_CURRENT_NAV_ITEM_ID, R.id.nav_list);
         }
     }
 
@@ -232,13 +222,12 @@ public class ViewAllActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putInt(LotteryLover.KEY_LIST_TYPE, mListType);
         outState.putInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
-        outState.putInt(KEY_CURRENT_NAV_ITEM_ID, mCurrentNavItemId);
     }
 
     private void initViewComponents(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(mCurrentNavItemId);
+        navigationView.setCheckedItem(R.id.nav_list);
         mLoadingProgressbar = (LinearLayout) findViewById(R.id.loading_progressbar);
     }
 
@@ -260,8 +249,8 @@ public class ViewAllActivity extends BaseActivity
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mLtoType = position;
-                    if (mLtoType != AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, LotteryLover.LTO_TYPE_LTO)) {
-                        AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
+                    if (mLtoType != AppSettings.get(MainTableActivity.this, LotteryLover.KEY_LTO_TYPE, LotteryLover.LTO_TYPE_LTO)) {
+                        AppSettings.put(MainTableActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
                     }
                     if (isMainTableAvailable()) {
                         mMainTableFragment.setLtoType(mLtoType);
@@ -269,8 +258,8 @@ public class ViewAllActivity extends BaseActivity
                         Bundle data = new Bundle();
                         data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
                         data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-                        AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
-                        AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
+                        AnalyticsHelper.getHelper(MainTableActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
+                        AnalyticsHelper.getHelper(MainTableActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
                     }
                 }
 
@@ -294,14 +283,14 @@ public class ViewAllActivity extends BaseActivity
             @Override
             public void onListTypeChanged(int type) {
                 mListType = type;
-                AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
+                AppSettings.put(MainTableActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
                 if (isMainTableAvailable()) {
                     mMainTableFragment.setListType(mListType);
                     Bundle data = new Bundle();
                     data.putString(Analytics.KEY_LTO_TYPE, LotteryItem.getSimpleClassName(mLtoType));
                     data.putString(Analytics.KEY_LIST_TYPE, Utilities.getListStringByType(mListType));
-                    AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
-                    AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
+                    AnalyticsHelper.getHelper(MainTableActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, data);
+                    AnalyticsHelper.getHelper(MainTableActivity.this).logEvent(Analytics.EVENT_TABLE_INFORMATION, LotteryItem.getSimpleClassName(mLtoType), Utilities.getListStringByType(mListType));
                 }
             }
         }, mListType, mLtoType);
@@ -361,9 +350,9 @@ public class ViewAllActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view_all, menu);
         MenuItem item = menu.findItem(R.id.action_show_subtotal_only);
-        item.setChecked(AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false));
+        item.setChecked(AppSettings.get(MainTableActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false));
         item.setIcon(item.isChecked() ? R.drawable.ic_format_list_bulleted_black_24dp : R.drawable.ic_format_list_bulleted_white_24dp);
-        item.setShowAsAction(AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS, true) ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
+        item.setShowAsAction(AppSettings.get(MainTableActivity.this, LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS, true) ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
         return true;
     }
 
@@ -372,8 +361,8 @@ public class ViewAllActivity extends BaseActivity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, new Bundle());
-            AnalyticsHelper.getHelper(ViewAllActivity.this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, null, null);
-            Intent intent = new Intent(ViewAllActivity.this, MainSettingsActivity.class);
+            AnalyticsHelper.getHelper(MainTableActivity.this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, null, null);
+            Intent intent = new Intent(MainTableActivity.this, MainSettingsActivity.class);
             startActivityForResult(intent, REQUEST_SETTINGS);
             return true;
         } else if (id == R.id.action_align_top) {
@@ -400,7 +389,7 @@ public class ViewAllActivity extends BaseActivity
             final boolean newValue = !item.isChecked();
             item.setChecked(newValue);
             item.setIcon(newValue ? R.drawable.ic_format_list_bulleted_black_24dp : R.drawable.ic_format_list_bulleted_white_24dp);
-            AppSettings.put(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, newValue);
+            AppSettings.put(MainTableActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, newValue);
             if (mMainTableFragment != null) {
                 // TODO block overall content list if can
                 mMainTableFragment.setIsShowSubTotalOnly(newValue);
@@ -416,25 +405,15 @@ public class ViewAllActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         final int id = item.getItemId();
-        mCurrentNavItemId = id;
         if (id == R.id.nav_list) {
             if (Utilities.areAllLtoItemsAreInit(this)) {
                 mLoadingProgressbar.setVisibility(View.INVISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
             }
         } else if (id == R.id.nav_calendar) {
-
         } else if (id == R.id.nav_analyze) {
-
         } else if (id == R.id.nav_rating_us) {
-            try {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Log.d(TAG, "Cannot find activity", e);
-                Toast.makeText(ViewAllActivity.this, R.string.view_all_activity_toast_cannot_find_store, Toast.LENGTH_LONG).show();
-            }
+            Utilities.startRatingUsAction(MainTableActivity.this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -454,7 +433,7 @@ public class ViewAllActivity extends BaseActivity
 
     @Override
     public boolean isShowSubTotalOnly() {
-        return AppSettings.get(ViewAllActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false);
+        return AppSettings.get(MainTableActivity.this, LotteryLover.KEY_SHOW_SUB_TOTAL_ONLY, false);
     }
 
     @Override
