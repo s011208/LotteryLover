@@ -127,12 +127,7 @@ public class MainTableActivity extends BaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FirebaseCrash.log("ViewAllActivity onCreate " + this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all);
-        restoreSavedInstanceState(savedInstanceState);
-        initActionBar(savedInstanceState);
-        initViewComponents(savedInstanceState);
 
         mMainTableFragment = (MainTableFragment) getSupportFragmentManager().findFragmentByTag(MainTableFragment.class.getSimpleName());
         if (mMainTableFragment == null) {
@@ -146,6 +141,16 @@ public class MainTableActivity extends BaseActivity
 
         registerObserver();
         initAds();
+    }
+
+    @Override
+    public int getContentViewResource() {
+        return R.layout.activity_view_all;
+    }
+
+    @Override
+    public String getActivityName() {
+        return MainTableActivity.class.getSimpleName();
     }
 
     private void initAds() {
@@ -180,7 +185,6 @@ public class MainTableActivity extends BaseActivity
 
     @Override
     protected void onResume() {
-        FirebaseCrash.log("ViewAllActivity onResume " + this);
         RemoteConfigHelper.getInstance(this).fetch();
         super.onResume();
         if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
@@ -190,7 +194,6 @@ public class MainTableActivity extends BaseActivity
 
     @Override
     protected void onPause() {
-        FirebaseCrash.log("ViewAllActivity onPause " + this);
         super.onPause();
         if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
             mAdView.pause();
@@ -207,7 +210,8 @@ public class MainTableActivity extends BaseActivity
         }
     }
 
-    private void restoreSavedInstanceState(Bundle savedInstanceState) {
+    @Override
+    protected void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             mListType = AppSettings.get(MainTableActivity.this, LotteryLover.KEY_LIST_TYPE, mListType);
             mLtoType = AppSettings.get(MainTableActivity.this, LotteryLover.KEY_LTO_TYPE, mLtoType);
@@ -224,14 +228,16 @@ public class MainTableActivity extends BaseActivity
         outState.putInt(LotteryLover.KEY_LTO_TYPE, mLtoType);
     }
 
-    private void initViewComponents(Bundle savedInstanceState) {
+    @Override
+    protected void initViewComponents(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_list);
         mLoadingProgressbar = (LinearLayout) findViewById(R.id.loading_progressbar);
     }
 
-    private void initActionBar(Bundle savedInstanceState) {
+    @Override
+    protected void initActionBar(Bundle savedInstanceState) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -295,16 +301,6 @@ public class MainTableActivity extends BaseActivity
             }
         }, mListType, mLtoType);
         mListTypeView.setAdapter(mListTypeAdapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

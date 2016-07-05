@@ -15,12 +15,16 @@ public abstract class BaseSettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        initActionBar();
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, getContainerFragment()).commitAllowingStateLoss();
     }
 
-    private void initActionBar() {
+    @Override
+    public int getContentViewResource() {
+        return R.layout.activity_settings;
+    }
+
+    @Override
+    protected void initActionBar(Bundle savedInstanceState) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

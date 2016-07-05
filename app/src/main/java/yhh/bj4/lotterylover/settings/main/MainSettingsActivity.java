@@ -3,6 +3,7 @@ package yhh.bj4.lotterylover.settings.main;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 import java.util.ArrayList;
@@ -21,6 +22,21 @@ public class MainSettingsActivity extends BaseSettingsActivity implements MainSe
     @Override
     public Fragment getContainerFragment() {
         return new MainSettingsFragment();
+    }
+
+    @Override
+    public String getActivityName() {
+        return MainSettingsActivity.class.getSimpleName();
+    }
+
+    @Override
+    protected void initViewComponents(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void restoreSavedInstanceState(Bundle savedInstanceState) {
+
     }
 
     @Override
