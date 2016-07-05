@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ public class CalendarFragment extends Fragment {
     private CalendarAdapter mCalendarAdapter;
 
     private RecyclerView mTodayLottery;
-    private RecyclerView.Adapter mTodayLotteryAdapter;
+    private LotteryAdapter mTodayLotteryAdapter;
 
     private int mYear, mMonth, mDay;
 
@@ -119,5 +120,8 @@ public class CalendarFragment extends Fragment {
 
     private void initTodayLottery(View root) {
         mTodayLottery = (RecyclerView) root.findViewById(R.id.today_lottery);
+        mTodayLottery.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTodayLotteryAdapter = new LotteryAdapter();
+        mTodayLottery.setAdapter(mTodayLotteryAdapter);
     }
 }

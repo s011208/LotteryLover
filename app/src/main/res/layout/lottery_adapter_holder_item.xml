@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lottery_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingLeft="@dimen/calendar_item_text_horizontal_padding"
+    android:paddingRight="@dimen/calendar_item_text_horizontal_padding"
+    android:paddingTop="@dimen/calendar_item_text_vertical_padding"
+    android:paddingBottom="@dimen/calendar_item_text_vertical_padding"
+    android:textColor="@android:color/black"
+    android:textSize="@dimen/calendar_item_text_size">
+
+</TextView>
