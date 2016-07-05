@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import yhh.bj4.lotterylover.analytics.Analytics;
 import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.firebase.RemoteConfigHelper;
-import yhh.bj4.lotterylover.fragments.MainTableFragment;
+import yhh.bj4.lotterylover.fragments.maintable.MainTableFragment;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
@@ -146,7 +146,7 @@ public class MainTableActivity extends BaseActivity
 
     @Override
     public int getContentViewResource() {
-        return R.layout.activity_view_all;
+        return R.layout.activity_main_table;
     }
 
     @Override

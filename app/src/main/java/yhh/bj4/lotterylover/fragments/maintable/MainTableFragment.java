@@ -1,4 +1,4 @@
-package yhh.bj4.lotterylover.fragments;
+package yhh.bj4.lotterylover.fragments.maintable;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

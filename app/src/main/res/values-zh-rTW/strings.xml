@@ -97,4 +97,7 @@
     <string name="view_all_activity_toast_cannot_find_store">無法打開評分頁面</string>
     <!-- FCM service -->
     <string name="update_task_dialog_title">版本 %s 可以更新</string>
+
+    <!-- Calendar activity-->
+    <string name="calender_activity_title">樂透日曆</string>
 </resources>

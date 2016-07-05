@@ -97,4 +97,7 @@
 
     <!-- FCM service -->
     <string name="update_task_dialog_title">Version %s is available</string>
+
+    <!-- Calendar activity-->
+    <string name="calender_activity_title">Lottery calendar</string>
 </resources>
