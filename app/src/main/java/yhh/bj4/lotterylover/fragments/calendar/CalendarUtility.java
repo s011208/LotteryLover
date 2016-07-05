@@ -22,6 +22,10 @@ public class CalendarUtility {
         sShortWeekdayList.remove(0);
     }
 
+    public static List<String> getShortWeekdayList() {
+        return new ArrayList<>(sShortWeekdayList);
+    }
+
     /**
      * get all date data which will be display on calendar view
      *

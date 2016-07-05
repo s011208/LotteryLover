@@ -16,4 +16,11 @@
 
     <!-- main table adapter-->
     <dimen name="main_table_adapter_content_text_size">16sp</dimen>
+
+    <!-- calendar item -->
+    <dimen name="calendar_item_text_size">14sp</dimen>
+    <dimen name="calendar_item_text_horizontal_padding">4dp</dimen>
+    <dimen name="calendar_item_text_vertical_padding">8dp</dimen>
+    <dimen name="calendar_date_title_text_size">16sp</dimen>
+    <dimen name="calendar_date_title_text_horizontal_padding">16dp</dimen>
 </resources>
