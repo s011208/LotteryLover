@@ -8,14 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.crash.FirebaseCrash;
 
-import yhh.bj4.lotterylover.firebase.RemoteConfigHelper;
-
 /**
  * Created by yenhsunhuang on 2016/6/28.
  */
 public abstract class BaseActivity extends AppCompatActivity {
-    private static final String TAG = "BaseActivity";
-    private static final boolean DEBUG = Utilities.DEBUG;
+    static final String TAG = "BaseActivity";
+    static final boolean DEBUG = Utilities.DEBUG;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +25,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         initActionBar(savedInstanceState);
         initViewComponents(savedInstanceState);
+
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 
     public abstract int getContentViewResource();
 
     public abstract String getActivityName();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onResume() {
@@ -57,6 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         }
     }
 }

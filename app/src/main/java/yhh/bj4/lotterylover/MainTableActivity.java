@@ -57,7 +57,6 @@ public class MainTableActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainTableFragment.Callback {
 
     private static final String TAG = "MainTableActivity";
-    private static final boolean DEBUG = Utilities.DEBUG;
 
     private static final int REQUEST_SETTINGS = 1000;
 
@@ -68,6 +67,8 @@ public class MainTableActivity extends BaseActivity
     private RecyclerView mListTypeView;
     private ListTypeAdapter mListTypeAdapter;
     private AdView mAdView;
+
+    private int mDrawerSelectedItemId;
 
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -190,6 +191,10 @@ public class MainTableActivity extends BaseActivity
         if (mAdView != null && Utilities.isEnableAds(MainTableActivity.this)) {
             mAdView.resume();
         }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setCheckedItem(R.id.nav_list);
+        }
     }
 
     @Override
@@ -279,9 +284,36 @@ public class MainTableActivity extends BaseActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if (mDrawerSelectedItemId == R.id.nav_calendar) {
+                    Intent startIntent = new Intent(MainTableActivity.this, CalendarActivity.class);
+                    startActivity(startIntent);
+                } else if (mDrawerSelectedItemId == R.id.nav_analyze) {
+                } else if (mDrawerSelectedItemId == R.id.nav_rating_us) {
+                    Utilities.startRatingUsAction(MainTableActivity.this);
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         mListTypeView = (RecyclerView) findViewById(R.id.list_type_recyclerview);
@@ -400,18 +432,13 @@ public class MainTableActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        final int id = item.getItemId();
-        if (id == R.id.nav_list) {
+        mDrawerSelectedItemId = item.getItemId();
+        if (mDrawerSelectedItemId == R.id.nav_list) {
             if (Utilities.areAllLtoItemsAreInit(this)) {
                 mLoadingProgressbar.setVisibility(View.INVISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
             }
-        } else if (id == R.id.nav_calendar) {
-        } else if (id == R.id.nav_analyze) {
-        } else if (id == R.id.nav_rating_us) {
-            Utilities.startRatingUsAction(MainTableActivity.this);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
