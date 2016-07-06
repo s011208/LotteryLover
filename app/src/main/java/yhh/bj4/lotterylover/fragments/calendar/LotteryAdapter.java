@@ -42,12 +42,17 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ((TodayLotteryItemHolder) holder).getText().setText(String.valueOf(getItem(position).getLotteryType() +
+                ": " + getItem(position).getLotteryItem().getDrawingDateTime()));
+    }
 
+    public TodayLotteryItem getItem(int position) {
+        return mItems.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mItems.size();
     }
 
     @Override

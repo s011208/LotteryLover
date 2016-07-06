@@ -7,12 +7,18 @@ import yhh.bj4.lotterylover.parser.LotteryItem;
  */
 public class TodayLotteryItem {
     private final LotteryItem mLotteryItem;
+    private final int mLotteryType;
 
-    public TodayLotteryItem(LotteryItem lotteryItem) {
+    public TodayLotteryItem(LotteryItem lotteryItem, int type) {
         mLotteryItem = lotteryItem;
+        mLotteryType = type;
     }
 
     public LotteryItem getLotteryItem() {
         return mLotteryItem;
+    }
+
+    public int getLotteryType() {
+        return mLotteryType;
     }
 }

@@ -22,7 +22,7 @@ import yhh.bj4.lotterylover.R;
 /**
  * Created by yenhsunhuang on 2016/7/1.
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements CalendarAdapter.Callback {
     private ImageView mPreviousMonth, mNextMonth;
     private TextView mSelectYearAndMonth;
 
@@ -61,7 +61,7 @@ public class CalendarFragment extends Fragment {
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-                mCalendarAdapter.setDateInfo(mYear, mMonth, mDay);
+                mCalendarAdapter.setDateInfo(mYear, mMonth);
                 mSelectYearAndMonth.setText(new SimpleDateFormat("yyyy.MM",
                         getActivity().getResources().getConfiguration().locale).format(c.getTime()));
             }
@@ -76,7 +76,7 @@ public class CalendarFragment extends Fragment {
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-                mCalendarAdapter.setDateInfo(mYear, mMonth, mDay);
+                mCalendarAdapter.setDateInfo(mYear, mMonth);
                 mSelectYearAndMonth.setText(new SimpleDateFormat("yyyy.MM",
                         getActivity().getResources().getConfiguration().locale).format(c.getTime()));
             }
@@ -96,7 +96,8 @@ public class CalendarFragment extends Fragment {
                         mDay = dayOfMonth;
                         Calendar c = Calendar.getInstance();
                         c.set(mYear, mMonth, mDay);
-                        mCalendarAdapter.setDateInfo(mYear, mMonth, mDay);
+                        mCalendarAdapter.setDateInfo(mYear, mMonth);
+                        mTodayLotteryAdapter.setDate(mYear, mMonth, mDay);
                         mSelectYearAndMonth.setText(new SimpleDateFormat("yyyy.MM",
                                 getActivity().getResources().getConfiguration().locale).format(c.getTime()));
                     }
@@ -113,15 +114,24 @@ public class CalendarFragment extends Fragment {
         mCalendar.setLayoutManager(new GridLayoutManager(getActivity(), 7));
         mCalendar.getRecycledViewPool().setMaxRecycledViews(CalendarAdapter.TYPE_WEEKDAY, 7);
         mCalendar.getRecycledViewPool().setMaxRecycledViews(CalendarAdapter.TYPE_DATE, 42);
-        mCalendarAdapter = new CalendarAdapter(getActivity());
-        mCalendarAdapter.setDateInfo(mYear, mMonth, mDay);
+        mCalendarAdapter = new CalendarAdapter(getActivity(), this);
+        mCalendarAdapter.setDateInfo(mYear, mMonth);
         mCalendar.setAdapter(mCalendarAdapter);
     }
 
     private void initTodayLottery(View root) {
         mTodayLottery = (RecyclerView) root.findViewById(R.id.today_lottery);
         mTodayLottery.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mTodayLotteryAdapter = new LotteryAdapter();
+        mTodayLotteryAdapter = new LotteryAdapter(getActivity());
+        mTodayLotteryAdapter.setDate(mYear, mMonth, mDay);
         mTodayLottery.setAdapter(mTodayLotteryAdapter);
+    }
+
+    @Override
+    public void onDateSelected(int y, int m, int d) {
+        mYear = y;
+        mMonth = m;
+        mDay = d;
+        mTodayLotteryAdapter.setDate(mYear, mMonth, mDay);
     }
 }

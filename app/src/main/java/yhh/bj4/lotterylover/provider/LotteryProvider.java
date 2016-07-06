@@ -39,6 +39,9 @@ public class LotteryProvider extends ContentProvider {
     public static final int FALSE = 0;
 
     private static final String AUTHORITY = "yhh.bj4.lotterylover.lottery_provider";
+
+    public static final Uri QUERY_ALL_LTO_TABLE_NAME = Uri.parse("content://" + AUTHORITY + "/" + "QUERY_ALL_LTO_TABLE_NAME");
+
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int APP_SETTINGS_MATCHER = 0;
     private static final int LTO_MATCHER = 1;
@@ -56,6 +59,7 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_EM_MATCHER = 13;
     private static final int LTO_LIST3_MATCHER = 14;
     private static final int LTO_LIST4_MATCHER = 15;
+    private static final int QUERY_ALL_LTO_TABLE_NAME_MATCHER = 100;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
@@ -76,6 +80,9 @@ public class LotteryProvider extends ContentProvider {
         sMatcher.addURI(AUTHORITY, LtoEm.TABLE_NAME, LTO_EM_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoList3.TABLE_NAME, LTO_LIST3_MATCHER);
         sMatcher.addURI(AUTHORITY, LtoList4.TABLE_NAME, LTO_LIST4_MATCHER);
+        sMatcher.addURI(AUTHORITY, LtoList4.TABLE_NAME, LTO_LIST4_MATCHER);
+
+        sMatcher.addURI(AUTHORITY, "QUERY_ALL_LTO_TABLE_NAME", QUERY_ALL_LTO_TABLE_NAME_MATCHER);
     }
 
     private SQLiteDatabase mDatabase;
@@ -156,6 +163,11 @@ public class LotteryProvider extends ContentProvider {
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.query(AppSettings.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            case QUERY_ALL_LTO_TABLE_NAME_MATCHER:
+                rtn = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
+                        "WHERE type='table' and name !='android_metadata' and name != 'AppSettings'", null);
+                break;
+
             default:
                 throw new RuntimeException("unexpected query uri: " + uri);
         }

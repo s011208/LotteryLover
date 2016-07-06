@@ -24,22 +24,34 @@ import yhh.bj4.lotterylover.fragments.calendar.item.CalendarItemWeekDay;
  * Created by yenhsunhuang on 2016/7/4.
  */
 public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDateDataTask.Callback {
+    public interface Callback {
+        void onDateSelected(int y, int m, int d);
+    }
+
     public static final int TYPE_DATE = 0;
     public static final int TYPE_WEEKDAY = 1;
     private final List<CalendarItem> mItems = new ArrayList<>();
     private final Context mContext;
     private final LayoutInflater mInflater;
-    private int mYear, mMonth, mDay;
+    private int mYear, mMonth;
+    private int mSelectedYear, mSelectedMonth, mSelectedDay;
 
-    public CalendarAdapter(Context context) {
+    private Callback mCallback;
+
+    public CalendarAdapter(Context context, Callback cb) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mCallback = cb;
+
+        Calendar c = Calendar.getInstance();
+        mSelectedYear = c.get(Calendar.YEAR);
+        mSelectedMonth = c.get(Calendar.MONTH);
+        mSelectedDay = c.get(Calendar.DAY_OF_MONTH);
     }
 
-    public void setDateInfo(int y, int m, int d) {
+    public void setDateInfo(int y, int m) {
         mYear = y;
         mMonth = m;
-        mDay = d;
         new RetrieveDateDataTask(mYear, mMonth, mContext, this)
                 .executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
@@ -86,7 +98,7 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
         currentCalendar.set(Calendar.SECOND, 0);
         currentCalendar.set(Calendar.MILLISECOND, 0);
 
-        Calendar dataCalendar = Calendar.getInstance();
+        final Calendar dataCalendar = Calendar.getInstance();
         dataCalendar.setTime(item.getDate());
         int dataMonth = dataCalendar.get(Calendar.MONTH);
 
@@ -102,17 +114,25 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
             dateHolder.getBorder().setClickable(false);
         } else {
             if (currentCalendar.getTimeInMillis() == dataCalendar.getTimeInMillis()) {
-                dateHolder.getText().setTextColor(Color.BLUE);
-                dateHolder.getBorder().setBackgroundResource(R.drawable.calendar_item_background);
-                dateHolder.getBorder().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
+                dateHolder.getText().setTextColor(Color.RED);
             } else {
                 dateHolder.getText().setTextColor(Color.BLACK);
             }
+            if (mSelectedYear == dataCalendar.get(Calendar.YEAR) &&
+                    mSelectedMonth == dataCalendar.get(Calendar.MONTH) &&
+                    mSelectedDay == dataCalendar.get(Calendar.DAY_OF_MONTH)) {
+                dateHolder.getBorder().setBackgroundResource(R.drawable.calendar_item_background);
+            }
+            dateHolder.getBorder().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSelectedYear = dataCalendar.get(Calendar.YEAR);
+                    mSelectedMonth = dataCalendar.get(Calendar.MONTH);
+                    mSelectedDay = dataCalendar.get(Calendar.DAY_OF_MONTH);
+                    mCallback.onDateSelected(mSelectedYear, mSelectedMonth, mSelectedDay);
+                    notifyDataSetChanged();
+                }
+            });
         }
         dateHolder.getText().setText(String.valueOf(dataCalendar.get(Calendar.DAY_OF_MONTH)));
     }
