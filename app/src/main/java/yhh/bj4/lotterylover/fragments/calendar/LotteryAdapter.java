@@ -20,7 +20,6 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
     private final Context mContext;
     private final LayoutInflater mInflater;
 
-    private int mYear, mMonth, mDay;
     private final List<TodayLotteryItem> mItems = new ArrayList<>();
 
     public LotteryAdapter(Context context) {
@@ -29,9 +28,6 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
     }
 
     public void setDate(int y, int m, int d) {
-        mYear = y;
-        mMonth = m;
-        mDay = d;
         new RetrieveTodayLotteryTask(mContext, this, y, m, d).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -42,8 +38,7 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((TodayLotteryItemHolder) holder).getText().setText(String.valueOf(getItem(position).getLotteryType() +
-                ": " + getItem(position).getLotteryItem().getDrawingDateTime()));
+        ((TodayLotteryItemHolder) holder).getText().setText(getItem(position).getSpannableString());
     }
 
     public TodayLotteryItem getItem(int position) {

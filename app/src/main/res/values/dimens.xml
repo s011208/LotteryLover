@@ -23,4 +23,9 @@
     <dimen name="calendar_item_text_vertical_padding">8dp</dimen>
     <dimen name="calendar_date_title_text_size">16sp</dimen>
     <dimen name="calendar_date_title_text_horizontal_padding">16dp</dimen>
+
+    <!-- lottery adapter item -->
+    <dimen name="lottery_item_text_horizontal_padding">8dp</dimen>
+    <dimen name="lottery_item_text_vertical_padding">8dp</dimen>
+    <dimen name="lottery_item_text_size">18sp</dimen>
 </resources>

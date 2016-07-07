@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 import yhh.bj4.lotterylover.LotteryLover;
+import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.fragments.calendar.item.TodayLotteryItem;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
@@ -63,22 +64,11 @@ public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, ArrayList<To
 
         final long endTime = c.getTimeInMillis();
 
+        String[] ltoNames = context.getResources().getStringArray(R.array.action_bar_spinner_lto_type);
         int ltoCount = 15;
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO, startTime, endTime), LotteryLover.LTO_TYPE_LTO));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO2C, startTime, endTime), LotteryLover.LTO_TYPE_LTO2C));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO7C, startTime, endTime), LotteryLover.LTO_TYPE_LTO7C));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_BIG, startTime, endTime), LotteryLover.LTO_TYPE_LTO_BIG));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_DOF, startTime, endTime), LotteryLover.LTO_TYPE_LTO_DOF));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_HK, startTime, endTime), LotteryLover.LTO_TYPE_LTO_HK));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_539, startTime, endTime), LotteryLover.LTO_TYPE_LTO_539));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_POW, startTime, endTime), LotteryLover.LTO_TYPE_LTO_POW));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_MM, startTime, endTime), LotteryLover.LTO_TYPE_LTO_MM));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_J6, startTime, endTime), LotteryLover.LTO_TYPE_LTO_J6));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_TOTO, startTime, endTime), LotteryLover.LTO_TYPE_LTO_TOTO));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_AU_POW, startTime, endTime), LotteryLover.LTO_TYPE_LTO_AU_POW));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_EM, startTime, endTime), LotteryLover.LTO_TYPE_LTO_EM));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3, startTime, endTime), LotteryLover.LTO_TYPE_LTO_LIST3));
-        rtn.add(new TodayLotteryItem(getItemFromCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4, startTime, endTime), LotteryLover.LTO_TYPE_LTO_LIST4));
+        for (int i = 0; i < ltoCount; ++i) {
+            rtn.add(new TodayLotteryItem(getItemFromCursor(context, i, startTime, endTime), i, ltoNames[i]));
+        }
 
         Iterator<TodayLotteryItem> items = rtn.iterator();
         while (items.hasNext()) {
