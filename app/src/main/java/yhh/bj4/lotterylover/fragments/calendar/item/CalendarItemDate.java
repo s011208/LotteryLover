@@ -9,12 +9,19 @@ public class CalendarItemDate extends CalendarItem {
 
     private final Date mDate;
 
-    public CalendarItemDate(Date date) {
+    private final boolean mHasDrawing;
+
+    public CalendarItemDate(Date date, boolean hasDrawing) {
         mDate = date;
+        mHasDrawing = hasDrawing;
     }
 
     public Date getDate() {
         return mDate;
+    }
+
+    public boolean hasDrawing() {
+        return mHasDrawing;
     }
 
     @Override

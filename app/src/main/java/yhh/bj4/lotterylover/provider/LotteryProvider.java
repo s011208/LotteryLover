@@ -6,12 +6,20 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
 import yhh.bj4.lotterylover.parser.lto.Lto;
 import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
@@ -41,6 +49,7 @@ public class LotteryProvider extends ContentProvider {
     private static final String AUTHORITY = "yhh.bj4.lotterylover.lottery_provider";
 
     public static final Uri QUERY_ALL_LTO_TABLE_NAME = Uri.parse("content://" + AUTHORITY + "/" + "QUERY_ALL_LTO_TABLE_NAME");
+    public static final Uri QUERY_LTO_DRAWING_DATE = Uri.parse("content://" + AUTHORITY + "/" + "QUERY_LTO_DRAWING_DATE");
 
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int APP_SETTINGS_MATCHER = 0;
@@ -60,6 +69,7 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_LIST3_MATCHER = 14;
     private static final int LTO_LIST4_MATCHER = 15;
     private static final int QUERY_ALL_LTO_TABLE_NAME_MATCHER = 100;
+    private static final int QUERY_LTO_DRAWING_DATE_MATCHER = 101;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
@@ -83,6 +93,7 @@ public class LotteryProvider extends ContentProvider {
         sMatcher.addURI(AUTHORITY, LtoList4.TABLE_NAME, LTO_LIST4_MATCHER);
 
         sMatcher.addURI(AUTHORITY, "QUERY_ALL_LTO_TABLE_NAME", QUERY_ALL_LTO_TABLE_NAME_MATCHER);
+        sMatcher.addURI(AUTHORITY, "QUERY_LTO_DRAWING_DATE", QUERY_LTO_DRAWING_DATE_MATCHER);
     }
 
     private SQLiteDatabase mDatabase;
@@ -167,7 +178,40 @@ public class LotteryProvider extends ContentProvider {
                 rtn = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
                         "WHERE type='table' and name !='android_metadata' and name != 'AppSettings'", null);
                 break;
+            case QUERY_LTO_DRAWING_DATE_MATCHER:
+                MatrixCursor matrixCursor = new MatrixCursor(new String[]{LotteryItem.COLUMN_DRAWING_DATE_TIME});
+                Cursor allLtoTableNameCursor = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
+                        "WHERE type='table' and name !='android_metadata' and name != 'AppSettings'", null);
+                if (allLtoTableNameCursor == null) return matrixCursor;
+                List<String> tableNames = new ArrayList<>();
+                try {
+                    while (allLtoTableNameCursor.moveToNext()) {
+                        tableNames.add(allLtoTableNameCursor.getString(0));
+                    }
+                } finally {
+                    allLtoTableNameCursor.close();
+                }
+                Set<Long> dateSet = new HashSet<>();
+                for (String tableName : tableNames) {
+                    Cursor ltoDateCursor = mDatabase.query(tableName, new String[]{LotteryItem.COLUMN_DRAWING_DATE_TIME}, selection, selectionArgs, null, null, null);
+                    if (ltoDateCursor == null) continue;
+                    try {
+                        while (ltoDateCursor.moveToNext()) {
+                            dateSet.add(ltoDateCursor.getLong(0));
+                        }
+                    } finally {
+                        ltoDateCursor.close();
+                    }
+                }
 
+                Iterator<Long> dateSetIterator = dateSet.iterator();
+                while (dateSetIterator.hasNext()) {
+                    Long date = dateSetIterator.next();
+                    matrixCursor.addRow(new Long[]{date});
+                }
+
+                rtn = matrixCursor;
+                break;
             default:
                 throw new RuntimeException("unexpected query uri: " + uri);
         }

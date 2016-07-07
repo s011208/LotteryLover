@@ -134,6 +134,7 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
                 }
             });
         }
+
         dateHolder.getText().setText(String.valueOf(dataCalendar.get(Calendar.DAY_OF_MONTH)));
     }
 
