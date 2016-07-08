@@ -1,5 +1,6 @@
 package yhh.bj4.lotterylover.views.table.main.item;
 
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
@@ -152,19 +153,18 @@ public class TypePlusAndMinus extends MainTableItem {
 
         SpannableString rtn = new SpannableString(builder.toString());
 
+        if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
+            rtn.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
         // first spe
         rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         rtn.setSpan(new RelativeSizeSpan(SEP_RELATIVE_SIZE), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime - 3, indexOfDrawingTime, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence - 5, indexOfSequence, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        }
-
-        if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new BackgroundColorSpan(mWindowBackgroundColor), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime - 3, indexOfDrawingTime, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence - 5, indexOfSequence, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // rest of spe

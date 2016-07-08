@@ -1,5 +1,6 @@
 package yhh.bj4.lotterylover.views.table.main.item;
 
+import android.graphics.Color;
 import android.support.v4.util.Pair;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -97,14 +98,14 @@ public class TypeNumeric extends MainTableItem {
 
         // drawing time & sequence
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER) {
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // rest of spe of normal
@@ -133,7 +134,7 @@ public class TypeNumeric extends MainTableItem {
             for (int i = 0; i < indexOfNormal.size(); ++i) {
                 final int startIndex = indexOfNormal.get(i);
                 final int endIndex = startIndex + digitLengthDiff;
-                rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
 
@@ -143,7 +144,7 @@ public class TypeNumeric extends MainTableItem {
             final int endIndex = startIndex + mDigitLength;
             if (mItemType == ITEM_TYPE_HEADER) {
                 if (digitLengthDiff > 0) {
-                    rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex + digitLengthDiff, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -152,7 +153,7 @@ public class TypeNumeric extends MainTableItem {
                 rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR_OF_HEADER_AND_FOOTER), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 if (digitLengthDiff > 0) {
-                    rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), startIndex, startIndex + digitLengthDiff, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex + digitLengthDiff, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     rtn.setSpan(new ForegroundColorSpan(SPECIAL_NUMBER_COLOR), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -164,7 +165,7 @@ public class TypeNumeric extends MainTableItem {
         for (int i = 0; i < indexOfZero.size(); ++i) {
             final int startIndex = indexOfZero.get(i);
             final int endIndex = startIndex + mDigitLength;
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         return rtn;

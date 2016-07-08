@@ -1,5 +1,6 @@
 package yhh.bj4.lotterylover.views.table.main.item;
 
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
@@ -119,7 +120,7 @@ public class TypeCombinedList extends MainTableItem {
         for (int i = 0; i < indexOfEmpty.size(); ++i) {
             final int startIndex = indexOfEmpty.get(i);
             final int endIndex = startIndex + 1;
-            rtn.setSpan(new ForegroundColorSpan(mWindowBackgroundColor), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         return rtn;
