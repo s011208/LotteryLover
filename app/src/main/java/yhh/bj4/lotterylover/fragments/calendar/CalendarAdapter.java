@@ -107,7 +107,7 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
         dataCalendar.set(Calendar.SECOND, 0);
         dataCalendar.set(Calendar.MILLISECOND, 0);
 
-        dateHolder.getBorder().setBackgroundResource(0);
+        dateHolder.getSelectedBackground().setVisibility(View.INVISIBLE);
         dateHolder.getBorder().setOnClickListener(null);
         if (dataMonth != mMonth) {
             dateHolder.getText().setTextColor(Color.LTGRAY);
@@ -121,7 +121,7 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
             if (mSelectedYear == dataCalendar.get(Calendar.YEAR) &&
                     mSelectedMonth == dataCalendar.get(Calendar.MONTH) &&
                     mSelectedDay == dataCalendar.get(Calendar.DAY_OF_MONTH)) {
-                dateHolder.getBorder().setBackgroundResource(R.drawable.calendar_item_background);
+                dateHolder.getSelectedBackground().setVisibility(View.VISIBLE);
             }
             dateHolder.getBorder().setOnClickListener(new View.OnClickListener() {
                 @Override

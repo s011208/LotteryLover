@@ -2,6 +2,7 @@ package yhh.bj4.lotterylover.fragments.calendar.holder;
 
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import yhh.bj4.lotterylover.R;
@@ -12,11 +13,13 @@ import yhh.bj4.lotterylover.R;
 public class CalendarItemDateHolder extends CalendarBaseHolder {
     private TextView mText;
     private FrameLayout mBorder;
+    private ImageView mSelectedBackground;
 
     public CalendarItemDateHolder(View itemView) {
         super(itemView);
         mBorder = (FrameLayout) itemView;
         mText = (TextView) itemView.findViewById(R.id.calendar_text);
+        mSelectedBackground = (ImageView) itemView.findViewById(R.id.selected_background);
     }
 
     public FrameLayout getBorder() {
@@ -25,5 +28,9 @@ public class CalendarItemDateHolder extends CalendarBaseHolder {
 
     public TextView getText() {
         return mText;
+    }
+
+    public ImageView getSelectedBackground() {
+        return mSelectedBackground;
     }
 }
