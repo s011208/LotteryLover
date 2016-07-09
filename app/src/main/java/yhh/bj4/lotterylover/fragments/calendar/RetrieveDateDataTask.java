@@ -3,6 +3,7 @@ package yhh.bj4.lotterylover.fragments.calendar;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import yhh.bj4.lotterylover.fragments.calendar.item.CalendarItemDate;
 import yhh.bj4.lotterylover.fragments.calendar.item.CalendarItemWeekDay;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.provider.LotteryProvider;
+import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
  * Created by yenhsunhuang on 2016/7/5.
@@ -57,11 +59,14 @@ public class RetrieveDateDataTask extends AsyncTask<Void, Void, List<CalendarIte
                 , null, null);
 
         List<Long> drawingDateList = new ArrayList<>();
+        List<Integer> showLtoTipsList = ShowDrawingTip.getCheckedLtoType(mContext);
 
         if (dateCursor != null) {
             try {
                 while (dateCursor.moveToNext()) {
-                    drawingDateList.add(dateCursor.getLong(0));
+                    final int ltoType = dateCursor.getInt(0);
+                    if (!showLtoTipsList.contains(ltoType)) continue;
+                    drawingDateList.add(dateCursor.getLong(1));
                 }
             } finally {
                 dateCursor.close();

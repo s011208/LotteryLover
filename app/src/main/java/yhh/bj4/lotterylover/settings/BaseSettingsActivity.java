@@ -44,4 +44,14 @@ public abstract class BaseSettingsActivity extends BaseActivity {
     }
 
     public abstract Fragment getContainerFragment();
+
+    @Override
+    protected void initViewComponents(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void restoreSavedInstanceState(Bundle savedInstanceState) {
+
+    }
 }

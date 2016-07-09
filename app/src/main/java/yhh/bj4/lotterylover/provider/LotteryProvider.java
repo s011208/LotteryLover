@@ -13,11 +13,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
@@ -35,6 +33,7 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
+import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -50,6 +49,7 @@ public class LotteryProvider extends ContentProvider {
 
     public static final Uri QUERY_ALL_LTO_TABLE_NAME = Uri.parse("content://" + AUTHORITY + "/" + "QUERY_ALL_LTO_TABLE_NAME");
     public static final Uri QUERY_LTO_DRAWING_DATE = Uri.parse("content://" + AUTHORITY + "/" + "QUERY_LTO_DRAWING_DATE");
+
 
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int APP_SETTINGS_MATCHER = 0;
@@ -70,6 +70,7 @@ public class LotteryProvider extends ContentProvider {
     private static final int LTO_LIST4_MATCHER = 15;
     private static final int QUERY_ALL_LTO_TABLE_NAME_MATCHER = 100;
     private static final int QUERY_LTO_DRAWING_DATE_MATCHER = 101;
+    private static final int SHOW_DRAWING_TIP_MATCHER = 200;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
@@ -94,6 +95,7 @@ public class LotteryProvider extends ContentProvider {
 
         sMatcher.addURI(AUTHORITY, "QUERY_ALL_LTO_TABLE_NAME", QUERY_ALL_LTO_TABLE_NAME_MATCHER);
         sMatcher.addURI(AUTHORITY, "QUERY_LTO_DRAWING_DATE", QUERY_LTO_DRAWING_DATE_MATCHER);
+        sMatcher.addURI(AUTHORITY, ShowDrawingTip.TABLE_NAME, SHOW_DRAWING_TIP_MATCHER);
     }
 
     private SQLiteDatabase mDatabase;
@@ -176,12 +178,17 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case QUERY_ALL_LTO_TABLE_NAME_MATCHER:
                 rtn = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
-                        "WHERE type='table' and name !='android_metadata' and name != 'AppSettings'", null);
+                                "WHERE type='table' " +
+                                "and name !='android_metadata' and name != 'AppSettings' " +
+                                "and name !='" + ShowDrawingTip.TABLE_NAME + "'"
+                        , null);
                 break;
             case QUERY_LTO_DRAWING_DATE_MATCHER:
-                MatrixCursor matrixCursor = new MatrixCursor(new String[]{LotteryItem.COLUMN_DRAWING_DATE_TIME});
+                MatrixCursor matrixCursor = new MatrixCursor(new String[]{"type", LotteryItem.COLUMN_DRAWING_DATE_TIME});
                 Cursor allLtoTableNameCursor = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
-                        "WHERE type='table' and name !='android_metadata' and name != 'AppSettings'", null);
+                        "WHERE type='table' " +
+                        "and name !='android_metadata' and name != 'AppSettings' " +
+                        "and name !='" + ShowDrawingTip.TABLE_NAME + "'", null);
                 if (allLtoTableNameCursor == null) return matrixCursor;
                 List<String> tableNames = new ArrayList<>();
                 try {
@@ -191,26 +198,22 @@ public class LotteryProvider extends ContentProvider {
                 } finally {
                     allLtoTableNameCursor.close();
                 }
-                Set<Long> dateSet = new HashSet<>();
                 for (String tableName : tableNames) {
                     Cursor ltoDateCursor = mDatabase.query(tableName, new String[]{LotteryItem.COLUMN_DRAWING_DATE_TIME}, selection, selectionArgs, null, null, null);
                     if (ltoDateCursor == null) continue;
                     try {
+                        final int ltoType = getLotteryTypeByTableName(tableName);
                         while (ltoDateCursor.moveToNext()) {
-                            dateSet.add(ltoDateCursor.getLong(0));
+                            matrixCursor.addRow(new Object[]{ltoType, ltoDateCursor.getLong(0)});
                         }
                     } finally {
                         ltoDateCursor.close();
                     }
                 }
-
-                Iterator<Long> dateSetIterator = dateSet.iterator();
-                while (dateSetIterator.hasNext()) {
-                    Long date = dateSetIterator.next();
-                    matrixCursor.addRow(new Long[]{date});
-                }
-
                 rtn = matrixCursor;
+                break;
+            case SHOW_DRAWING_TIP_MATCHER:
+                rtn = mDatabase.query(ShowDrawingTip.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new RuntimeException("unexpected query uri: " + uri);
@@ -284,6 +287,9 @@ public class LotteryProvider extends ContentProvider {
                     builder.appendQueryParameter(PARAMETER_NOTIFY, notify);
                 }
                 rtn = builder.build();
+                break;
+            case SHOW_DRAWING_TIP_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(ShowDrawingTip.TABLE_NAME, null, values));
                 break;
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
@@ -404,6 +410,9 @@ public class LotteryProvider extends ContentProvider {
                 mDatabase.replace(AppSettings.TABLE_NAME, null, values);
                 rtn = 1;
                 break;
+            case SHOW_DRAWING_TIP_MATCHER:
+                rtn = mDatabase.update(ShowDrawingTip.TABLE_NAME, values, selection, selectionArgs);
+                break;
             default:
                 throw new RuntimeException("unexpected update uri: " + uri);
         }
@@ -463,6 +472,9 @@ public class LotteryProvider extends ContentProvider {
             case APP_SETTINGS_MATCHER:
                 rtn = bulkInsert(AppSettings.TABLE_NAME, values);
                 break;
+            case SHOW_DRAWING_TIP_MATCHER:
+                rtn = bulkInsert(ShowDrawingTip.TABLE_NAME, values);
+                break;
             default:
                 throw new RuntimeException("unexpected bulkInsert uri: " + uri);
         }
@@ -514,5 +526,25 @@ public class LotteryProvider extends ContentProvider {
 
     private void clearTable(Uri uri) {
         delete(uri, null, null);
+    }
+
+    private static int getLotteryTypeByTableName(final String tableName) {
+        if (Lto.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO;
+        else if (Lto2C.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO2C;
+        else if (Lto7C.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO7C;
+        else if (Lto539.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_539;
+        else if (LtoBig.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_BIG;
+        else if (LtoHK.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_HK;
+        else if (LtoDof.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_DOF;
+        else if (LtoPow.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_POW;
+        else if (LtoMM.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_MM;
+        else if (LtoJ6.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_J6;
+        else if (LtoToTo.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_TOTO;
+        else if (LtoAuPow.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_AU_POW;
+        else if (LtoEm.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_EM;
+        else if (LtoList3.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_LIST3;
+        else if (LtoList4.TABLE_NAME.equals(tableName)) return LotteryLover.LTO_TYPE_LTO_LIST4;
+
+        else throw new RuntimeException("unexpected table name: " + tableName);
     }
 }

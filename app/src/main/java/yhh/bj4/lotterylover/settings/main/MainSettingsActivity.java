@@ -30,16 +30,6 @@ public class MainSettingsActivity extends BaseSettingsActivity implements MainSe
     }
 
     @Override
-    protected void initViewComponents(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void restoreSavedInstanceState(Bundle savedInstanceState) {
-
-    }
-
-    @Override
     public void onBackPressed() {
         if (mChangedItemList.isEmpty()) {
             super.onBackPressed();

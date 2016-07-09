@@ -100,4 +100,11 @@
 
     <!-- Calendar activity-->
     <string name="calender_activity_title">樂透日曆</string>
+
+    <!-- Calendar settings -->
+    <string name="calender_settings_activity_name">日曆設定</string>
+
+    <string name="calender_settings_category_title">日曆內容</string>
+    <string name="calendar_settings_show_drawing_list">顯示開獎時間提示</string>
+    <string name="show_drawing_tip_activity_title">提示列表</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/calender_settings_category_title">
+        <Preference android:title="@string/calendar_settings_show_drawing_list"
+            android:key="show_drawing_list"/>
+    </PreferenceCategory>
+</PreferenceScreen>

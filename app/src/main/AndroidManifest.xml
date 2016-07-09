@@ -33,8 +33,7 @@
         <activity
             android:name=".CalendarActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <provider
             android:name=".provider.LotteryProvider"
@@ -69,12 +68,25 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".firebase.FMHelperService">
+        <service android:name=".firebase.FMHelperService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".settings.calendar.CalendarSettingsActivity"
+            android:label="@string/calender_settings_activity_name"
+            android:parentActivityName=".CalendarActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="UnusedAttribute" />
+
+        <activity
+            android:name=".settings.calendar.ShowDrawingTipActivity"
+            android:label="@string/calender_settings_activity_name"
+            android:parentActivityName=".settings.calendar.CalendarSettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="UnusedAttribute" />
     </application>
 
 </manifest>

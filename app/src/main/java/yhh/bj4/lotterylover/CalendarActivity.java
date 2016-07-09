@@ -1,5 +1,6 @@
 package yhh.bj4.lotterylover;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -7,15 +8,22 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import yhh.bj4.lotterylover.analytics.Analytics;
+import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.fragments.calendar.CalendarFragment;
+import yhh.bj4.lotterylover.settings.calendar.CalendarSettingsActivity;
 
 /**
  * Created by yenhsunhuang on 2016/7/5.
  */
-public class CalendarActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CalendarActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int REQUEST_SETTINGS = 1000;
+
     private int mDrawerSelectedItemId;
 
     @Override
@@ -104,5 +112,24 @@ public class CalendarActivity extends BaseActivity implements NavigationView.OnN
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_calendar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            AnalyticsHelper.getHelper(this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, new Bundle());
+            AnalyticsHelper.getHelper(CalendarActivity.this).logEvent(Analytics.EVENT_SETTINGS_BUTTON, null, null);
+            Intent intent = new Intent(CalendarActivity.this, CalendarSettingsActivity.class);
+            startActivityForResult(intent, REQUEST_SETTINGS);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

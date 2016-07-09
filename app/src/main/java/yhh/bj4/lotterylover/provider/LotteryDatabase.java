@@ -20,13 +20,14 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
+import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 9;
+    private static final int VERSION = 10;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -71,6 +72,9 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         // v9
         createTableLtoList4(db);
         createTableLtoList3(db);
+
+        // v10
+        createTableShowDrawingTip(db);
     }
 
     @Override
@@ -106,6 +110,10 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         if (oldVersion == 8) {
             createTableLtoList4(db);
             createTableLtoList3(db);
+            ++oldVersion;
+        }
+        if (oldVersion == 9) {
+            createTableShowDrawingTip(db);
             ++oldVersion;
         }
     }
@@ -172,5 +180,9 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     private void createTableLtoList3(SQLiteDatabase db) {
         db.execSQL(LtoList3.COMMAND_CREATE_TABLE(LtoList3.TABLE_NAME));
+    }
+
+    private void createTableShowDrawingTip(SQLiteDatabase db) {
+        db.execSQL(ShowDrawingTip.COMMAND_CREATE_TABLE);
     }
 }
