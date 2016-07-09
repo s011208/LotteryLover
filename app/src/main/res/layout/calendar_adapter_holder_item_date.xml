@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,7 +7,7 @@
         android:id="@+id/selected_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:scaleType="centerInside"
         android:src="@drawable/calendar_item_background" />
 
@@ -15,7 +15,7 @@
         android:id="@+id/calendar_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:background="?android:selectableItemBackground"
         android:gravity="center"
         android:paddingBottom="@dimen/calendar_item_text_vertical_padding"
@@ -23,7 +23,15 @@
         android:paddingRight="@dimen/calendar_item_text_horizontal_padding"
         android:paddingTop="@dimen/calendar_item_text_vertical_padding"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/calendar_item_text_size">
+        android:textSize="@dimen/calendar_item_text_size" />
 
-    </TextView>
-</FrameLayout>
+    <ImageView
+        android:id="@+id/show_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendar_text"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/calendar_item_show_tips_background"
+        android:visibility="invisible" />
+</RelativeLayout>

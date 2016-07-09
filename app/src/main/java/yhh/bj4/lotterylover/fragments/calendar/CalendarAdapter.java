@@ -3,7 +3,6 @@ package yhh.bj4.lotterylover.fragments.calendar;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,14 +136,9 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
         }
 
         if (item.hasDrawing()) {
-            dateHolder.getBorder().setBackgroundColor(Color.CYAN);
+            dateHolder.getShowTips().setVisibility(View.VISIBLE);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                dateHolder.getBorder().setBackground(null);
-            } else {
-                //noinspection deprecation
-                dateHolder.getBorder().setBackgroundDrawable(null);
-            }
+            dateHolder.getShowTips().setVisibility(View.INVISIBLE);
         }
 
         dateHolder.getText().setText(String.valueOf(dataCalendar.get(Calendar.DAY_OF_MONTH)));
