@@ -110,6 +110,8 @@ public class ShowDrawingTipActivity extends BaseActivity {
             CharSequence text = buttonView.getText();
             for (int i = 0; i < mLto.length; ++i) {
                 if (mLto[i].equals(text)) {
+                    mItems.remove(i);
+                    mItems.add(i, new Pair<>(i, isChecked));
                     ContentValues cv = new ContentValues();
                     cv.put(ShowDrawingTip.COLUMN_IS_CHECKED, isChecked ? LotteryProvider.TRUE : LotteryProvider.FALSE);
                     mContext.getContentResolver().update(ShowDrawingTip.URI, cv, ShowDrawingTip.COLUMN_LTO_TYPE + "=" + i, null);
