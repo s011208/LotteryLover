@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,14 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((TodayLotteryItemHolder) holder).getText().setText(getItem(position).getSpannableString());
+        TodayLotteryItem item = getItem(position);
+        TextView text = ((TodayLotteryItemHolder) holder).getText();
+        text.setText(item.getSpannableString());
+        if (item.isShowTipItem()) {
+            text.setCompoundDrawablesWithIntrinsicBounds(R.drawable.calendar_item_show_tips_background, 0, 0, 0);
+        } else {
+            text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
     }
 
     public TodayLotteryItem getItem(int position) {
@@ -51,7 +59,7 @@ public class LotteryAdapter extends RecyclerView.Adapter implements RetrieveToda
     }
 
     @Override
-    public void onFinish(ArrayList<TodayLotteryItem> items) {
+    public void onFinish(List<TodayLotteryItem> items) {
         mItems.clear();
         mItems.addAll(items);
         notifyDataSetChanged();

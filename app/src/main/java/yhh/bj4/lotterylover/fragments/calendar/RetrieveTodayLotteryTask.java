@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
@@ -29,17 +30,18 @@ import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.LotteryProvider;
+import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
  * Created by yenhsunhuang on 2016/7/5.
  */
-public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, ArrayList<TodayLotteryItem>> {
+public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, List<TodayLotteryItem>> {
     private final int mYear, mMonth, mDay;
     private final WeakReference<Context> mContext;
     private final WeakReference<Callback> mCallback;
 
     public interface Callback {
-        void onFinish(ArrayList<TodayLotteryItem> items);
+        void onFinish(List<TodayLotteryItem> items);
     }
 
     public RetrieveTodayLotteryTask(Context context, Callback cb, int y, int m, int d) {
@@ -51,8 +53,8 @@ public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, ArrayList<To
     }
 
     @Override
-    protected ArrayList<TodayLotteryItem> doInBackground(Void... params) {
-        ArrayList<TodayLotteryItem> rtn = new ArrayList<>();
+    protected List<TodayLotteryItem> doInBackground(Void... params) {
+        List<TodayLotteryItem> rtn = new ArrayList<>();
         final Context context = mContext.get();
         if (context == null) return rtn;
         Calendar c = Calendar.getInstance();
@@ -66,8 +68,15 @@ public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, ArrayList<To
 
         String[] ltoNames = context.getResources().getStringArray(R.array.action_bar_spinner_lto_type);
         int ltoCount = 15;
+        List<Integer> showLtoTipsList = ShowDrawingTip.getCheckedLtoType(context);
+        int indexOfTipItem = 0;
         for (int i = 0; i < ltoCount; ++i) {
-            rtn.add(new TodayLotteryItem(getItemFromCursor(context, i, startTime, endTime), i, ltoNames[i]));
+            if (showLtoTipsList.contains(i)) {
+                rtn.add(indexOfTipItem, new TodayLotteryItem(getItemFromCursor(context, i, startTime, endTime), i, ltoNames[i], true));
+                ++indexOfTipItem;
+            } else {
+                rtn.add(new TodayLotteryItem(getItemFromCursor(context, i, startTime, endTime), i, ltoNames[i], false));
+            }
         }
 
         Iterator<TodayLotteryItem> items = rtn.iterator();
@@ -382,7 +391,7 @@ public class RetrieveTodayLotteryTask extends AsyncTask<Void, Void, ArrayList<To
     }
 
     @Override
-    protected void onPostExecute(ArrayList<TodayLotteryItem> lotteryItems) {
+    protected void onPostExecute(List<TodayLotteryItem> lotteryItems) {
         super.onPostExecute(lotteryItems);
         Callback cb = mCallback.get();
         if (cb == null) return;

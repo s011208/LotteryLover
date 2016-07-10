@@ -3,11 +3,12 @@
     android:id="@+id/lottery_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:drawablePadding="10dp"
     android:gravity="center"
+    android:paddingBottom="@dimen/lottery_item_text_vertical_padding"
     android:paddingLeft="@dimen/lottery_item_text_horizontal_padding"
     android:paddingRight="@dimen/lottery_item_text_horizontal_padding"
     android:paddingTop="@dimen/lottery_item_text_vertical_padding"
-    android:paddingBottom="@dimen/lottery_item_text_vertical_padding"
     android:textColor="@android:color/black"
     android:textSize="@dimen/lottery_item_text_size">
 

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -18,11 +19,17 @@ public class TodayLotteryItem {
     private final LotteryItem mLotteryItem;
     private final int mLotteryType;
     private final String mLotteryString;
+    private final boolean mIsShowTipItem;
 
-    public TodayLotteryItem(LotteryItem lotteryItem, int type, String ltoString) {
+    public TodayLotteryItem(LotteryItem lotteryItem, int type, String ltoString, boolean isShowTipItem) {
         mLotteryItem = lotteryItem;
         mLotteryType = type;
         mLotteryString = ltoString;
+        mIsShowTipItem = isShowTipItem;
+    }
+
+    public boolean isShowTipItem() {
+        return mIsShowTipItem;
     }
 
     public LotteryItem getLotteryItem() {
