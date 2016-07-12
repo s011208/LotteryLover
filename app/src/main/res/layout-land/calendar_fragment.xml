@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/month_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="4dp"
+                android:scaleType="center"
+                android:src="@drawable/calendar_previous_month_background" />
+
+            <TextView
+                android:id="@+id/select_y_and_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?android:selectableItemBackground"
+                android:gravity="center"
+                android:paddingLeft="@dimen/calendar_date_title_text_horizontal_padding"
+                android:paddingRight="@dimen/calendar_date_title_text_horizontal_padding"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/calendar_date_title_text_size" />
+
+            <ImageView
+                android:id="@+id/month_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="4dp"
+                android:scaleType="center"
+                android:src="@drawable/calendar_next_month_background" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/today_lottery"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"></android.support.v7.widget.RecyclerView>
+</LinearLayout>
