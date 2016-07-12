@@ -54,7 +54,6 @@
             android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/today_lottery"
         android:layout_width="match_parent"
