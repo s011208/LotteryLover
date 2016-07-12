@@ -310,9 +310,9 @@ public class MainTableActivity extends BaseActivity
             @Override
             public void onDrawerClosed(View drawerView) {
                 if (mDrawerSelectedItemId == R.id.nav_calendar) {
-                    Intent startIntent = new Intent(MainTableActivity.this, CalendarActivity.class);
-                    startActivity(startIntent);
+                    startActivity(new Intent(MainTableActivity.this, CalendarActivity.class));
                 } else if (mDrawerSelectedItemId == R.id.nav_analyze) {
+                    startActivity(new Intent(MainTableActivity.this, AnalyzeActivity.class));
                 } else if (mDrawerSelectedItemId == R.id.nav_rating_us) {
                     Utilities.startRatingUsAction(MainTableActivity.this);
                 }

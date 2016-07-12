@@ -108,4 +108,7 @@
     <string name="calendar_settings_show_drawing_list">顯示開獎時間提示</string>
     <string name="show_drawing_tip_activity_title">提示列表</string>
     <string name="show_drawing_tip_summary">藍色小點會顯示在日期下面提示開獎日期</string>
+
+    <!-- analyze activity -->
+    <string name="analyze_activity_title">樂透分析</string>
 </resources>

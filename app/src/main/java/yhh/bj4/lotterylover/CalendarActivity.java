@@ -16,7 +16,6 @@ import android.view.View;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,8 +141,9 @@ public class CalendarActivity extends BaseActivity
             @Override
             public void onDrawerClosed(View drawerView) {
                 if (mDrawerSelectedItemId == R.id.nav_list) {
-                    onBackPressed();
+                    startActivity(new Intent(CalendarActivity.this, MainTableActivity.class));
                 } else if (mDrawerSelectedItemId == R.id.nav_analyze) {
+                    startActivity(new Intent(CalendarActivity.this, AnalyzeActivity.class));
                 } else if (mDrawerSelectedItemId == R.id.nav_rating_us) {
                     Utilities.startRatingUsAction(CalendarActivity.this);
                 }

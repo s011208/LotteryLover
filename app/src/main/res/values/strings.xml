@@ -108,4 +108,7 @@
     <string name="calendar_settings_show_drawing_list">Show drawing time tip in calender</string>
     <string name="show_drawing_tip_activity_title">Tip list</string>
     <string name="show_drawing_tip_summary">The blue dot will show under the drawing date</string>
+
+    <!-- analyze activity -->
+    <string name="analyze_activity_title">Lottery analyze</string>
 </resources>
