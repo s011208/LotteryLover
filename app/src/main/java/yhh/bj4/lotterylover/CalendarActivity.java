@@ -13,6 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +38,39 @@ public class CalendarActivity extends BaseActivity
 
     private final List<Integer> mShowTipsLtoList = new ArrayList<>();
 
+    private AdView mAdView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CalendarFragment fragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getSimpleName());
         if (fragment == null) fragment = new CalendarFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, CalendarFragment.class.getSimpleName()).commitAllowingStateLoss();
+        initAds();
+    }
 
+    private void initAds() {
+        mAdView = (AdView) findViewById(R.id.adView);
+        if (mAdView == null) return;
+        if (Utilities.isEnableAds(CalendarActivity.this) == false) {
+            mAdView.setVisibility(View.GONE);
+            return;
+        }
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                mAdView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mAdView.setVisibility(View.VISIBLE);
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -64,6 +95,17 @@ public class CalendarActivity extends BaseActivity
                 CalendarFragment fragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getSimpleName());
                 if (fragment != null) fragment.updateCalendar();
             }
+        }
+        if (mAdView != null && Utilities.isEnableAds(CalendarActivity.this)) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAdView != null && Utilities.isEnableAds(CalendarActivity.this)) {
+            mAdView.pause();
         }
     }
 

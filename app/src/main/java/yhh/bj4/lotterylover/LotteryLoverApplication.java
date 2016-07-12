@@ -3,7 +3,8 @@ package yhh.bj4.lotterylover;
 import android.app.Application;
 import android.os.Process;
 
-import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
+import com.google.android.gms.ads.MobileAds;
+
 import yhh.bj4.lotterylover.applicationproxy.ApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.MainApplicationProxy;
 import yhh.bj4.lotterylover.applicationproxy.RemoteComponentsApplicationProxy;
@@ -21,6 +22,8 @@ public class LotteryLoverApplication extends Application {
         if (mApplicationProxy != null) {
             mApplicationProxy.onCreate();
         }
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-6361389364792908~8224049824");
     }
 
     @Override
