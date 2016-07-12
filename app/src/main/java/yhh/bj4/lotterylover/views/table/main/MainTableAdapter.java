@@ -1,10 +1,12 @@
 package yhh.bj4.lotterylover.views.table.main;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.views.table.main.holder.MainTableHolder;
 import yhh.bj4.lotterylover.views.table.main.holder.OverallContentHolder;
 import yhh.bj4.lotterylover.views.table.main.item.MainTableItem;
 import yhh.bj4.lotterylover.views.table.main.item.TypeCombinedList;
@@ -61,6 +64,10 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     private Callback mCallback;
 
     private ArrayList<LotteryItem> mLotteryItems = new ArrayList<>();
+
+    private int mSelectedIndex = -1;
+
+    private View mPreviousSelectedView = null;
 
     public MainTableAdapter(Context context, int ltoType, int listType, boolean showMonthlyDataOnly) {
         mContext = context;
@@ -145,7 +152,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final int viewType = getItemViewType(position);
         switch (viewType) {
             case TYPE_OVER_ALL_CONTENT:
@@ -166,6 +173,24 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             case TYPE_COMBINE_LIST:
                 bindCombinedListContent(holder, position);
                 break;
+        }
+        final MainTableHolder mainTableHolder = (MainTableHolder) holder;
+        mainTableHolder.getMainView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSelectedIndex = position;
+                if (mPreviousSelectedView != null) {
+                    mPreviousSelectedView.setBackgroundColor(Color.TRANSPARENT);
+                }
+                mainTableHolder.getMainView().setBackgroundColor(Color.CYAN);
+                mPreviousSelectedView = mainTableHolder.getMainView();
+            }
+        });
+        if (mSelectedIndex == position) {
+            mainTableHolder.getMainView().setBackgroundColor(Color.CYAN);
+            mPreviousSelectedView = mainTableHolder.getMainView();
+        } else {
+            mainTableHolder.getMainView().setBackgroundDrawable(null);
         }
     }
 
