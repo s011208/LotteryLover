@@ -1,5 +1,6 @@
 package yhh.bj4.lotterylover;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,10 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import yhh.bj4.lotterylover.analytics.Analytics;
 import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.fragments.calendar.CalendarFragment;
 import yhh.bj4.lotterylover.settings.calendar.CalendarSettingsActivity;
+import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
  * Created by yenhsunhuang on 2016/7/5.
@@ -25,6 +30,8 @@ public class CalendarActivity extends BaseActivity
     private static final int REQUEST_SETTINGS = 1000;
 
     private int mDrawerSelectedItemId;
+
+    private final List<Integer> mShowTipsLtoList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +46,22 @@ public class CalendarActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setCheckedItem(R.id.nav_calendar);
+        }
+        if (mShowTipsLtoList.isEmpty()) {
+            mShowTipsLtoList.addAll(ShowDrawingTip.getCheckedLtoType(CalendarActivity.this));
+        } else {
+            List<Integer> newTips = ShowDrawingTip.getCheckedLtoType(CalendarActivity.this);
+            boolean update = true;
+            if (newTips.size() == mShowTipsLtoList.size()) {
+                for (Integer newItem : newTips) {
+                    update = !mShowTipsLtoList.contains(newItem);
+                    if (update) break;
+                }
+            }
+            if (update) {
+                CalendarFragment fragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getSimpleName());
+                if (fragment != null) fragment.updateCalendar();
+            }
         }
     }
 
@@ -131,5 +154,15 @@ public class CalendarActivity extends BaseActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (REQUEST_SETTINGS == requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                CalendarFragment fragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getSimpleName());
+                if (fragment != null) fragment.updateCalendar();
+            }
+        }
     }
 }

@@ -134,4 +134,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.Callba
         mDay = d;
         mTodayLotteryAdapter.setDate(mYear, mMonth, mDay);
     }
+
+    public void updateCalendar() {
+        mCalendarAdapter.setDateInfo(mYear, mMonth);
+    }
 }
