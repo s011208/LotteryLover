@@ -36,7 +36,9 @@ public class CalendarActivity extends BaseActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment(), CalendarFragment.class.getSimpleName()).commitAllowingStateLoss();
+        CalendarFragment fragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getSimpleName());
+        if (fragment == null) fragment = new CalendarFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, CalendarFragment.class.getSimpleName()).commitAllowingStateLoss();
 
     }
 

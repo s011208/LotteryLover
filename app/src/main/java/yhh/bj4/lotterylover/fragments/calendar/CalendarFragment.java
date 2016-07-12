@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import yhh.bj4.lotterylover.R;
+import yhh.bj4.lotterylover.Utilities;
 
 /**
  * Created by yenhsunhuang on 2016/7/1.
  */
 public class CalendarFragment extends Fragment implements CalendarAdapter.Callback {
+    private static final String KEY_YEAR = "year";
+    private static final String KEY_MONTH = "month";
+    private static final String KEY_DAY = "day";
+
+    private static final String TAG = "CalendarFragment";
+    private static final boolean DEBUG = Utilities.DEBUG;
+
     private ImageView mPreviousMonth, mNextMonth;
     private TextView mSelectYearAndMonth;
 
@@ -38,16 +47,28 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.Callba
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.calendar_fragment, null);
-        if (savedInstanceState == null) {
-            Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-        } else {
-
+        Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        if (savedInstanceState != null) {
+            mYear = savedInstanceState.getInt(KEY_YEAR, mYear);
+            mMonth = savedInstanceState.getInt(KEY_MONTH, mMonth);
+            mDay = savedInstanceState.getInt(KEY_DAY, mDay);
+            if (DEBUG) {
+                Log.e(TAG, "restore, y: " + mYear + ", m: " + mMonth + ", d: " + mDay);
+            }
         }
         initComponents(root);
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_YEAR, mYear);
+        outState.putInt(KEY_MONTH, mMonth);
+        outState.putInt(KEY_DAY, mDay);
     }
 
     private void initComponents(View root) {
@@ -83,6 +104,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.Callba
         });
         mSelectYearAndMonth = (TextView) root.findViewById(R.id.select_y_and_m);
         Calendar c = Calendar.getInstance();
+        c.set(mYear, mMonth, mDay);
         mSelectYearAndMonth.setText(new SimpleDateFormat("yyyy.MM",
                 getActivity().getResources().getConfiguration().locale).format(c.getTime()));
         mSelectYearAndMonth.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +138,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.Callba
         mCalendar.getRecycledViewPool().setMaxRecycledViews(CalendarAdapter.TYPE_DATE, 42);
         mCalendarAdapter = new CalendarAdapter(getActivity(), this);
         mCalendarAdapter.setDateInfo(mYear, mMonth);
+        mCalendarAdapter.setSelectedDay(mYear, mMonth, mDay);
         mCalendar.setAdapter(mCalendarAdapter);
     }
 

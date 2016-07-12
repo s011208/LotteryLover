@@ -56,6 +56,12 @@ public class CalendarAdapter extends RecyclerView.Adapter implements RetrieveDat
                 .executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void setSelectedDay(int y, int m, int d) {
+        mSelectedYear = y;
+        mSelectedMonth = m;
+        mSelectedDay = d;
+    }
+
     @Override
     public void onFinish(List<CalendarItem> items) {
         mItems.clear();
