@@ -111,4 +111,7 @@
 
     <!-- analyze activity -->
     <string name="analyze_activity_title">樂透分析</string>
+    <string name="analyze_category_all_period">全部時間</string>
+    <string name="analyze_category_top_five">熱門前 5</string>
+    <string name="analyze_category_last_five">冷門前 5</string>
 </resources>

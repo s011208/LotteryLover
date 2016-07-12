@@ -2,6 +2,8 @@ package yhh.bj4.lotterylover;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,12 +11,28 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+
+import yhh.bj4.lotterylover.fragments.analyze.AnalyzeFragment;
 
 /**
  * Created by yenhsunhuang on 2016/7/12.
  */
 public class AnalyzeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int mDrawerSelectedItemId;
+    private ProgressBar mProgressBar;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PreferenceFragment fragment = (PreferenceFragment) getFragmentManager().findFragmentByTag(AnalyzeFragment.class.getSimpleName());
+        if (fragment == null) {
+            fragment = new AnalyzeFragment();
+            Bundle arguments = new Bundle();
+            fragment.setArguments(arguments);
+        }
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, AnalyzeFragment.class.getSimpleName()).commitAllowingStateLoss();
+    }
 
     @Override
     public int getContentViewResource() {
@@ -81,6 +99,8 @@ public class AnalyzeActivity extends BaseActivity implements NavigationView.OnNa
     protected void initViewComponents(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
     }
 
     @Override

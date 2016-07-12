@@ -111,4 +111,7 @@
 
     <!-- analyze activity -->
     <string name="analyze_activity_title">Lottery analyze</string>
+    <string name="analyze_category_all_period">All times</string>
+    <string name="analyze_category_top_five">Top 5</string>
+    <string name="analyze_category_last_five">Last 5</string>
 </resources>
