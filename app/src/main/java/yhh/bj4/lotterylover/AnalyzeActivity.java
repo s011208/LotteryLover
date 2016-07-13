@@ -2,9 +2,9 @@ package yhh.bj4.lotterylover;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,13 +25,11 @@ public class AnalyzeActivity extends BaseActivity implements NavigationView.OnNa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferenceFragment fragment = (PreferenceFragment) getFragmentManager().findFragmentByTag(AnalyzeFragment.class.getSimpleName());
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(AnalyzeFragment.class.getSimpleName());
         if (fragment == null) {
             fragment = new AnalyzeFragment();
-            Bundle arguments = new Bundle();
-            fragment.setArguments(arguments);
         }
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, AnalyzeFragment.class.getSimpleName()).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, AnalyzeFragment.class.getSimpleName()).commitAllowingStateLoss();
     }
 
     @Override

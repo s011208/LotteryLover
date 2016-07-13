@@ -47,12 +47,18 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
     private final Callback mCallback;
     private final int mLtoType;
     private final int mListType;
+    private final boolean mLimit;
 
     public RetrieveLotteryItemDataHelper(Context context, Callback cb, int ltoType, int listType) {
+        this(context, cb, ltoType, listType, true);
+    }
+
+    public RetrieveLotteryItemDataHelper(Context context, Callback cb, int ltoType, int listType, boolean limit) {
         mContext = new WeakReference<>(context);
         mCallback = cb;
         mLtoType = ltoType;
         mListType = listType;
+        mLimit = limit;
     }
 
     @Override
@@ -62,11 +68,11 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
         if (context == null) return rtn;
         if (mListType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
             if (mLtoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
-                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
-                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3, mLimit), LotteryLover.LTO_TYPE_LTO_LIST3));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4, mLimit), LotteryLover.LTO_TYPE_LTO_LIST4));
             } else {
-                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4), LotteryLover.LTO_TYPE_LTO_LIST4));
-                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3), LotteryLover.LTO_TYPE_LTO_LIST3));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST4, mLimit), LotteryLover.LTO_TYPE_LTO_LIST4));
+                rtn.addAll(getDataFromCursor(getDataCursor(context, LotteryLover.LTO_TYPE_LTO_LIST3, mLimit), LotteryLover.LTO_TYPE_LTO_LIST3));
             }
             int orderSettings = AppSettings.get(context, LotteryLover.KEY_ORDER, LotteryLover.ORDER_BY_ASC);
             final boolean isAsc = orderSettings == LotteryLover.ORDER_BY_ASC;
@@ -85,7 +91,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 }
             });
         } else {
-            Cursor cursor = getDataCursor(context, mLtoType);
+            Cursor cursor = getDataCursor(context, mLtoType, mLimit);
             rtn.addAll(getDataFromCursor(cursor, mLtoType));
         }
         if (DEBUG)
@@ -250,6 +256,10 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
     }
 
     public static Cursor getDataCursor(Context context, int ltoType) {
+        return getDataCursor(context, ltoType, true);
+    }
+
+    public static Cursor getDataCursor(Context context, int ltoType, boolean limit) {
         Uri queryUri = null;
         switch (ltoType) {
             case LotteryLover.LTO_TYPE_LTO:
@@ -305,25 +315,27 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
 
         int rowSettings = AppSettings.get(context, LotteryLover.KEY_DISPLAY_ROWS, LotteryLover.DISPLAY_ROWS_100);
         String row = "";
-        switch (rowSettings) {
-            case LotteryLover.DISPLAY_ROWS_50:
-                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_50;
-                break;
-            case LotteryLover.DISPLAY_ROWS_100:
-                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_100;
-                break;
-            case LotteryLover.DISPLAY_ROWS_150:
-                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_150;
-                break;
-            case LotteryLover.DISPLAY_ROWS_200:
-                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_200;
-                break;
-            case LotteryLover.DISPLAY_ROWS_500:
-                row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_500;
-                break;
-            case LotteryLover.DISPLAY_ROWS_ALL:
-                row = "";
-                break;
+        if (limit) {
+            switch (rowSettings) {
+                case LotteryLover.DISPLAY_ROWS_50:
+                    row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_50;
+                    break;
+                case LotteryLover.DISPLAY_ROWS_100:
+                    row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_100;
+                    break;
+                case LotteryLover.DISPLAY_ROWS_150:
+                    row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_150;
+                    break;
+                case LotteryLover.DISPLAY_ROWS_200:
+                    row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_200;
+                    break;
+                case LotteryLover.DISPLAY_ROWS_500:
+                    row = "limit " + LotteryLover.VALUE_DISPLAY_ROWS_500;
+                    break;
+                case LotteryLover.DISPLAY_ROWS_ALL:
+                    row = "";
+                    break;
+            }
         }
         return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " " + order + " " + row);
     }

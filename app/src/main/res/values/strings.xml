@@ -111,7 +111,11 @@
 
     <!-- analyze activity -->
     <string name="analyze_activity_title">Lottery analyze</string>
-    <string name="analyze_category_all_period">All times</string>
-    <string name="analyze_category_top_five">Top 5</string>
-    <string name="analyze_category_last_five">Last 5</string>
+
+    <string name="analyze_fragment_result_all_time">All times</string>
+    <string name="analyze_fragment_result_recent_10">Last 10 results</string>
+    <string name="analyze_fragment_result_recent_20">Last 20 results</string>
+    <string name="analyze_fragment_result_this_month">This month</string>
+    <string name="analyze_fragment_result_last_month">Last month</string>
+    <string name="analyze_fragment_result_last_2_month">Last 2 months</string>
 </resources>
