@@ -47,10 +47,6 @@ public class NotDrawingNumbers {
         }
 
         for (LotteryItem item : mLotteryItems) {
-            android.util.Log.i("QQQQ", "seq: " + item.getSequence());
-            for (Integer value : item.getNormalNumbers()) {
-                android.util.Log.w("QQQQ", "v: " + value);
-            }
             for (Integer value : item.getNormalNumbers()) {
                 hitNormalList.set(value, true);
             }
