@@ -16,6 +16,7 @@ import java.util.List;
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.fragments.analyze.result.AnalyzeResult;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.views.ltotype.LtoTypeAdapter;

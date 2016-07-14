@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import yhh.bj4.lotterylover.fragments.analyze.result.AnalyzeResult;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 
 /**

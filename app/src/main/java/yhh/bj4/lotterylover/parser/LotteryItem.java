@@ -206,6 +206,42 @@ public abstract class LotteryItem {
         }
     }
 
+    public static int getMaximumSpecialNumber(int type) {
+        if (LotteryLover.LTO_TYPE_LTO == type) {
+            return Lto.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO2C == type) {
+            return Lto2C.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO7C == type) {
+            return Lto7C.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_BIG == type) {
+            return LtoBig.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_DOF == type) {
+            return LtoDof.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_HK == type) {
+            return LtoHK.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_539 == type) {
+            return Lto539.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_POW == type) {
+            return LtoPow.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_MM == type) {
+            return LtoMM.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_J6 == type) {
+            return LtoJ6.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_TOTO == type) {
+            return LtoToTo.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_AU_POW == type) {
+            return LtoAuPow.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_EM == type) {
+            return LtoEm.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_LIST3 == type) {
+            return LtoList3.getMaximumSpecialNumber();
+        } else if (LotteryLover.LTO_TYPE_LTO_LIST4 == type) {
+            return LtoList4.getMaximumSpecialNumber();
+        } else {
+            throw new RuntimeException("must provide valid item");
+        }
+    }
+
     public static int getMaximumSpecialNumber(LotteryItem item) {
         if (item instanceof Lto) {
             return Lto.getMaximumSpecialNumber();

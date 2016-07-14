@@ -1,6 +1,5 @@
-package yhh.bj4.lotterylover.fragments.analyze;
+package yhh.bj4.lotterylover.fragments.analyze.result;
 
-import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -13,16 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 
 /**
- * Created by yenhsunhuang on 2016/7/13.
+ * Created by yenhsunhuang on 2016/7/14.
  */
-public class AnalyzeResult {
-    private static final String TAG = "AnalyzeResult";
-    private static final boolean DEBUG = Utilities.DEBUG;
-
+public class DrawingTime {
     private final int mLotteryType;
 
     private final List<LotteryItem> mLotteryItems = new ArrayList<>();
@@ -50,22 +45,10 @@ public class AnalyzeResult {
     private final List<Pair<Integer, Integer>> mNormalDrawingTimesLast2Month = new ArrayList<>();
     private final List<Pair<Integer, Integer>> mSpecialDrawingTimesLast2Month = new ArrayList<>();
 
-    public AnalyzeResult(int ltoType, List<LotteryItem> items) {
+
+    public DrawingTime(int ltoType, List<LotteryItem> items) {
         mLotteryType = ltoType;
         mLotteryItems.addAll(items);
-
-        Collections.sort(mLotteryItems, new Comparator<LotteryItem>() {
-            @Override
-            public int compare(LotteryItem lhs, LotteryItem rhs) {
-                if (lhs.getDrawingDateTime() > rhs.getDrawingDateTime()) return -1;
-                else if (lhs.getDrawingDateTime() < rhs.getDrawingDateTime()) return 1;
-                return 0;
-            }
-        });
-    }
-
-    public int getLotteryType() {
-        return mLotteryType;
     }
 
     public void process() {
@@ -391,12 +374,17 @@ public class AnalyzeResult {
         return rtn;
     }
 
-    private static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    private static <K extends Comparable<? super K>,
+            V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list =
                 new LinkedList<>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
             public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
+                final int rtn = (o1.getValue()).compareTo(o2.getValue());
+                if (rtn == 0) {
+                    return (o1.getKey()).compareTo(o2.getKey());
+                }
+                return rtn;
             }
         });
 
@@ -406,13 +394,4 @@ public class AnalyzeResult {
         }
         return result;
     }
-
-    private static void debugList(List<Pair<Integer, Integer>> list) {
-        if (DEBUG) {
-            for (Pair<Integer, Integer> pair : list) {
-                Log.d(TAG, "first: " + pair.first + ", second: " + pair.second);
-            }
-        }
-    }
-
 }

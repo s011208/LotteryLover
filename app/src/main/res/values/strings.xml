@@ -118,4 +118,9 @@
     <string name="analyze_fragment_result_this_month">This month</string>
     <string name="analyze_fragment_result_last_month">Last month</string>
     <string name="analyze_fragment_result_last_2_month">Last 2 months</string>
+
+    <string name="analyze_fragment_result_item_top_5">Top 5</string>
+    <string name="analyze_fragment_result_item_last_5">Last 5</string>
+    <string name="analyze_fragment_result_item_top_5_special">Top 5 special</string>
+    <string name="analyze_fragment_result_item_last_5_special">Last 5 special</string>
 </resources>
