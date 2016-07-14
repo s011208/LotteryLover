@@ -32,10 +32,10 @@ public class LtoPow extends LotteryItem {
     }
 
     public static int getMaximumNormalNumber() {
-        return 59;
+        return 69;
     }
 
     public static int getMaximumSpecialNumber() {
-        return 35;
+        return 26;
     }
 }

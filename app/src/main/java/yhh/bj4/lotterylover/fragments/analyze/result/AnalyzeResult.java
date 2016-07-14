@@ -41,9 +41,11 @@ public class AnalyzeResult {
 
         mDrawingTime = new DrawingTime(mLotteryType, mLotteryItems);
         mNotDrawingNumbers = new NotDrawingNumbers(mLotteryType, mLotteryItems);
+
+        process();
     }
 
-    public void process() {
+    private void process() {
         mDrawingTime.process();
         mNotDrawingNumbers.process();
     }
@@ -81,4 +83,5 @@ public class AnalyzeResult {
         }
         return result;
     }
+
 }

@@ -126,4 +126,5 @@
 
     <string name="analyze_fragment_result_item_longest_not_show">最久未出現</string>
     <string name="analyze_fragment_result_item_longest_not_show_special">最久未出現特別號</string>
+    <string name="analyze_fragment_result_item_dialog_title">細節</string>
 </resources>

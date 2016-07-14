@@ -1,6 +1,8 @@
 package yhh.bj4.lotterylover.fragments.analyze;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
@@ -168,7 +170,7 @@ public class AnalyzeResultAdapter extends RecyclerView.Adapter {
     private String getFiveResultsFromList(List<Pair<Integer, Integer>> list) {
         StringBuilder rtn = new StringBuilder();
         for (int i = 0; i < list.size() && i < 5; ++i) {
-            rtn.append(list.get(i).first).append(" (").append(list.get(i).second).append(")");
+            rtn.append(String.format("%02d", list.get(i).first)).append(" (").append(list.get(i).second).append(")");
             if (i != 4) {
                 rtn.append(", ");
             }
@@ -176,73 +178,78 @@ public class AnalyzeResultAdapter extends RecyclerView.Adapter {
         return rtn.toString();
     }
 
-    private String getTypeContentSummary(int categoryType, int contentType) {
-        StringBuilder rtn = new StringBuilder();
+    private List<Pair<Integer, Integer>> getTypeContentDataByType(int categoryType, int contentType) {
         if (categoryType == R.string.analyze_fragment_result_all_time) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimesAllPeriod()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimesAllPeriod();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimesAllPeriod()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimesAllPeriod();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimesAllPeriod()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimesAllPeriod();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimesAllPeriod()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimesAllPeriod();
             } else if (contentType == R.string.analyze_fragment_result_item_longest_not_show) {
-                rtn.append(getFiveResultsFromList(mResult.getNotDrawingNumbers().getLongestNormalNotShowList()));
+                return mResult.getNotDrawingNumbers().getLongestNormalNotShowList();
             } else if (contentType == R.string.analyze_fragment_result_item_longest_not_show_special) {
-                rtn.append(getFiveResultsFromList(mResult.getNotDrawingNumbers().getLongestSpecialNotShowList()));
+                return mResult.getNotDrawingNumbers().getLongestSpecialNotShowList();
             }
         } else if (categoryType == R.string.analyze_fragment_result_recent_10) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimes10()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimes10();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimes10()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimes10();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimes10()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimes10();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimes10()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimes10();
             }
         } else if (categoryType == R.string.analyze_fragment_result_recent_20) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimes20()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimes20();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimes20()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimes20();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimes20()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimes20();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimes20()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimes20();
             }
         } else if (categoryType == R.string.analyze_fragment_result_this_month) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimesThisMonth()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimesThisMonth();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimesThisMonth()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimesThisMonth();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimesThisMonth()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimesThisMonth();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimesThisMonth()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimesThisMonth();
             }
         } else if (categoryType == R.string.analyze_fragment_result_last_month) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimesLast1Month()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimesLast1Month();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimesLast1Month()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimesLast1Month();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimesLast1Month()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimesLast1Month();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimesLast1Month()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimesLast1Month();
             }
         } else if (categoryType == R.string.analyze_fragment_result_last_2_month) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopNormalDrawingTimesLast2Month()));
+                return mResult.getDrawingTime().getTopNormalDrawingTimesLast2Month();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastNormalDrawingTimesLast2Month()));
+                return mResult.getDrawingTime().getLastNormalDrawingTimesLast2Month();
             } else if (contentType == R.string.analyze_fragment_result_item_top_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimesLast2Month()));
+                return mResult.getDrawingTime().getTopSpecialDrawingTimesLast2Month();
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
-                rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimesLast2Month()));
+                return mResult.getDrawingTime().getLastSpecialDrawingTimesLast2Month();
             }
         }
+        throw new RuntimeException("unexpected type");
+    }
+
+    private String getTypeContentSummary(int categoryType, int contentType) {
+        StringBuilder rtn = new StringBuilder();
+        rtn.append(getFiveResultsFromList(getTypeContentDataByType(categoryType, contentType)));
         return rtn.toString();
     }
 
@@ -261,14 +268,23 @@ public class AnalyzeResultAdapter extends RecyclerView.Adapter {
             analyzeResultContentHolder.getContainer().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    List<Pair<Integer, Integer>> rawData = getTypeContentDataByType(categoryType, contentType);
+                    CharSequence[] data = new CharSequence[rawData.size()];
+                    for (int i = 0; i < rawData.size(); ++i) {
+                        data[i] = (String.format("%02d", rawData.get(i).first) + ": " + rawData.get(i).second);
+                    }
+                    new AlertDialog.Builder(mContext).setTitle(R.string.analyze_fragment_result_item_dialog_title)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
+                                }
+                            }).setItems(data, null).create().show();
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void bindTypeCategory(RecyclerView.ViewHolder holder, int position) {

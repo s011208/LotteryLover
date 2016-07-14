@@ -44,7 +44,6 @@ public class LotteryItemsLoader extends AsyncTask<Void, Void, Void> {
         if (callback == null) return null;
 
         mResult = new AnalyzeResult(mLotteryType, mItems);
-        mResult.process();
         return null;
     }
 
