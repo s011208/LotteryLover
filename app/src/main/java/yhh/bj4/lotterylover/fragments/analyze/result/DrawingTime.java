@@ -5,10 +5,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,8 +97,8 @@ public class DrawingTime {
 
         // all period
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, -1);
-        Map<Integer, Integer> sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        Map<Integer, Integer> sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        Map<Integer, Integer> sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        Map<Integer, Integer> sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimesAllPeriod.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -113,8 +110,8 @@ public class DrawingTime {
 
         //recent 10
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, 10);
-        sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimes10.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -126,8 +123,8 @@ public class DrawingTime {
 
         //recent 20
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, 20);
-        sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimes20.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -152,8 +149,8 @@ public class DrawingTime {
         }
 
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, itemCount);
-        sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimesThisMonth.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -178,8 +175,8 @@ public class DrawingTime {
         }
 
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, itemCount);
-        sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimesLast1Month.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -206,8 +203,8 @@ public class DrawingTime {
         }
 
         processDrawingTimes(drawingTimesNormalMap, drawingTimesSpecialMap, hasSpecial, itemCount);
-        sortedDrawingTimesNormalMap = sortByValue(drawingTimesNormalMap);
-        sortedDrawingTimesSpecialMap = sortByValue(drawingTimesSpecialMap);
+        sortedDrawingTimesNormalMap = AnalyzeResult.sortByValue(drawingTimesNormalMap);
+        sortedDrawingTimesSpecialMap = AnalyzeResult.sortByValue(drawingTimesSpecialMap);
 
         for (Integer key : sortedDrawingTimesNormalMap.keySet()) {
             mNormalDrawingTimesLast2Month.add(new Pair<>(key, sortedDrawingTimesNormalMap.get(key)));
@@ -374,24 +371,4 @@ public class DrawingTime {
         return rtn;
     }
 
-    private static <K extends Comparable<? super K>,
-            V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-        List<Map.Entry<K, V>> list =
-                new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                final int rtn = (o1.getValue()).compareTo(o2.getValue());
-                if (rtn == 0) {
-                    return (o1.getKey()).compareTo(o2.getKey());
-                }
-                return rtn;
-            }
-        });
-
-        Map<K, V> result = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }
 }

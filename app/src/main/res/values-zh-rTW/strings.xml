@@ -123,4 +123,7 @@
     <string name="analyze_fragment_result_item_last_5">前 5 冷門</string>
     <string name="analyze_fragment_result_item_top_5_special">前 5 熱門特別號</string>
     <string name="analyze_fragment_result_item_last_5_special">前 5 冷門特別號</string>
+
+    <string name="analyze_fragment_result_item_longest_not_show">最久未出現</string>
+    <string name="analyze_fragment_result_item_longest_not_show_special">最久未出現特別號</string>
 </resources>

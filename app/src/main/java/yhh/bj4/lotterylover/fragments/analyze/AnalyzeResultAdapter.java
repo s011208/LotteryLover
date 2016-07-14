@@ -62,6 +62,10 @@ public class AnalyzeResultAdapter extends RecyclerView.Adapter {
             mItems.add(buildTypeContent(mContext, R.string.analyze_fragment_result_item_last_5_special, R.string.analyze_fragment_result_all_time));
         }
 
+        mItems.add(buildTypeContent(mContext, R.string.analyze_fragment_result_item_longest_not_show, R.string.analyze_fragment_result_all_time));
+        if (hasSpecial) {
+            mItems.add(buildTypeContent(mContext, R.string.analyze_fragment_result_item_longest_not_show_special, R.string.analyze_fragment_result_all_time));
+        }
         // 10
         mItems.add(buildTypeCategory(res.getString(R.string.analyze_fragment_result_recent_10)));
 
@@ -183,6 +187,10 @@ public class AnalyzeResultAdapter extends RecyclerView.Adapter {
                 rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getTopSpecialDrawingTimesAllPeriod()));
             } else if (contentType == R.string.analyze_fragment_result_item_last_5_special) {
                 rtn.append(getFiveResultsFromList(mResult.getDrawingTime().getLastSpecialDrawingTimesAllPeriod()));
+            } else if (contentType == R.string.analyze_fragment_result_item_longest_not_show) {
+                rtn.append(getFiveResultsFromList(mResult.getNotDrawingNumbers().getLongestNormalNotShowList()));
+            } else if (contentType == R.string.analyze_fragment_result_item_longest_not_show_special) {
+                rtn.append(getFiveResultsFromList(mResult.getNotDrawingNumbers().getLongestSpecialNotShowList()));
             }
         } else if (categoryType == R.string.analyze_fragment_result_recent_10) {
             if (contentType == R.string.analyze_fragment_result_item_top_5) {
