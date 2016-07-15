@@ -79,7 +79,7 @@
         <item>和數</item>
         <item>尾數</item>
         <item>加減</item>
-        <item>星彩</item>
+        <!--<item>星彩</item>-->
     </string-array>
 
     <!-- view all activity -->

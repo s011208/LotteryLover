@@ -78,7 +78,7 @@
         <item>Plus digits</item>
         <item>Last digit</item>
         <item>Plus and minus</item>
-        <item>Combine List</item>
+        <!--<item>Combine List</item>-->
     </string-array>
 
     <!-- view all activity -->
