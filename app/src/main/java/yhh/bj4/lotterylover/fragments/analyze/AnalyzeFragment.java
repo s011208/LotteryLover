@@ -23,6 +23,7 @@ import yhh.bj4.lotterylover.fragments.analyze.list34.List34ResultAdapter;
 import yhh.bj4.lotterylover.fragments.analyze.result.AnalyzeResult;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.DividerItemDecoration;
 import yhh.bj4.lotterylover.views.ltotype.LtoTypeAdapter;
 
@@ -34,6 +35,8 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
     private static final String TAG = "AnalyzeFragment";
     private static final boolean DEBUG = Utilities.DEBUG;
 
+    private static final String KEY_LTO_TYPE = "ltotype";
+
     private ProgressBar mProgressBar;
 
     private RecyclerView mLtoList, mAnalyzeResult, mAnalyzeList34Result;
@@ -41,6 +44,18 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
 
     private HorizontalScrollView mList34AdapterContainer;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mLtoType = savedInstanceState.getInt(KEY_LTO_TYPE, mLtoType);
+        } else {
+            if (getActivity() != null) {
+                mLtoType = AppSettings.get(getActivity(), LotteryLover.KEY_SELECTED_LTO_TYPE_ANALYZE, mLtoType);
+            }
+        }
+    }
 
     @Nullable
     @Override
@@ -50,6 +65,7 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
 
         mLtoList = (RecyclerView) root.findViewById(R.id.lto_type_recyclerview);
         mLtoList.setAdapter(new LtoTypeAdapter(getActivity(), this, mLtoType));
+        mLtoList.scrollToPosition(mLtoType);
 
         mAnalyzeResult = (RecyclerView) root.findViewById(R.id.analyze_list);
 
@@ -59,6 +75,12 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
 
         updateAnalyzeResult();
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_LTO_TYPE, mLtoType);
     }
 
     private void updateAnalyzeResult() {
@@ -89,6 +111,7 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
         }
         mLtoType = ltoType;
         updateAnalyzeResult();
+        AppSettings.put(getActivity(), LotteryLover.KEY_SELECTED_LTO_TYPE_ANALYZE, mLtoType);
     }
 
     @Override

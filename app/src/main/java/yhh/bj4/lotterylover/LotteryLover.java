@@ -95,4 +95,5 @@ public class LotteryLover {
     public static final String KEY_SHOW_MONTHLY_DATA_ALWAYS = "show_monthly_data_only_always";
     public static final String KEY_SHOW_ADS = "show_ads";
     public static final String KEY_SET_TABLE_BACKGROUND_FROM_WEB = "set_table_background_from_web";
+    public static final String KEY_SELECTED_LTO_TYPE_ANALYZE = "selected_lto_type_analyze";
 }
