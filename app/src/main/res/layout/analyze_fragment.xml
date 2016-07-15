@@ -16,6 +16,28 @@
         android:paddingRight="@dimen/lto_type_item_padding"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
 
+    <HorizontalScrollView
+        android:id="@+id/list34_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lto_type_recyclerview">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/analyze_list34"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/lto_type_recyclerview"
+                android:orientation="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/analyze_list"
         android:layout_width="match_parent"

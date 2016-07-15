@@ -126,5 +126,5 @@
 
     <string name="analyze_fragment_result_item_longest_not_show">Longest time not show</string>
     <string name="analyze_fragment_result_item_longest_not_show_special">Longest time not show special</string>
-    <string name="analyze_fragment_result_item_dialog_title">Detail</string>
+    <string name="analyze_fragment_result_item_dialog_title">More information</string>
 </resources>
