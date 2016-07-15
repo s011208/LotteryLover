@@ -1,6 +1,7 @@
 package yhh.bj4.lotterylover.fragments.analyze.list34;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,6 @@ import yhh.bj4.lotterylover.parser.LotteryItem;
  * Created by yenhsunhuang on 2016/7/15.
  */
 public class List34Result {
-    private static final String TAG = "List34Result";
-    private static final boolean DEBUG = Utilities.DEBUG;
     private static final String SEP = " | ";
 
     private final int mLtoType;
@@ -25,8 +24,17 @@ public class List34Result {
     public List34Result(Context context, int ltoType, List<LotteryItem> items) {
         mLtoType = ltoType;
         mItems.addAll(items);
-        mOdd = context.getResources().getString(R.string.odd);
-        mPlural = context.getResources().getString(R.string.plural);
+        final Resources res = context.getResources();
+        mOdd = res.getString(R.string.odd);
+        mPlural = res.getString(R.string.plural);
+        mResultList.add(new ItemContent(
+                res.getString(R.string.analyze_list34_result_drawing_time),
+                res.getString(R.string.analyze_list34_result_drawing_number),
+                res.getString(R.string.analyze_list34_result_odd_and_plural),
+                res.getString(R.string.analyze_list34_result_mod_3),
+                res.getString(R.string.analyze_list34_result_sum),
+                res.getString(R.string.analyze_list34_result_average),
+                res.getString(R.string.analyze_list34_result_number_of_odd_and_plural)));
         process();
     }
 

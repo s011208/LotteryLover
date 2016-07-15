@@ -127,4 +127,12 @@
     <string name="analyze_fragment_result_item_longest_not_show">最久未出現</string>
     <string name="analyze_fragment_result_item_longest_not_show_special">最久未出現特別號</string>
     <string name="analyze_fragment_result_item_dialog_title">更多資訊</string>
+
+    <string name="analyze_list34_result_drawing_time">日期</string>
+    <string name="analyze_list34_result_drawing_number">號碼</string>
+    <string name="analyze_list34_result_odd_and_plural">單/雙</string>
+    <string name="analyze_list34_result_mod_3">3餘數</string>
+    <string name="analyze_list34_result_sum">總和</string>
+    <string name="analyze_list34_result_average">平均</string>
+    <string name="analyze_list34_result_number_of_odd_and_plural">單/雙 和</string>
 </resources>

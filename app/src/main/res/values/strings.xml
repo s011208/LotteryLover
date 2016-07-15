@@ -127,4 +127,12 @@
     <string name="analyze_fragment_result_item_longest_not_show">Longest time not show</string>
     <string name="analyze_fragment_result_item_longest_not_show_special">Longest time not show special</string>
     <string name="analyze_fragment_result_item_dialog_title">More information</string>
+
+    <string name="analyze_list34_result_drawing_time">Drawing time</string>
+    <string name="analyze_list34_result_drawing_number">Drawing number</string>
+    <string name="analyze_list34_result_odd_and_plural">Odd/Plural</string>
+    <string name="analyze_list34_result_mod_3">Mod 3</string>
+    <string name="analyze_list34_result_sum">Sum</string>
+    <string name="analyze_list34_result_average">Average</string>
+    <string name="analyze_list34_result_number_of_odd_and_plural">Odd/Plural count</string>
 </resources>
