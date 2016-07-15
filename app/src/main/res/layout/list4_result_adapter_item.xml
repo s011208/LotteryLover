@@ -9,48 +9,48 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_drawing_time" />
+        android:minEms="@integer/analyze_list4_result_drawing_time" />
 
     <TextView
         android:id="@+id/drawing_number"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_drawing_number" />
+        android:minEms="@integer/analyze_list4_result_drawing_number" />
 
     <TextView
         android:id="@+id/odd_and_plural"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_odd_and_plural" />
+        android:minEms="@integer/analyze_list4_result_odd_and_plural" />
 
     <TextView
         android:id="@+id/mod3"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_mod_3" />
+        android:minEms="@integer/analyze_list4_result_mod_3" />
 
     <TextView
         android:id="@+id/sum"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_sum" />
+        android:minEms="@integer/analyze_list4_result_sum" />
 
     <TextView
         android:id="@+id/average"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@integer/analyze_list34_result_average" />
+        android:minEms="@integer/analyze_list4_result_average" />
 
     <TextView
         android:id="@+id/number_of_odd_and_plural"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:minEms="@string/analyze_list34_result_number_of_odd_and_plural" />
+        android:minEms="@integer/analyze_list4_result_number_of_odd_and_plural" />
 
 </LinearLayout>

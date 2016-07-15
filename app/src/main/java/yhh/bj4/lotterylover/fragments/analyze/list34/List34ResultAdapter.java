@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 
 /**
@@ -25,7 +26,12 @@ public class List34ResultAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mInflater.inflate(R.layout.list34_result_adapter_item, parent, false));
+        if (mResult.getLotteryType() == LotteryLover.LTO_TYPE_LTO_LIST3) {
+            return new ViewHolder(mInflater.inflate(R.layout.list3_result_adapter_item, parent, false));
+        } else if (mResult.getLotteryType() == LotteryLover.LTO_TYPE_LTO_LIST4) {
+            return new ViewHolder(mInflater.inflate(R.layout.list4_result_adapter_item, parent, false));
+        }
+        throw new RuntimeException("unexpected type: " + mResult.getLotteryType());
     }
 
     @Override
@@ -39,6 +45,11 @@ public class List34ResultAdapter extends RecyclerView.Adapter {
         holderItem.mSum.setText(item.mSum);
         holderItem.mAverage.setText(item.mAverage);
         holderItem.mNumberOfOddAndPlural.setText(item.mNumberOfOddAndPlural);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mResult.getLotteryType();
     }
 
     @Override

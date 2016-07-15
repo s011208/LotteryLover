@@ -84,8 +84,8 @@
     <!-- view all activity -->
     <string name="loading">Loading data</string>
 
-    <string name="odd">1</string>
-    <string name="plural">0</string>
+    <string name="odd">O</string>
+    <string name="plural">P</string>
 
     <string name="view_all_activity_drawer_list">List</string>
     <string name="view_all_activity_drawer_calendar">Calendar</string>
@@ -128,8 +128,8 @@
     <string name="analyze_fragment_result_item_longest_not_show_special">Longest time not show special</string>
     <string name="analyze_fragment_result_item_dialog_title">More information</string>
 
-    <string name="analyze_list34_result_drawing_time">Drawing time</string>
-    <string name="analyze_list34_result_drawing_number">Drawing number</string>
+    <string name="analyze_list34_result_drawing_time">Time</string>
+    <string name="analyze_list34_result_drawing_number">Number</string>
     <string name="analyze_list34_result_odd_and_plural">Odd/Plural</string>
     <string name="analyze_list34_result_mod_3">Mod 3</string>
     <string name="analyze_list34_result_sum">Sum</string>

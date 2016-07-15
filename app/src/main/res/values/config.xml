@@ -4,11 +4,19 @@
 
     <integer name="activity_slide_anim_duration">150</integer>
 
-    <integer name="analyze_list34_result_drawing_time">6</integer>
-    <integer name="analyze_list34_result_drawing_number">5</integer>
-    <integer name="analyze_list34_result_odd_and_plural">6</integer>
-    <integer name="analyze_list34_result_mod_3">5</integer>
-    <integer name="analyze_list34_result_sum">3</integer>
-    <integer name="analyze_list34_result_average">2</integer>
-    <integer name="analyze_list34_result_number_of_odd_and_plural">5</integer>
+    <integer name="analyze_list3_result_drawing_time">6</integer>
+    <integer name="analyze_list3_result_drawing_number">5</integer>
+    <integer name="analyze_list3_result_odd_and_plural">6</integer>
+    <integer name="analyze_list3_result_mod_3">5</integer>
+    <integer name="analyze_list3_result_sum">3</integer>
+    <integer name="analyze_list3_result_average">3</integer>
+    <integer name="analyze_list3_result_number_of_odd_and_plural">7</integer>
+
+    <integer name="analyze_list4_result_drawing_time">6</integer>
+    <integer name="analyze_list4_result_drawing_number">5</integer>
+    <integer name="analyze_list4_result_odd_and_plural">6</integer>
+    <integer name="analyze_list4_result_mod_3">5</integer>
+    <integer name="analyze_list4_result_sum">3</integer>
+    <integer name="analyze_list4_result_average">3</integer>
+    <integer name="analyze_list4_result_number_of_odd_and_plural">7</integer>
 </resources>
