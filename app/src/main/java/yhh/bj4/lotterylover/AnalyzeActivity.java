@@ -20,7 +20,6 @@ import yhh.bj4.lotterylover.fragments.analyze.AnalyzeFragment;
  */
 public class AnalyzeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int mDrawerSelectedItemId;
-    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,8 +96,6 @@ public class AnalyzeActivity extends BaseActivity implements NavigationView.OnNa
     protected void initViewComponents(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
     }
 
     @Override
