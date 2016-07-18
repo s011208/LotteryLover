@@ -211,7 +211,41 @@ public class RetrieveDataService extends Service {
     private boolean isExpired(int type) {
         long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
         Calendar now = Calendar.getInstance();
-        return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 2;
+        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
+        long expiredTime;
+        switch (updatePeriodType) {
+            case LotteryLover.KEY_UPDATE_PERIOD_DEFUALT:
+                ConnectivityManager cm =
+                        (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                expiredTime = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ? Utilities.HOUR : Utilities.HOUR * 3;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_HOUR:
+                expiredTime = Utilities.HOUR;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_2_HOUR:
+                expiredTime = Utilities.HOUR * 2;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_3_HOUR:
+                expiredTime = Utilities.HOUR * 3;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_6_HOUR:
+                expiredTime = Utilities.HOUR * 6;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_12_HOUR:
+                expiredTime = Utilities.HOUR * 12;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_1_DAY:
+                expiredTime = Utilities.HOUR * 24;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_NEVER:
+                expiredTime = Utilities.HOUR * 24;
+                break;
+            default:
+                throw new RuntimeException("unexpected selection");
+        }
+        expiredTime -= Utilities.MINUTE * 5;
+        return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= expiredTime;
     }
 
     private boolean isWorkAround(int type, long seq, long pre) {
