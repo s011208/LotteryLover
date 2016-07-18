@@ -78,6 +78,12 @@ public class RetrieveDataService extends Service {
             Log.w(TAG, "isDataCursorEmpty: " + isDataCursorEmpty);
         }
 
+        if (isDataCursorEmpty) {
+            AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
+                    LotteryItem.getSimpleClassName(requestLtoType)), 0l);
+
+        }
+
         if (!isExpired(requestLtoType) && !isDataCursorEmpty) {
             Log.w(TAG, "requestLtoType: " + requestLtoType + ", not expired");
             return;
@@ -95,6 +101,8 @@ public class RetrieveDataService extends Service {
                     @Override
                     public void onFinish(int page, int[] results) {
                         if (results[0] == Activity.RESULT_CANCELED) {
+                            AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
+                                    LotteryItem.getSimpleClassName(requestLtoType)), Calendar.getInstance().getTimeInMillis());
                             return;
                         }
                         // check data integrity
@@ -146,9 +154,6 @@ public class RetrieveDataService extends Service {
                                 data.close();
                             }
                         }
-                        AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
-                                LotteryItem.getSimpleClassName(requestLtoType)), Calendar.getInstance().getTimeInMillis());
-                        // notify update
                     }
                 }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
@@ -175,49 +180,49 @@ public class RetrieveDataService extends Service {
             @Override
             public void run() {
                 ArrayList<Integer> updateLtoList = new ArrayList<>();
-                if (needToInit(LotteryLover.LTO_TYPE_LTO) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO2C) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO2C, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO2C)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO2C);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO7C) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO7C, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO7C)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO7C);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_BIG) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_BIG, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_BIG)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_BIG);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_DOF) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_DOF, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_DOF)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_DOF);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_HK) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_HK, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_HK)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_HK);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_539) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_539, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_539)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_539);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_POW) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_POW, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_POW)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_POW);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_MM) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_MM, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_MM)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_MM);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_J6) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_J6, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_J6)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_J6);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_TOTO) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_TOTO, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_TOTO)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_TOTO);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_AU_POW) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_AU_POW, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_AU_POW)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_AU_POW);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_EM) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_EM, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_EM)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_EM);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST3) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_LIST3, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST3)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_LIST3);
                 }
-                if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST4) && !AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_INIT_LTO_LIST4, false)) {
+                if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST4)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_LIST4);
                 }
                 for (Integer ltoType : updateLtoList) {
@@ -231,10 +236,15 @@ public class RetrieveDataService extends Service {
         Cursor data;
         data = getContentResolver().query(LotteryItem.getLtoTypeUri(type), null, null, null, null);
         if (data != null) {
-            if (data.getCount() == 0) {
-                return true;
+            try {
+                if (data.getCount() == 0) {
+                    AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
+                            LotteryItem.getSimpleClassName(type)), 0l);
+                    return true;
+                }
+            } finally {
+                data.close();
             }
-            data.close();
         } else {
             return true;
         }

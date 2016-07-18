@@ -34,6 +34,7 @@ public class LotteryDatabase extends SQLiteOpenHelper {
 
     public LotteryDatabase(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
+        clearAllLtoTables(getWritableDatabase());
     }
 
     @Override
