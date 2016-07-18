@@ -5,6 +5,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -50,6 +52,22 @@ public class RetrieveDataService extends Service {
     public void onCreate() {
         super.onCreate();
         checkAndInitLtoData();
+
+        updateRegularly();
+    }
+
+    private void updateRegularly() {
+        ConnectivityManager cm =
+                (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utilities.updateAllLtoData(RetrieveDataService.this, "regularly update");
+                updateRegularly();
+            }
+        }, activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ? Utilities.HOUR : Utilities.HOUR * 3);
     }
 
     @Override
