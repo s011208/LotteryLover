@@ -236,7 +236,7 @@ public class MainSettingsFragment extends PreferenceFragment {
                     }).show();
             return true;
         } else if (SETTINGS_OTHER_UPDATE_RECORD.equals(key)) {
-            Cursor itemCursor = getActivity().getContentResolver().query(UpdateLogger.URI, null, null, null, null);
+            Cursor itemCursor = getActivity().getContentResolver().query(UpdateLogger.URI, null, null, null, UpdateLogger.COLUMN_ID + " desc");
             if (itemCursor == null) return true;
             CharSequence[] items = null;
             try {
