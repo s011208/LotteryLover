@@ -53,6 +53,18 @@
         <item>Large</item>
         <item>Huge</item>
     </string-array>
+
+    <string name="settings_other_update_period">Update period</string>
+    <string-array name="settings_other_update_period">
+        <item>Default</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>1 day</item>
+        <item>Never</item>
+    </string-array>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>Lto</item>

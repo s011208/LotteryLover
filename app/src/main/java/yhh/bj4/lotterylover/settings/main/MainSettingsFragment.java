@@ -36,6 +36,8 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_OTHERS_LTO_LIST = "settings_others_lto_type_selector_title";
     private static final String SETTINGS_DISPLAY_SCREEN_ORIENTATION = "settings_display_orientation";
 
+    private static final String SETTINGS_OTHER_UPDATE_PERIOD = "settings_other_update_period";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,11 @@ public class MainSettingsFragment extends PreferenceFragment {
         pref = findPreference(SETTINGS_DISPLAY_SCREEN_ORIENTATION);
         if (pref != null) {
             pref.setSummary(getResources().getStringArray(R.array.settings_display_orientation_list)[AppSettings.get(getActivity(), LotteryLover.KEY_DISPLAY_ORIENTATION, LotteryLover.VALUE_BY_DEVICE)]);
+        }
+
+        pref = findPreference(SETTINGS_OTHER_UPDATE_PERIOD);
+        if (pref != null) {
+            pref.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[AppSettings.get(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT)]);
         }
     }
 
@@ -209,6 +216,16 @@ public class MainSettingsFragment extends PreferenceFragment {
                                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_DISPLAY_ORIENTATION);
                             }
                             Utilities.setActivityOrientation(getActivity());
+                        }
+                    }).show();
+            return true;
+        } else if (SETTINGS_OTHER_UPDATE_PERIOD.equals(key)) {
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.settings_others_category_title)
+                    .setItems(R.array.settings_other_update_period, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            preference.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[which]);
+                            AppSettings.put(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, which);
                         }
                     }).show();
             return true;

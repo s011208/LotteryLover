@@ -25,6 +25,21 @@ import java.util.List;
 import java.util.Map;
 
 import yhh.bj4.lotterylover.parser.LotteryItem;
+import yhh.bj4.lotterylover.parser.LtoList3.LtoList3;
+import yhh.bj4.lotterylover.parser.lto.Lto;
+import yhh.bj4.lotterylover.parser.lto2c.Lto2C;
+import yhh.bj4.lotterylover.parser.lto539.Lto539;
+import yhh.bj4.lotterylover.parser.lto7c.Lto7C;
+import yhh.bj4.lotterylover.parser.ltoHK.LtoHK;
+import yhh.bj4.lotterylover.parser.ltoJ6.LtoJ6;
+import yhh.bj4.lotterylover.parser.ltoMM.LtoMM;
+import yhh.bj4.lotterylover.parser.ltoToTo.LtoToTo;
+import yhh.bj4.lotterylover.parser.ltoapow.LtoAuPow;
+import yhh.bj4.lotterylover.parser.ltobig.LtoBig;
+import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
+import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
+import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
+import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.services.RetrieveDataService;
 
@@ -289,6 +304,24 @@ public class Utilities {
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST3);
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST4);
         }
+    }
+
+    public static void clearAllLtoTables(Context context) {
+        context.getContentResolver().delete(Lto.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoBig.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoHK.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoDof.DATA_URI, null, null);
+        context.getContentResolver().delete(Lto2C.DATA_URI, null, null);
+        context.getContentResolver().delete(Lto7C.DATA_URI, null, null);
+        context.getContentResolver().delete(Lto539.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoPow.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoMM.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoJ6.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoToTo.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoAuPow.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoEm.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoList4.DATA_URI, null, null);
+        context.getContentResolver().delete(LtoList3.DATA_URI, null, null);
     }
 
     public static String getListStringByType(int listType) {

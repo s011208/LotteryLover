@@ -57,17 +57,47 @@ public class RetrieveDataService extends Service {
     }
 
     private void updateRegularly() {
-        ConnectivityManager cm =
-                (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        long postDelayed = 0;
+        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
+        switch (updatePeriodType) {
+            case LotteryLover.KEY_UPDATE_PERIOD_DEFUALT:
+                ConnectivityManager cm =
+                        (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                postDelayed = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ? Utilities.HOUR : Utilities.HOUR * 3;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_HOUR:
+                postDelayed = Utilities.HOUR;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_2_HOUR:
+                postDelayed = Utilities.HOUR * 2;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_3_HOUR:
+                postDelayed = Utilities.HOUR * 3;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_6_HOUR:
+                postDelayed = Utilities.HOUR * 6;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_12_HOUR:
+                postDelayed = Utilities.HOUR * 12;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_1_DAY:
+                postDelayed = Utilities.HOUR * 24;
+                break;
+            case LotteryLover.KEY_UPDATE_PERIOD_NEVER:
+                return;
+            default:
+                throw new RuntimeException("unexpected selection");
+        }
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Utilities.updateAllLtoData(RetrieveDataService.this, "regularly update");
                 updateRegularly();
             }
-        }, activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ? Utilities.HOUR : Utilities.HOUR * 3);
+        }, postDelayed);
     }
 
     @Override

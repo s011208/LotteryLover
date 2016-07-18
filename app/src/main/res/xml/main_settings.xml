@@ -31,6 +31,9 @@
         <Preference
             android:key="settings_others_lto_type_selector_title"
             android:title="@string/settings_others_lto_type_selector_title" />
+        <Preference
+            android:key="settings_other_update_period"
+            android:title="@string/settings_other_update_period" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -45,4 +48,5 @@
             android:summary="s011208@gmail.com"
             android:title="@string/settings_about_contact_me" />
     </PreferenceCategory>
+
 </PreferenceScreen>

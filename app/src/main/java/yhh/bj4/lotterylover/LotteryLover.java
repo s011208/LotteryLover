@@ -96,4 +96,14 @@ public class LotteryLover {
     public static final String KEY_SHOW_ADS = "show_ads";
     public static final String KEY_SET_TABLE_BACKGROUND_FROM_WEB = "set_table_background_from_web";
     public static final String KEY_SELECTED_LTO_TYPE_ANALYZE = "selected_lto_type_analyze";
+
+    public static final String KEY_UPDATE_PERIOD = "key_update_period";
+    public static final int KEY_UPDATE_PERIOD_DEFUALT = 0;
+    public static final int KEY_UPDATE_PERIOD_HOUR = 1;
+    public static final int KEY_UPDATE_PERIOD_2_HOUR = 2;
+    public static final int KEY_UPDATE_PERIOD_3_HOUR = 3;
+    public static final int KEY_UPDATE_PERIOD_6_HOUR = 4;
+    public static final int KEY_UPDATE_PERIOD_12_HOUR = 5;
+    public static final int KEY_UPDATE_PERIOD_1_DAY = 6;
+    public static final int KEY_UPDATE_PERIOD_NEVER = 7;
 }
