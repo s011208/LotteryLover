@@ -3,6 +3,7 @@ package yhh.bj4.lotterylover;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -42,6 +43,7 @@ import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.services.RetrieveDataService;
+import yhh.bj4.lotterylover.services.UpdateLogger;
 
 /**
  * Created by yenhsunhuang on 2016/6/14.
@@ -304,6 +306,10 @@ public class Utilities {
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST3);
             RetrieveDataService.startServiceAndUpdate(context, LotteryLover.LTO_TYPE_LTO_LIST4);
         }
+        ContentValues cv = new ContentValues();
+        cv.put(UpdateLogger.COLUMN_TIME, Calendar.getInstance().getTimeInMillis());
+        cv.put(UpdateLogger.COLUMN_REASON, reason);
+        context.getContentResolver().insert(UpdateLogger.URI, cv);
     }
 
     public static void clearAllLtoTables(Context context) {

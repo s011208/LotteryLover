@@ -65,6 +65,8 @@
         <item>1 day</item>
         <item>Never</item>
     </string-array>
+
+    <string name="settings_other_update_record">Update record</string>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>Lto</item>

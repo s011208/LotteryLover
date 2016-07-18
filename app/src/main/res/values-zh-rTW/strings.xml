@@ -66,6 +66,8 @@
         <item>1 天</item>
         <item>從不</item>
     </string-array>
+
+    <string name="settings_other_update_record">更新紀錄</string>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>威力彩</item>

@@ -34,6 +34,9 @@
         <Preference
             android:key="settings_other_update_period"
             android:title="@string/settings_other_update_period" />
+        <Preference
+            android:key="settings_others_update_record"
+            android:title="@string/settings_other_update_record" />
     </PreferenceCategory>
 
     <PreferenceCategory

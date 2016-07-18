@@ -33,6 +33,7 @@ import yhh.bj4.lotterylover.parser.ltodof.LtoDof;
 import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
+import yhh.bj4.lotterylover.services.UpdateLogger;
 import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
 
 /**
@@ -71,6 +72,7 @@ public class LotteryProvider extends ContentProvider {
     private static final int QUERY_ALL_LTO_TABLE_NAME_MATCHER = 100;
     private static final int QUERY_LTO_DRAWING_DATE_MATCHER = 101;
     private static final int SHOW_DRAWING_TIP_MATCHER = 200;
+    private static final int UPDATE_LOGGER_MATCHER = 201;
 
     public static final String PARAMETER_NOTIFY = "notify";
 
@@ -96,6 +98,7 @@ public class LotteryProvider extends ContentProvider {
         sMatcher.addURI(AUTHORITY, "QUERY_ALL_LTO_TABLE_NAME", QUERY_ALL_LTO_TABLE_NAME_MATCHER);
         sMatcher.addURI(AUTHORITY, "QUERY_LTO_DRAWING_DATE", QUERY_LTO_DRAWING_DATE_MATCHER);
         sMatcher.addURI(AUTHORITY, ShowDrawingTip.TABLE_NAME, SHOW_DRAWING_TIP_MATCHER);
+        sMatcher.addURI(AUTHORITY, UpdateLogger.TABLE_NAME, UPDATE_LOGGER_MATCHER);
     }
 
     private SQLiteDatabase mDatabase;
@@ -180,7 +183,7 @@ public class LotteryProvider extends ContentProvider {
                 rtn = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
                                 "WHERE type='table' " +
                                 "and name !='android_metadata' and name != 'AppSettings' " +
-                                "and name !='" + ShowDrawingTip.TABLE_NAME + "'"
+                                "and name !='" + ShowDrawingTip.TABLE_NAME + "' and name !='" + UpdateLogger.TABLE_NAME + "'"
                         , null);
                 break;
             case QUERY_LTO_DRAWING_DATE_MATCHER:
@@ -188,7 +191,7 @@ public class LotteryProvider extends ContentProvider {
                 Cursor allLtoTableNameCursor = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
                         "WHERE type='table' " +
                         "and name !='android_metadata' and name != 'AppSettings' " +
-                        "and name !='" + ShowDrawingTip.TABLE_NAME + "'", null);
+                        "and name !='" + ShowDrawingTip.TABLE_NAME + "' and name !='" + UpdateLogger.TABLE_NAME + "'", null);
                 if (allLtoTableNameCursor == null) return matrixCursor;
                 List<String> tableNames = new ArrayList<>();
                 try {
@@ -214,6 +217,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case SHOW_DRAWING_TIP_MATCHER:
                 rtn = mDatabase.query(ShowDrawingTip.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case UPDATE_LOGGER_MATCHER:
+                rtn = mDatabase.query(UpdateLogger.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new RuntimeException("unexpected query uri: " + uri);
@@ -291,6 +297,9 @@ public class LotteryProvider extends ContentProvider {
             case SHOW_DRAWING_TIP_MATCHER:
                 rtn = ContentUris.withAppendedId(uri, mDatabase.insert(ShowDrawingTip.TABLE_NAME, null, values));
                 break;
+            case UPDATE_LOGGER_MATCHER:
+                rtn = ContentUris.withAppendedId(uri, mDatabase.insert(UpdateLogger.TABLE_NAME, null, values));
+                break;
             default:
                 throw new RuntimeException("unexpected insert uri: " + uri);
         }
@@ -349,6 +358,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case APP_SETTINGS_MATCHER:
                 rtn = mDatabase.delete(AppSettings.TABLE_NAME, selection, selectionArgs);
+                break;
+            case UPDATE_LOGGER_MATCHER:
+                rtn = mDatabase.delete(UpdateLogger.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new RuntimeException("unexpected delete uri: " + uri);
@@ -412,6 +424,9 @@ public class LotteryProvider extends ContentProvider {
                 break;
             case SHOW_DRAWING_TIP_MATCHER:
                 rtn = mDatabase.update(ShowDrawingTip.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case UPDATE_LOGGER_MATCHER:
+                rtn = mDatabase.update(UpdateLogger.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
                 throw new RuntimeException("unexpected update uri: " + uri);

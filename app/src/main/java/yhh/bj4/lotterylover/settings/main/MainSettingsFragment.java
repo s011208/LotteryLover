@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -13,12 +14,16 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.analytics.Analytics;
 import yhh.bj4.lotterylover.analytics.AnalyticsHelper;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.services.UpdateLogger;
 import yhh.bj4.lotterylover.settings.ltotype.LtoTypeSettingActivity;
 
 /**
@@ -37,6 +42,7 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_DISPLAY_SCREEN_ORIENTATION = "settings_display_orientation";
 
     private static final String SETTINGS_OTHER_UPDATE_PERIOD = "settings_other_update_period";
+    private static final String SETTINGS_OTHER_UPDATE_RECORD = "settings_others_update_record";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -226,6 +232,36 @@ public class MainSettingsFragment extends PreferenceFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             preference.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[which]);
                             AppSettings.put(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, which);
+                        }
+                    }).show();
+            return true;
+        } else if (SETTINGS_OTHER_UPDATE_RECORD.equals(key)) {
+            Cursor itemCursor = getActivity().getContentResolver().query(UpdateLogger.URI, null, null, null, null);
+            if (itemCursor == null) return true;
+            CharSequence[] items = null;
+            try {
+                items = new CharSequence[itemCursor.getCount()];
+                int index = 0;
+                final int indexOfTime = itemCursor.getColumnIndex(UpdateLogger.COLUMN_TIME);
+                final int indexOfReason = itemCursor.getColumnIndex(UpdateLogger.COLUMN_REASON);
+                while (itemCursor.moveToNext()) {
+                    String time = new SimpleDateFormat("MM/dd HH:mm").format(new Date(itemCursor.getLong(indexOfTime)));
+                    String reason = itemCursor.getString(indexOfReason);
+                    items[index] = time + ": " + reason;
+                    ++index;
+                }
+            } finally {
+                itemCursor.close();
+            }
+            if (items == null) {
+                items = new CharSequence[]{""};
+            }
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.settings_other_update_record)
+                    .setItems(items, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
                         }
                     }).show();
             return true;
