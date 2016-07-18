@@ -8,8 +8,8 @@ android {
         applicationId "yhh.bj4.lotterylover"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 15
-        versionName "0.1.15 beta"
+        versionCode 16
+        versionName "0.1.16 beta"
     }
     buildTypes {
         release {
