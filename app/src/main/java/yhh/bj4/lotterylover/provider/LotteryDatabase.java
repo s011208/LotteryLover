@@ -27,7 +27,7 @@ import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 10;
+    private static final int VERSION = 11;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -116,6 +116,28 @@ public class LotteryDatabase extends SQLiteOpenHelper {
             createTableShowDrawingTip(db);
             ++oldVersion;
         }
+        if (oldVersion == 10) {
+            clearAllLtoTables(db);
+            ++oldVersion;
+        }
+    }
+
+    private void clearAllLtoTables(SQLiteDatabase db) {
+        db.delete(Lto.TABLE_NAME, null, null);
+        db.delete(LtoBig.TABLE_NAME, null, null);
+        db.delete(LtoHK.TABLE_NAME, null, null);
+        db.delete(LtoDof.TABLE_NAME, null, null);
+        db.delete(Lto2C.TABLE_NAME, null, null);
+        db.delete(Lto7C.TABLE_NAME, null, null);
+        db.delete(Lto539.TABLE_NAME, null, null);
+        db.delete(LtoPow.TABLE_NAME, null, null);
+        db.delete(LtoMM.TABLE_NAME, null, null);
+        db.delete(LtoJ6.TABLE_NAME, null, null);
+        db.delete(LtoToTo.TABLE_NAME, null, null);
+        db.delete(LtoAuPow.TABLE_NAME, null, null);
+        db.delete(LtoEm.TABLE_NAME, null, null);
+        db.delete(LtoList4.TABLE_NAME, null, null);
+        db.delete(LtoList3.TABLE_NAME, null, null);
     }
 
     private void createTableAppSettings(SQLiteDatabase db) {
@@ -131,7 +153,7 @@ public class LotteryDatabase extends SQLiteOpenHelper {
     }
 
     private void createTableLtoHK(SQLiteDatabase db) {
-        db.execSQL(LtoBig.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
+        db.execSQL(LtoHK.COMMAND_CREATE_TABLE(LtoHK.TABLE_NAME));
     }
 
     private void createTableLtoDof(SQLiteDatabase db) {

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
+import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.parser.LotteryParser;
 import yhh.bj4.lotterylover.provider.AppSettings;
@@ -69,7 +70,15 @@ public class RetrieveDataService extends Service {
 
     private void handleLtoUpdate(final int requestLtoType, final int queryPage) {
         if (requestLtoType == -1) return;
-        if (!isExpired(requestLtoType)) {
+        Cursor dataCursor = RetrieveLotteryItemDataHelper.getDataCursor(RetrieveDataService.this, requestLtoType);
+        boolean isDataCursorEmpty = false;
+        if (dataCursor != null) {
+            isDataCursorEmpty = dataCursor.getCount() == 0;
+            dataCursor.close();
+            Log.w(TAG, "isDataCursorEmpty: " + isDataCursorEmpty);
+        }
+
+        if (!isExpired(requestLtoType) && !isDataCursorEmpty) {
             Log.w(TAG, "requestLtoType: " + requestLtoType + ", not expired");
             return;
         }
@@ -149,7 +158,7 @@ public class RetrieveDataService extends Service {
     private boolean isExpired(int type) {
         long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
         Calendar now = Calendar.getInstance();
-        return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 6;
+        return Math.abs(lastUpdateTime - now.getTimeInMillis()) >= Utilities.HOUR * 2;
     }
 
     private boolean isWorkAround(int type, long seq, long pre) {
