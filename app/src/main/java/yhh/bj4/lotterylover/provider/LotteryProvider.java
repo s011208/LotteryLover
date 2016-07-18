@@ -509,11 +509,11 @@ public class LotteryProvider extends ContentProvider {
     private void printDatabaseData(Uri uri) {
         try {
             Log.i(TAG, "============ start to print " + uri.getPath() + " ============");
-            Cursor cursor = query(uri, null, null, null, null);
+            Cursor cursor = query(uri, null, null, null, LotteryItem.COLUMN_SEQUENCE + " desc limit 50");
             if (cursor != null) {
                 try {
                     String data = DatabaseUtils.dumpCursorToString(cursor);
-                    Log.d(TAG, "data: " + data);
+                    Log.e(TAG, "data: " + data);
                 } finally {
                     cursor.close();
                 }

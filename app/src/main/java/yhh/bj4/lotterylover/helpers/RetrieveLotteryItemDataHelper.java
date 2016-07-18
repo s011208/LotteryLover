@@ -2,6 +2,7 @@ package yhh.bj4.lotterylover.helpers;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -92,6 +93,13 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
             });
         } else {
             Cursor cursor = getDataCursor(context, mLtoType, mLimit);
+//            if (cursor != null) {
+//                try {
+//                    String data = DatabaseUtils.dumpCursorToString(cursor);
+//                    Log.d(TAG, "data: " + data);
+//                } finally {
+//                }
+//            }
             rtn.addAll(getDataFromCursor(cursor, mLtoType));
         }
         if (DEBUG)
@@ -337,7 +345,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                     break;
             }
         }
-        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " " + order + " " + row);
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_SEQUENCE + " " + order + " " + row);
     }
 
     @Override
