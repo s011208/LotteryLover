@@ -28,7 +28,7 @@ import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 12;
+    private static final int VERSION = 13;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -127,6 +127,10 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         }
         if (oldVersion == 11) {
             createTableUpdateLogger(db);
+            ++oldVersion;
+        }
+        if (oldVersion == 12) {
+            db.execSQL("ALTER TABLE " + UpdateLogger.TABLE_NAME + " ADD " + UpdateLogger.COLUMN_TYPE + " INTEGER DEFAULT " + UpdateLogger.TYPE_NORMAL);
             ++oldVersion;
         }
     }

@@ -1,6 +1,9 @@
 package yhh.bj4.lotterylover.applicationproxy;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.services.RetrieveDataService;
@@ -16,7 +19,6 @@ public class RemoteComponentsApplicationProxy extends ApplicationProxy {
     @Override
     public void onCreate() {
         RetrieveDataService.startService(getContext(), "Application start");
-        Utilities.updateAllLtoData(getContext(), "app start");
     }
 
     @Override

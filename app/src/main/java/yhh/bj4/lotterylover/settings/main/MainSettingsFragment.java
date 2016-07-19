@@ -244,10 +244,12 @@ public class MainSettingsFragment extends PreferenceFragment {
                 int index = 0;
                 final int indexOfTime = itemCursor.getColumnIndex(UpdateLogger.COLUMN_TIME);
                 final int indexOfReason = itemCursor.getColumnIndex(UpdateLogger.COLUMN_REASON);
+                final int indexOfType = itemCursor.getColumnIndex(UpdateLogger.COLUMN_TYPE);
                 while (itemCursor.moveToNext()) {
                     String time = new SimpleDateFormat("MM/dd HH:mm").format(new Date(itemCursor.getLong(indexOfTime)));
                     String reason = itemCursor.getString(indexOfReason);
-                    items[index] = time + ": " + reason;
+                    int type = itemCursor.getInt(indexOfType);
+                    items[index] = "(" + type + ") " + time + ": " + reason;
                     ++index;
                 }
             } finally {

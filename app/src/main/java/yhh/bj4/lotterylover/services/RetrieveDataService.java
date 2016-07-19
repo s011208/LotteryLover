@@ -53,10 +53,11 @@ public class RetrieveDataService extends Service {
         super.onCreate();
         checkAndInitLtoData();
 
-        updateRegularly();
+        updateRegularly("service start");
     }
 
-    private void updateRegularly() {
+    private void updateRegularly(String reason) {
+        Utilities.updateAllLtoData(RetrieveDataService.this, reason);
         long postDelayed = 0;
         final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
         switch (updatePeriodType) {
@@ -94,8 +95,7 @@ public class RetrieveDataService extends Service {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Utilities.updateAllLtoData(RetrieveDataService.this, "regularly update");
-                updateRegularly();
+                updateRegularly("regularly update");
             }
         }, postDelayed);
     }
