@@ -106,4 +106,6 @@ public class LotteryLover {
     public static final int KEY_UPDATE_PERIOD_12_HOUR = 5;
     public static final int KEY_UPDATE_PERIOD_1_DAY = 6;
     public static final int KEY_UPDATE_PERIOD_NEVER = 7;
+
+    public static final String KEY_KEEP_SCREEN_ON = "keep_screen_on";
 }

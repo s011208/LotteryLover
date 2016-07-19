@@ -67,6 +67,8 @@
     </string-array>
 
     <string name="settings_other_update_record">Update record</string>
+
+    <string name="settings_other_keep_screen_on">Keep screen on</string>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>Lto</item>

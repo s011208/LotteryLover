@@ -68,6 +68,8 @@
     </string-array>
 
     <string name="settings_other_update_record">更新紀錄</string>
+
+    <string name="settings_other_keep_screen_on">保持螢幕開啟</string>
     <!-- action bar -->
     <string-array name="action_bar_spinner_lto_type">
         <item>威力彩</item>

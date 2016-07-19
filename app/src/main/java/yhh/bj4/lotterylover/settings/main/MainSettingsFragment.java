@@ -44,6 +44,8 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_OTHER_UPDATE_PERIOD = "settings_other_update_period";
     private static final String SETTINGS_OTHER_UPDATE_RECORD = "settings_others_update_record";
 
+    private static final String SETTINGS_OTHER_KEEP_SCREEN_ON = "settings_other_keep_screen_on";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +90,11 @@ public class MainSettingsFragment extends PreferenceFragment {
         pref = findPreference(SETTINGS_OTHER_UPDATE_PERIOD);
         if (pref != null) {
             pref.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[AppSettings.get(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT)]);
+        }
+
+        pref = findPreference(SETTINGS_OTHER_KEEP_SCREEN_ON);
+        if (pref != null) {
+            ((CheckBoxPreference) pref).setChecked(AppSettings.get(getActivity(), LotteryLover.KEY_KEEP_SCREEN_ON, false));
         }
     }
 
@@ -267,6 +274,12 @@ public class MainSettingsFragment extends PreferenceFragment {
                         }
                     }).show();
             return true;
+        } else if (SETTINGS_OTHER_KEEP_SCREEN_ON.equals(key)) {
+            if (getActivity() instanceof Callback) {
+                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_KEEP_SCREEN_ON);
+            }
+            AppSettings.put(getActivity(), LotteryLover.KEY_KEEP_SCREEN_ON, ((CheckBoxPreference) preference).isChecked());
+
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }

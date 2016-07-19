@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.google.firebase.crash.FirebaseCrash;
+
+import yhh.bj4.lotterylover.provider.AppSettings;
 
 /**
  * Created by yenhsunhuang on 2016/6/28.
@@ -42,6 +45,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         FirebaseCrash.log(getActivityName() + " onResume " + this);
+        if (AppSettings.get(BaseActivity.this, LotteryLover.KEY_KEEP_SCREEN_ON, false)) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
     }
 
     @Override
