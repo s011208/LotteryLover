@@ -50,6 +50,7 @@ import yhh.bj4.lotterylover.parser.ltoem.LtoEm;
 import yhh.bj4.lotterylover.parser.ltolist4.LtoList4;
 import yhh.bj4.lotterylover.parser.ltopow.LtoPow;
 import yhh.bj4.lotterylover.provider.AppSettings;
+import yhh.bj4.lotterylover.services.RetrieveDataService;
 import yhh.bj4.lotterylover.settings.main.MainSettingsActivity;
 import yhh.bj4.lotterylover.views.listtype.ListTypeAdapter;
 
@@ -382,6 +383,9 @@ public class MainTableActivity extends BaseActivity
             }
             if (changedItemList.contains(LotteryLover.KEY_DISPLAY_ORIENTATION)) {
                 Utilities.setActivityOrientation(this);
+            }
+            if (changedItemList.contains(LotteryLover.KEY_FORCE_RELOAD)) {
+                RetrieveDataService.startServiceAndForceReload(MainTableActivity.this);
             }
         }
     }

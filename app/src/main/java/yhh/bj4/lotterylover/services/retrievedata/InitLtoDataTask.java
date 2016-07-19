@@ -44,16 +44,23 @@ public class InitLtoDataTask implements Runnable {
     private static final String TAG = "InitLtoDataTask";
     private static final boolean DEBUG = Utilities.DEBUG;
 
+    public interface Callback {
+        void onDataChangeFinish(int ltoType);
+    }
+
     private final int mLtoType;
 
     private final Uri mProviderUri;
 
     private Context mContext;
 
-    public InitLtoDataTask(int ltoType, Context context) {
+    private Callback mCallback;
+
+    public InitLtoDataTask(int ltoType, Context context, Callback cb) {
         mLtoType = ltoType;
         mProviderUri = LotteryItem.getLtoTypeUri(mLtoType);
         mContext = context;
+        mCallback = cb;
     }
 
     @Override
@@ -77,11 +84,11 @@ public class InitLtoDataTask implements Runnable {
             Log.d(TAG, "provider providerData count: " + providerDataCount);
         }
         FirebaseDatabaseHelper.getFirebaseDatabase().getReference().child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA)
-                .child(LotteryItem.getSimpleClassName(mLtoType)).orderByKey().addValueEventListener(new ValueEventListener() {
+                .child(LotteryItem.getSimpleClassName(mLtoType)).orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (DEBUG) {
-                    Log.i(TAG, "onDataChange");
+                    Log.i(TAG, "onDataChange, mLtoType: " + mLtoType);
                 }
                 final List<Map<String, String>> values = new ArrayList<>();
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
@@ -93,12 +100,10 @@ public class InitLtoDataTask implements Runnable {
                         @Override
                         public void run() {
                             writeFirebaseIntoProvider(values);
+                            mCallback.onDataChangeFinish(mLtoType);
                         }
                     }).start();
                 }
-
-                FirebaseDatabaseHelper.getFirebaseDatabase().getReference().child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA)
-                        .child(LotteryItem.getSimpleClassName(mLtoType)).removeEventListener(this);
 
                 Context context = mContext;
                 if (context == null) return;
@@ -162,8 +167,6 @@ public class InitLtoDataTask implements Runnable {
                 if (DEBUG) {
                     Log.w(TAG, "onCancelled", databaseError.toException());
                 }
-                FirebaseDatabaseHelper.getFirebaseDatabase().getReference().child(FirebaseDatabaseHelper.CHILD_LOTTERY_DATA)
-                        .child(LotteryItem.getSimpleClassName(mLtoType)).removeEventListener(this);
             }
         });
     }
@@ -232,7 +235,7 @@ public class InitLtoDataTask implements Runnable {
         }
         int result = context.getContentResolver().bulkInsert(mProviderUri, cvs);
         if (DEBUG)
-            Log.d(TAG, "insert " + LotteryItem.getSimpleClassName(mLtoType) + " count from firebase: " + result);
+            Log.d(TAG, "insert " + LotteryItem.getSimpleClassName(mLtoType) + " count from firebase: " + result + ", firebaseData size: " + firebaseData.size());
     }
 
     public void release() {

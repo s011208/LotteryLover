@@ -41,6 +41,9 @@
         <Preference
             android:key="settings_others_update_record"
             android:title="@string/settings_other_update_record" />
+        <yhh.bj4.lotterylover.settings.DangerPreference
+            android:key="settings_others_clear_all_lto_data_and_reload"
+            android:title="@string/settings_other_clear_and_reload_all_lto_data" />
     </PreferenceCategory>
 
     <PreferenceCategory

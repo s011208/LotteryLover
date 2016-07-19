@@ -31,12 +31,13 @@ import yhh.bj4.lotterylover.services.retrievedata.InitLtoDataTask;
 /**
  * Created by yenhsunhuang on 2016/6/23.
  */
-public class RetrieveDataService extends Service {
+public class RetrieveDataService extends Service implements InitLtoDataTask.Callback {
     private static final String TAG = "RetrieveDataService";
     private static final boolean DEBUG = Utilities.DEBUG;
 
     public static final String INTENT_REASON = "intent_reason";
     public static final String INTENT_REQUEST_LTO_TYPE = "rlt";
+    public static final String INTENT_FORCE_RELOAD = "force_reload";
 
     private HandlerThread mHandlerThread = new HandlerThread("RetrieveDataService");
 
@@ -48,15 +49,16 @@ public class RetrieveDataService extends Service {
 
     private final Map<Integer, InitLtoDataTask> mRunnableTaskMap = new HashMap<>();
 
+    private int mCheckInitCount = 0;
+    private String mUpdateReason = "service start";
+
     @Override
     public void onCreate() {
         super.onCreate();
         checkAndInitLtoData();
-
-        updateRegularly("service start");
     }
 
-    private void updateRegularly(String reason) {
+    private void updateRegularly(final String reason) {
         Utilities.updateAllLtoData(RetrieveDataService.this, reason);
         long postDelayed = 0;
         final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
@@ -110,6 +112,15 @@ public class RetrieveDataService extends Service {
                 Log.d(TAG, "onStartCommand request to update lto: " + intent.getIntExtra(INTENT_REQUEST_LTO_TYPE, -1));
                 handleLtoUpdate(intent.getIntExtra(INTENT_REQUEST_LTO_TYPE, -1), 0);
             }
+            if (intent.getStringExtra(INTENT_FORCE_RELOAD) != null) {
+                mHandler.removeCallbacks(null);
+                synchronized (this) {
+                    mCheckInitCount = 0;
+                }
+                mUpdateReason = "force reload";
+                Utilities.clearAllLtoTables(RetrieveDataService.this);
+                checkAndInitLtoData();
+            }
         } else {
             Log.d(TAG, "unknown reason");
         }
@@ -129,7 +140,6 @@ public class RetrieveDataService extends Service {
         if (isDataCursorEmpty) {
             AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
                     LotteryItem.getSimpleClassName(requestLtoType)), 0l);
-
         }
 
         if (!isExpired(requestLtoType) && !isDataCursorEmpty) {
@@ -161,6 +171,7 @@ public class RetrieveDataService extends Service {
                             }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc limit 1");
                             if (data == null) return;
                             try {
+                                if (data.getCount() == 0) return;
                                 data.moveToNext();
                                 if (requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST3) {
                                     if (data.getLong(0) == 1134921600000l) return;
@@ -308,7 +319,13 @@ public class RetrieveDataService extends Service {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_LIST4);
                 }
                 for (Integer ltoType : updateLtoList) {
-                    mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this));
+                    mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this, RetrieveDataService.this));
+                }
+                synchronized (this) {
+                    mCheckInitCount = LotteryItem.TOTAL_LTO_TYPE_COUNT - updateLtoList.size();
+                    if (mCheckInitCount == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
+                        updateRegularly(mUpdateReason);
+                    }
                 }
             }
         });
@@ -366,5 +383,21 @@ public class RetrieveDataService extends Service {
         Intent startIntent = new Intent(context, RetrieveDataService.class);
         startIntent.putExtra(RetrieveDataService.INTENT_REASON, reason);
         context.startService(startIntent);
+    }
+
+    public static void startServiceAndForceReload(Context context) {
+        Intent startIntent = new Intent(context, RetrieveDataService.class);
+        startIntent.putExtra(RetrieveDataService.INTENT_FORCE_RELOAD, "force_reload");
+        context.startService(startIntent);
+    }
+
+    @Override
+    public void onDataChangeFinish(int ltoType) {
+        synchronized (this) {
+            ++mCheckInitCount;
+            if (mCheckInitCount == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
+                updateRegularly(mUpdateReason);
+            }
+        }
     }
 }

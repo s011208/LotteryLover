@@ -108,4 +108,6 @@ public class LotteryLover {
     public static final int KEY_UPDATE_PERIOD_NEVER = 7;
 
     public static final String KEY_KEEP_SCREEN_ON = "keep_screen_on";
+
+    public static final String KEY_FORCE_RELOAD = "force_reload";
 }

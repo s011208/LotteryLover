@@ -8,7 +8,6 @@ import com.google.firebase.database.Exclude;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +38,9 @@ import yhh.bj4.lotterylover.provider.LotteryProvider;
  * Created by yenhsunhuang on 2016/6/14.
  */
 public abstract class LotteryItem {
+    public static final int TOTAL_LTO_TYPE_COUNT = 15;
+
+
     public static final String COLUMN_SEQUENCE = "seq";
     public static final String COLUMN_DRAWING_DATE_TIME = "drawing_dt";
     public static final String COLUMN_NORMAL_NUMBERS = "nn";

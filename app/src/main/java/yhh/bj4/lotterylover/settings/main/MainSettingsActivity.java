@@ -3,12 +3,11 @@ package yhh.bj4.lotterylover.settings.main;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.Bundle;
-import android.preference.PreferenceFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.settings.BaseSettingsActivity;
 
 /**
@@ -45,5 +44,8 @@ public class MainSettingsActivity extends BaseSettingsActivity implements MainSe
     public void onItemChanged(String key) {
         if (key == null || mChangedItemList.contains(key)) return;
         mChangedItemList.add(key);
+        if (LotteryLover.KEY_FORCE_RELOAD.equals(key)) {
+            onBackPressed();
+        }
     }
 }

@@ -45,6 +45,7 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_OTHER_UPDATE_RECORD = "settings_others_update_record";
 
     private static final String SETTINGS_OTHER_KEEP_SCREEN_ON = "settings_other_keep_screen_on";
+    private static final String SETTINGS_OTHER_CLEAR_AND_RESET_LTO_DATA = "settings_others_clear_all_lto_data_and_reload";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -279,7 +280,10 @@ public class MainSettingsFragment extends PreferenceFragment {
                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_KEEP_SCREEN_ON);
             }
             AppSettings.put(getActivity(), LotteryLover.KEY_KEEP_SCREEN_ON, ((CheckBoxPreference) preference).isChecked());
-
+        } else if (SETTINGS_OTHER_CLEAR_AND_RESET_LTO_DATA.equals(key)) {
+            if (getActivity() instanceof Callback) {
+                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_FORCE_RELOAD);
+            }
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
