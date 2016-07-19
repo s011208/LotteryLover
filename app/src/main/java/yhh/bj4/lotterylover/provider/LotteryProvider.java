@@ -182,6 +182,7 @@ public class LotteryProvider extends ContentProvider {
             case QUERY_ALL_LTO_TABLE_NAME_MATCHER:
                 rtn = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
                                 "WHERE type='table' " +
+                                "and name !='sqlite_sequence' " +
                                 "and name !='android_metadata' and name != 'AppSettings' " +
                                 "and name !='" + ShowDrawingTip.TABLE_NAME + "' and name !='" + UpdateLogger.TABLE_NAME + "'"
                         , null);
@@ -190,6 +191,7 @@ public class LotteryProvider extends ContentProvider {
                 MatrixCursor matrixCursor = new MatrixCursor(new String[]{"type", LotteryItem.COLUMN_DRAWING_DATE_TIME});
                 Cursor allLtoTableNameCursor = mDatabase.rawQuery("SELECT name FROM sqlite_master " +
                         "WHERE type='table' " +
+                        "and name !='sqlite_sequence' " +
                         "and name !='android_metadata' and name != 'AppSettings' " +
                         "and name !='" + ShowDrawingTip.TABLE_NAME + "' and name !='" + UpdateLogger.TABLE_NAME + "'", null);
                 if (allLtoTableNameCursor == null) return matrixCursor;
