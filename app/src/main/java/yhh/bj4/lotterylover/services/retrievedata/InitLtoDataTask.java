@@ -94,15 +94,19 @@ public class InitLtoDataTask implements Runnable {
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     values.add((Map<String, String>) s.getValue());
                 }
-                if (values != null && providerDataCount < values.size()) {
-                    // sync from firebase directly
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            writeFirebaseIntoProvider(values);
-                            mCallback.onDataChangeFinish(mLtoType);
-                        }
-                    }).start();
+                if (values != null) {
+                    if (providerDataCount < values.size()) {
+                        // sync from firebase directly
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                writeFirebaseIntoProvider(values);
+                                mCallback.onDataChangeFinish(mLtoType);
+                            }
+                        }).start();
+                    } else {
+                        mCallback.onDataChangeFinish(mLtoType);
+                    }
                 }
 
                 Context context = mContext;

@@ -123,7 +123,7 @@ public class LtoDofParser extends LotteryParser {
                 }
                 int result = mContext.getContentResolver().bulkInsert(LtoDof.DATA_URI, cvs);
                 if (result != 0) {
-                    FirebaseDatabaseHelper.setLtoValues(items);
+                    FirebaseDatabaseHelper.setLtoValues(items, mContext);
                 }
             }
         } catch (IOException e) {

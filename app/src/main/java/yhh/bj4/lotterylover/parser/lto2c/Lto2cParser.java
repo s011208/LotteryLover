@@ -118,7 +118,7 @@ public class Lto2CParser extends LotteryParser {
                 }
                 int result = mContext.getContentResolver().bulkInsert(Lto2C.DATA_URI, cvs);
                 if (result != 0) {
-                    FirebaseDatabaseHelper.setLtoValues(items);
+                    FirebaseDatabaseHelper.setLtoValues(items, mContext);
                 }
             }
         } catch (IOException e) {

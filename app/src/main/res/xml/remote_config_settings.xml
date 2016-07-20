@@ -20,4 +20,8 @@
         <key>set_table_background_from_web</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>allow_user_update_lto_data</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

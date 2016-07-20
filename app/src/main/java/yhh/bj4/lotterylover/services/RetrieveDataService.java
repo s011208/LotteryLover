@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
@@ -49,7 +50,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
 
     private final Map<Integer, InitLtoDataTask> mRunnableTaskMap = new HashMap<>();
 
-    private int mCheckInitCount = 0;
+    private AtomicInteger mCheckInitCount = new AtomicInteger(0);
     private String mUpdateReason = "service start";
 
     @Override
@@ -60,7 +61,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
 
     private void updateRegularly(final String reason) {
         Utilities.updateAllLtoData(RetrieveDataService.this, reason);
-        long postDelayed = 0;
+        long postDelayed;
         final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
         switch (updatePeriodType) {
             case LotteryLover.KEY_UPDATE_PERIOD_DEFUALT:
@@ -114,9 +115,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
             }
             if (intent.getStringExtra(INTENT_FORCE_RELOAD) != null) {
                 mHandler.removeCallbacks(null);
-                synchronized (this) {
-                    mCheckInitCount = 0;
-                }
+                mCheckInitCount.set(0);
                 mUpdateReason = "force reload";
                 Utilities.clearAllLtoTables(RetrieveDataService.this);
                 checkAndInitLtoData();
@@ -321,11 +320,9 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                 for (Integer ltoType : updateLtoList) {
                     mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this, RetrieveDataService.this));
                 }
-                synchronized (this) {
-                    mCheckInitCount = LotteryItem.TOTAL_LTO_TYPE_COUNT - updateLtoList.size();
-                    if (mCheckInitCount == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
-                        updateRegularly(mUpdateReason);
-                    }
+                mCheckInitCount.set(LotteryItem.TOTAL_LTO_TYPE_COUNT - updateLtoList.size());
+                if (mCheckInitCount.get() == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
+                    updateRegularly(mUpdateReason);
                 }
             }
         });
@@ -393,11 +390,8 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
 
     @Override
     public void onDataChangeFinish(int ltoType) {
-        synchronized (this) {
-            ++mCheckInitCount;
-            if (mCheckInitCount == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
-                updateRegularly(mUpdateReason);
-            }
+        if (mCheckInitCount.addAndGet(1) == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
+            updateRegularly(mUpdateReason);
         }
     }
 }

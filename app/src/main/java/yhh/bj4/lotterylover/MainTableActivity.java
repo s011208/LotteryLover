@@ -110,13 +110,14 @@ public class MainTableActivity extends BaseActivity
             } else if (LtoList4.DATA_URI.equals(uri)) {
                 updateList = mLtoType == LotteryLover.LTO_TYPE_LTO_LIST4;
             } else if (uri.toString().startsWith(AppSettings.DATA_URI.toString())) {
-                if (Utilities.areAllLtoItemsAreInit(MainTableActivity.this)) {
-                    if (!isMainTableAvailable()) {
-                        mLoadingProgressbar.setVisibility(View.INVISIBLE);
-                        Utilities.updateAllLtoData(MainTableActivity.this, "just finish loading");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
-                    }
-                }
+                // TODO WHY?
+//                if (Utilities.areAllLtoItemsAreInit(MainTableActivity.this)) {
+//                    if (!isMainTableAvailable()) {
+//                        mLoadingProgressbar.setVisibility(View.INVISIBLE);
+//                        Utilities.updateAllLtoData(MainTableActivity.this, "just finish loading");
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+//                    }
+//                }
                 if (LotteryLover.KEY_SHOW_MONTHLY_DATA_ALWAYS.equals(uri.getLastPathSegment())) {
                     invalidateOptionsMenu();
                 }
@@ -135,11 +136,11 @@ public class MainTableActivity extends BaseActivity
         if (mMainTableFragment == null) {
             mMainTableFragment = new MainTableFragment();
         }
-
-        if (Utilities.areAllLtoItemsAreInit(this)) {
-            mLoadingProgressbar.setVisibility(View.INVISIBLE);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
-        }
+        // TODO WHY?
+//        if (Utilities.areAllLtoItemsAreInit(this)) {
+//            mLoadingProgressbar.setVisibility(View.INVISIBLE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mMainTableFragment, MainTableFragment.class.getSimpleName()).commitAllowingStateLoss();
+//        }
 
         registerObserver();
         initAds();

@@ -132,7 +132,7 @@ public class Lto539Parser extends LotteryParser {
                     Log.d(TAG, "insert result: " + result);
                 }
                 if (result != 0) {
-                    FirebaseDatabaseHelper.setLtoValues(items);
+                    FirebaseDatabaseHelper.setLtoValues(items, mContext);
                 }
             }
         } catch (IOException e) {
