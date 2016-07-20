@@ -100,11 +100,11 @@ public class RemoteConfigHelper {
                     AppSettings.put(mContext, LotteryLover.KEY_SET_TABLE_BACKGROUND_FROM_WEB, setTableBackground);
                 }
                 final boolean allowUserUpdateLtoTable = firebaseRemoteConfig.getBoolean(KEY_ALLOW_USER_UPDATE_LTO_LIST);
-                if (AppSettings.get(mContext, LotteryLover.KEY_ALLOW_USER_UPDATE_LTO_LIST, false) != allowUserUpdateLtoTable) {
+                if (AppSettings.get(mContext, LotteryLover.KEY_ALLOW_USER_UPDATE_LTO_LIST, true) != allowUserUpdateLtoTable) {
                     AppSettings.put(mContext, LotteryLover.KEY_ALLOW_USER_UPDATE_LTO_LIST, allowUserUpdateLtoTable);
                 }
                 final boolean syncFromFirebase = firebaseRemoteConfig.getBoolean(KEY_SYNC_FROM_FIREBASE);
-                if (AppSettings.get(mContext, LotteryLover.KEY_SYNC_FROM_FIREBASE, false) != syncFromFirebase) {
+                if (AppSettings.get(mContext, LotteryLover.KEY_SYNC_FROM_FIREBASE, true) != syncFromFirebase) {
                     AppSettings.put(mContext, LotteryLover.KEY_SYNC_FROM_FIREBASE, syncFromFirebase);
                 }
                 Log.d(TAG, "KEY_SHOW_MONTHLY_DATA_ALWAYS: " + showMonthlyDataAlways);

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Process;
 import android.util.Log;
 
@@ -100,13 +101,14 @@ public class InitLtoDataTask implements Runnable {
                 if (values != null) {
                     if (providerDataCount < values.size()) {
                         // sync from firebase directly
-                        new Thread(new Runnable() {
+                        new AsyncTask<Void, Void, Void>() {
                             @Override
-                            public void run() {
+                            protected Void doInBackground(Void... params) {
                                 writeFirebaseIntoProvider(values);
                                 mCallback.onDataChangeFinish(mLtoType);
+                                return null;
                             }
-                        }).start();
+                        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     } else {
                         mCallback.onDataChangeFinish(mLtoType);
                     }

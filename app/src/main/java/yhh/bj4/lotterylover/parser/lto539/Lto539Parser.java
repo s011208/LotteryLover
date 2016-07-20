@@ -95,6 +95,10 @@ public class Lto539Parser extends LotteryParser {
                 try {
                     long seq = Long.valueOf(tds.get(0).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
+                    // work around
+                    if (seq == 901) {
+                        drawingTime = Utilities.convertStringDateToLong("2010/06/14");
+                    }
                     List<Integer> normalNumber = Utilities.convertStringNumberToList(tds.get(2).text());
                     List<Integer> specialNumber = new ArrayList<>();
                     if (normalNumber.size() != Lto539.getNormalNumbersCount() ||

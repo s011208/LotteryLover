@@ -22,10 +22,10 @@
     </entry>
     <entry>
         <key>allow_user_update_lto_data</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>sync_from_firebase</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
 </defaultsMap>

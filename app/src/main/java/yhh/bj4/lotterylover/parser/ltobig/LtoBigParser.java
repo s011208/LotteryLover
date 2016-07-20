@@ -87,6 +87,10 @@ public class LtoBigParser extends LotteryParser {
                 try {
                     long seq = Long.valueOf(tds.get(0).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
+                    // work around
+                    if (seq == 937) {
+                        drawingTime = Utilities.convertStringDateToLong("2012/12/25");
+                    }
                     List<Integer> normalNumber = Utilities.convertStringNumberToList(tds.get(2).text());
                     List<Integer> specialNumber = Utilities.convertStringNumberToList(tds.get(3).text());
                     if (normalNumber.size() != LtoBig.getNormalNumbersCount() ||

@@ -90,6 +90,16 @@ public class Lto7CParser extends LotteryParser {
                 try {
                     long seq = Long.valueOf(tds.get(0).text());
                     long drawingTime = Utilities.convertStringDateToLong(tds.get(1).text());
+                    // workaround
+                    if (seq == 463) {
+                        drawingTime = Utilities.convertStringDateToLong("2005/01/03");
+                    } else if (seq == 648) {
+                        drawingTime = Utilities.convertStringDateToLong("2006/03/22");
+                    } else if (seq == 649) {
+                        drawingTime = Utilities.convertStringDateToLong("2006/03/25");
+                    } else if (seq == 730) {
+                        drawingTime = Utilities.convertStringDateToLong("2006/09/29");
+                    }
                     List<Integer> normalNumber = Utilities.convertStringNumberToList(tds.get(2).text());
                     List<Integer> specialNumber = Utilities.convertStringNumberToList(tds.get(3).text());
                     if (normalNumber.size() != Lto7C.getNormalNumbersCount() ||

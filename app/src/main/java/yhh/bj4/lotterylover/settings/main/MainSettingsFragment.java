@@ -90,7 +90,7 @@ public class MainSettingsFragment extends PreferenceFragment {
 
         pref = findPreference(SETTINGS_OTHER_UPDATE_PERIOD);
         if (pref != null) {
-            pref.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[AppSettings.get(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT)]);
+            pref.setSummary(getResources().getStringArray(R.array.settings_other_update_period)[AppSettings.get(getActivity(), LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFAULT)]);
         }
 
         pref = findPreference(SETTINGS_OTHER_KEEP_SCREEN_ON);

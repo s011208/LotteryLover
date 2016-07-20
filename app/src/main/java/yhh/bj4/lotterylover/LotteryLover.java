@@ -100,7 +100,7 @@ public class LotteryLover {
     public static final String KEY_SYNC_FROM_FIREBASE = "sync_from_firebase";
 
     public static final String KEY_UPDATE_PERIOD = "key_update_period";
-    public static final int KEY_UPDATE_PERIOD_DEFUALT = 0;
+    public static final int KEY_UPDATE_PERIOD_DEFAULT = 0;
     public static final int KEY_UPDATE_PERIOD_HOUR = 1;
     public static final int KEY_UPDATE_PERIOD_2_HOUR = 2;
     public static final int KEY_UPDATE_PERIOD_3_HOUR = 3;

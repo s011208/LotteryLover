@@ -30,7 +30,8 @@ public class FirebaseDatabaseHelper {
     }
 
     public static void setLtoValues(List<LotteryItem> items, Context context) {
-        if (!AppSettings.get(context, LotteryLover.KEY_ALLOW_USER_UPDATE_LTO_LIST, false)) return;
+        if (context != null && !AppSettings.get(context, LotteryLover.KEY_ALLOW_USER_UPDATE_LTO_LIST, true))
+            return;
         DatabaseReference db = FirebaseDatabaseHelper.getFirebaseDatabase().getReference();
         for (final LotteryItem item : items) {
             Map<String, Object> childUpdates = new HashMap<>();

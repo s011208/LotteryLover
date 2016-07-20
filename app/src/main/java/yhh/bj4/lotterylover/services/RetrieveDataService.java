@@ -60,9 +60,9 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
     private void updateRegularly(final String reason) {
         Utilities.updateAllLtoData(RetrieveDataService.this, reason);
         long postDelayed;
-        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
+        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFAULT);
         switch (updatePeriodType) {
-            case LotteryLover.KEY_UPDATE_PERIOD_DEFUALT:
+            case LotteryLover.KEY_UPDATE_PERIOD_DEFAULT:
                 ConnectivityManager cm =
                         (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -157,6 +157,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                         if (results[0] == Activity.RESULT_CANCELED) {
                             AppSettings.put(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(
                                     LotteryItem.getSimpleClassName(requestLtoType)), Calendar.getInstance().getTimeInMillis());
+                            Log.i(TAG, "cancel type: " + requestLtoType);
                             return;
                         }
                         // check data integrity
@@ -189,6 +190,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                                     long seq = data.getLong(0);
                                     if (previous == 0) {
                                         if (seq > 1) {
+                                            Log.w(TAG, "1 seq: " + seq + ", previous: " + previous + ", requestLtoType: " + requestLtoType);
                                             handleLtoUpdate(requestLtoType, page + 1);
                                             return;
                                         }
@@ -200,6 +202,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                                             previous = seq;
                                             continue;
                                         }
+                                        Log.w(TAG, "2 seq: " + seq + ", previous: " + previous + ", requestLtoType: " + requestLtoType);
                                         handleLtoUpdate(requestLtoType, page + 1);
                                         return;
                                     }
@@ -218,10 +221,10 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
     private boolean isExpired(int type) {
         long lastUpdateTime = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_LTO_UPDATE_TIME(LotteryItem.getSimpleClassName(type)), 0l);
         Calendar now = Calendar.getInstance();
-        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFUALT);
+        final int updatePeriodType = AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_UPDATE_PERIOD, LotteryLover.KEY_UPDATE_PERIOD_DEFAULT);
         long expiredTime;
         switch (updatePeriodType) {
-            case LotteryLover.KEY_UPDATE_PERIOD_DEFUALT:
+            case LotteryLover.KEY_UPDATE_PERIOD_DEFAULT:
                 ConnectivityManager cm =
                         (ConnectivityManager) RetrieveDataService.this.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -260,6 +263,9 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
         if (type == LotteryLover.LTO_TYPE_LTO) {
             if (seq == 155 && pre == 144) return true;
             if (seq == 445 && pre == 443) return true;
+        }
+        if (type == LotteryLover.LTO_TYPE_LTO_POW) {
+            if (seq == 68 && pre == 66) return true;
         }
         return false;
     }
@@ -314,14 +320,15 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                 if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST4)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_LIST4);
                 }
-                if (!AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_SYNC_FROM_FIREBASE, false)) {
+                if (!AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_SYNC_FROM_FIREBASE, true)) {
                     updateLtoList.clear();
-                }
-                for (Integer ltoType : updateLtoList) {
-                    mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this, RetrieveDataService.this));
                 }
                 if (updateLtoList.isEmpty()) {
                     updateRegularly(mUpdateReason);
+                } else {
+                    for (Integer ltoType : updateLtoList) {
+                        mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this, RetrieveDataService.this));
+                    }
                 }
             }
         });
