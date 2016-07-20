@@ -93,6 +93,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
             @Override
             public void onFinished(List<LotteryItem> data) {
                 mLotteryItems.addAll(data);
+                final boolean showSequence = AppSettings.get(mContext, LotteryLover.KEY_SHOW_COLUMN_SEQUENCE, true);
                 new AdapterDataGenerator(ltoType, listType, mCombineSpecialNumber, Utilities.getWindowBackgroundColor(mContext),
                         data, new AdapterDataGenerator.Callback() {
                     @Override
@@ -129,7 +130,7 @@ public class MainTableAdapter extends RecyclerView.Adapter {
                             mCallback.onFinishLoadingData();
                         }
                     }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }, showSequence).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             }
         }, ltoType, listType).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }

@@ -65,12 +65,6 @@ public class MainTableActivity extends BaseActivity
     private LinearLayout mLoadingProgressbar;
     private int mListType = LotteryLover.LIST_TYPE_OVERALL;
     private int mLtoType = LotteryLover.LTO_TYPE_LTO;
-    private RecyclerView mListTypeView;
-    private ListTypeAdapter mListTypeAdapter;
-    private AdView mAdView;
-
-    private int mDrawerSelectedItemId;
-
     private final ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
@@ -127,6 +121,10 @@ public class MainTableActivity extends BaseActivity
             }
         }
     };
+    private RecyclerView mListTypeView;
+    private ListTypeAdapter mListTypeAdapter;
+    private AdView mAdView;
+    private int mDrawerSelectedItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -387,6 +385,13 @@ public class MainTableActivity extends BaseActivity
             }
             if (changedItemList.contains(LotteryLover.KEY_FORCE_RELOAD)) {
                 RetrieveDataService.startServiceAndForceReload(MainTableActivity.this);
+            }
+            if (changedItemList.contains(LotteryLover.KEY_SHOW_COLUMN_SEQUENCE)) {
+                if (mMainTableFragment != null) {
+                    if (isMainTableAvailable()) {
+                        mMainTableFragment.updateAllList();
+                    }
+                }
             }
         }
     }

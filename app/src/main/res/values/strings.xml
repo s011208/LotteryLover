@@ -46,6 +46,8 @@
         <item>Descendant</item>
     </string-array>
 
+    <string name="settings_display_show_sequence">Show column "Sequence"</string>
+
     <string-array name="settings_appearance_digit_size_list">
         <item>Tiny</item>
         <item>Small</item>

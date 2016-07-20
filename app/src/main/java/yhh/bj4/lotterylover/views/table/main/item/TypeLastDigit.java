@@ -31,16 +31,19 @@ public class TypeLastDigit extends MainTableItem {
         List<Integer> indexOfNormal = new ArrayList<>();
         List<Integer> indexOfSpecial = new ArrayList<>();
         List<Integer> indexOfZero = new ArrayList<>();
-        Pair<Integer, Integer> indexOfSequence, indexOfDrawingTime;
+        Pair<Integer, Integer> indexOfSequence = null, indexOfDrawingTime;
 
         StringBuilder builder = new StringBuilder();
         builder.append(SEP);
         builder.deleteCharAt(0);
-        int start = builder.length();
-        builder.append(Utilities.getLotterySequenceString(mSequence));
-        indexOfSequence = new Pair<>(start, builder.length());
-        indexOfSepOfNormal.add(builder.length());
-        builder.append(SEP);
+        int start;
+        if (mShowSequence) {
+            start = builder.length();
+            builder.append(Utilities.getLotterySequenceString(mSequence));
+            indexOfSequence = new Pair<>(start, builder.length());
+            indexOfSepOfNormal.add(builder.length());
+            builder.append(SEP);
+        }
         start = builder.length();
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
         indexOfDrawingTime = new Pair<>(start, builder.length());
@@ -141,13 +144,17 @@ public class TypeLastDigit extends MainTableItem {
 
         // drawing time & sequence
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER) {
-            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (indexOfSequence != null) {
+                rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime.first, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
             rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime.second - 3, indexOfDrawingTime.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (indexOfSequence != null) {
+                rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence.first, indexOfSequence.second, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
 
         // rest of spe of normal

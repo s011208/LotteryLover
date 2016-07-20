@@ -54,15 +54,17 @@ public class TypePlusAndMinus extends MainTableItem {
         List<Integer> indexOfSpecial = new ArrayList<>();
         List<Integer> indexOfHitNormal = new ArrayList<>();
         List<Integer> indexOfHitSpecial = new ArrayList<>();
-        int indexOfDrawingTime, indexOfSequence;
+        int indexOfDrawingTime, indexOfSequence = -1;
 
         StringBuilder builder = new StringBuilder();
         builder.append(SEP);
         builder.deleteCharAt(0);
-        builder.append(Utilities.getLotterySequenceString(mSequence));
-        indexOfSequence = builder.length();
-        indexOfSep.add(builder.length());
-        builder.append(SEP);
+        if (mShowSequence) {
+            builder.append(Utilities.getLotterySequenceString(mSequence));
+            indexOfSequence = builder.length();
+            indexOfSep.add(builder.length());
+            builder.append(SEP);
+        }
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
         indexOfDrawingTime = builder.length();
         indexOfSep.add(builder.length());
@@ -164,7 +166,9 @@ public class TypePlusAndMinus extends MainTableItem {
         // hide day of month
         if (mItemType == ITEM_TYPE_SUB_TOTAL) {
             rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfDrawingTime - 3, indexOfDrawingTime, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence - 5, indexOfSequence, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (indexOfSequence != -1) {
+                rtn.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), indexOfSequence - 5, indexOfSequence, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
 
         // rest of spe

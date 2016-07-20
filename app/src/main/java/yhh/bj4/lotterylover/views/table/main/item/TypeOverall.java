@@ -33,11 +33,13 @@ public class TypeOverall extends MainTableItem {
         StringBuilder builder = new StringBuilder();
         builder.append(SEP);
         builder.deleteCharAt(0);
-        if (mSequence < 100000) {
-            // for List3 & List4
-            builder.append(Utilities.getLotterySequenceString(mSequence));
-            indexOfSep.add(builder.length());
-            builder.append(SEP);
+        if (mShowSequence) {
+            if (mSequence < 100000) {
+                // for List3 & List4
+                builder.append(Utilities.getLotterySequenceString(mSequence));
+                indexOfSep.add(builder.length());
+                builder.append(SEP);
+            }
         }
         builder.append(Utilities.getDateTimeYMDString(mDrawingTime));
         indexOfSep.add(builder.length());

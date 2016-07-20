@@ -112,4 +112,6 @@ public class LotteryLover {
     public static final String KEY_KEEP_SCREEN_ON = "keep_screen_on";
 
     public static final String KEY_FORCE_RELOAD = "force_reload";
+
+    public static final String KEY_SHOW_COLUMN_SEQUENCE = "key_show_column_sequence";
 }

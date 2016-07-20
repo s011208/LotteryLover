@@ -58,6 +58,8 @@ public abstract class MainTableItem {
     int mWindowBackgroundColor = Color.WHITE;
     int mDigitLength = 2;
 
+    boolean mShowSequence = true;
+
     private SpannableString mSpannableString;
     private boolean mCacheSpannableString = true;
     int mItemType = ITEM_TYPE_CONTENT;
@@ -121,6 +123,10 @@ public abstract class MainTableItem {
 
     public final void setDigitLength(int length) {
         mDigitLength = length;
+    }
+
+    public final void setShowSequence(boolean showSequence) {
+        mShowSequence = showSequence;
     }
 
     @Override

@@ -26,26 +26,21 @@ import yhh.bj4.lotterylover.views.table.main.item.TypePlusTogether;
 public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTableItem>> {
     private static final String TAG = "AdapterDataGenerator";
     private static final boolean DEBUG = false;
-
-    public interface Callback {
-        void onFinished(ArrayList<MainTableItem> data);
-    }
-
     private static final int TABLE_OFFSET = 1;
-
     private final int mListType;
     private final ArrayList<LotteryItem> mLotteryData = new ArrayList<>();
     private final Callback mCallback;
-    private int mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber, mMaximumSpecialNumber;
     private final int mWindowBackgroundColor;
     private final boolean mCombineSpecialNumber;
-
-    public AdapterDataGenerator(int lto, int list, boolean combineSpecialNumber, int color, List<LotteryItem> data, Callback cb) {
+    private final boolean mShowSequence;
+    private int mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber, mMaximumSpecialNumber;
+    public AdapterDataGenerator(int lto, int list, boolean combineSpecialNumber, int color, List<LotteryItem> data, Callback cb, boolean showSequence) {
         mListType = list;
         mLotteryData.addAll(data);
         mCallback = cb;
         mWindowBackgroundColor = color;
         mCombineSpecialNumber = combineSpecialNumber;
+        mShowSequence = showSequence;
     }
 
     @Override
@@ -98,6 +93,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 }
             }
             mainTableItem.makeSpannableString();
+            mainTableItem.setShowSequence(mShowSequence);
             rtn.add(mainTableItem);
         }
         return rtn;
@@ -119,6 +115,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     ((TypePlusAndMinus) monthlyItem).setCombineSpecialNumber(mCombineSpecialNumber);
                     monthlyItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
                     monthlyItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
+                    monthlyItem.setShowSequence(mShowSequence);
                     for (int i = 0; i < mNormalNumberCount; ++i) {
                         monthlyItem.addNormalNumber(i, 0);
                     }
@@ -138,6 +135,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     , mMaximumSpecialNumber);
             ((TypePlusAndMinus) mainTableItem).setCombineSpecialNumber(mCombineSpecialNumber);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
+            mainTableItem.setShowSequence(mShowSequence);
             for (int i = 0; i < mNormalNumberCount; ++i) {
                 mainTableItem.addNormalNumber(i, item.getNormalNumbers().get(i));
             }
@@ -162,6 +160,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     item.getMemo(), item.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                     , mMaximumSpecialNumber);
             mainTableItem.setDigitLength(maximumDigitOfSum);
+            mainTableItem.setShowSequence(mShowSequence);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             Map<Integer, Integer> newNormalIndex = Utilities.getLastDigitMap(mMaximumNormalNumber);
@@ -238,6 +237,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
                     mainTableItem.setDigitLength(maximumDigitOfSum);
+                    mainTableItem.setShowSequence(mShowSequence);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
@@ -304,6 +304,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
             mainTableItem.setDigitLength(maximumDigitOfSum);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
+            mainTableItem.setShowSequence(mShowSequence);
             Map<Integer, Integer> newNormalIndex = Utilities.getPlusAndLastDigitMap(mMaximumNormalNumber);
 
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
@@ -378,6 +379,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
                     mainTableItem.setDigitLength(maximumDigitOfSum);
+                    mainTableItem.setShowSequence(mShowSequence);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
 
@@ -443,6 +445,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                     , mMaximumSpecialNumber);
             mainTableItem.setDigitLength(maximumDigitOfSum);
             mainTableItem.setWindowBackgroundColor(mWindowBackgroundColor);
+            mainTableItem.setShowSequence(mShowSequence);
             mainTableItem.setItemType(MainTableItem.ITEM_TYPE_CONTENT);
             for (int k = TABLE_OFFSET; k < mMaximumNormalNumber + TABLE_OFFSET; ++k) {
                 boolean isFind = false;
@@ -512,6 +515,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                             tempItem.getSequence(), tempItem.getDrawingDateTime(),
                             tempItem.getMemo(), tempItem.getExtraMessage(), mNormalNumberCount, mSpecialNumberCount, mMaximumNormalNumber
                             , mMaximumSpecialNumber);
+                    mainTableItem.setShowSequence(mShowSequence);
                     mainTableItem.setDigitLength(maximumDigitOfSum);
                     mainTableItem.setWindowBackgroundColor(Utilities.getPrimaryLightColor(null));
                     mainTableItem.setItemType(MainTableItem.ITEM_TYPE_SUB_TOTAL);
@@ -567,6 +571,7 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
                 for (int i = 0; i < mSpecialNumberCount; ++i) {
                     mainTableItem.addSpecialNumber(i, item.getSpecialNumbers().get(i));
                 }
+                mainTableItem.setShowSequence(mShowSequence);
                 mainTableItem.makeSpannableString();
                 rtn.add(mainTableItem);
             }
@@ -590,5 +595,9 @@ public class AdapterDataGenerator extends AsyncTask<Void, Void, ArrayList<MainTa
         super.onPostExecute(mainTableItems);
         if (mCallback == null) return;
         mCallback.onFinished(mainTableItems);
+    }
+
+    public interface Callback {
+        void onFinished(ArrayList<MainTableItem> data);
     }
 }

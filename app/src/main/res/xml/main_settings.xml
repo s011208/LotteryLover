@@ -25,6 +25,11 @@
         <Preference
             android:key="settings_display_orientation"
             android:title="@string/settings_display_orientation_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="settings_display_show_sequence"
+            android:title="@string/settings_display_show_sequence" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_others_category_title">

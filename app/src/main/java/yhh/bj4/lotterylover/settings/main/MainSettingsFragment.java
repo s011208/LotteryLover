@@ -47,6 +47,8 @@ public class MainSettingsFragment extends PreferenceFragment {
     private static final String SETTINGS_OTHER_KEEP_SCREEN_ON = "settings_other_keep_screen_on";
     private static final String SETTINGS_OTHER_CLEAR_AND_RESET_LTO_DATA = "settings_others_clear_all_lto_data_and_reload";
 
+    private static final String SETTINGS_DISPLAY_SHOW_COLUMN_SEQUENCE = "settings_display_show_sequence";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +98,11 @@ public class MainSettingsFragment extends PreferenceFragment {
         pref = findPreference(SETTINGS_OTHER_KEEP_SCREEN_ON);
         if (pref != null) {
             ((CheckBoxPreference) pref).setChecked(AppSettings.get(getActivity(), LotteryLover.KEY_KEEP_SCREEN_ON, false));
+        }
+
+        pref = findPreference(SETTINGS_DISPLAY_SHOW_COLUMN_SEQUENCE);
+        if (pref != null) {
+            ((CheckBoxPreference) pref).setChecked(AppSettings.get(getActivity(), LotteryLover.KEY_SHOW_COLUMN_SEQUENCE, true));
         }
     }
 
@@ -283,6 +290,11 @@ public class MainSettingsFragment extends PreferenceFragment {
         } else if (SETTINGS_OTHER_CLEAR_AND_RESET_LTO_DATA.equals(key)) {
             if (getActivity() instanceof Callback) {
                 ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_FORCE_RELOAD);
+            }
+        } else if (SETTINGS_DISPLAY_SHOW_COLUMN_SEQUENCE.equals(key)) {
+            if (getActivity() instanceof Callback) {
+                ((Callback) getActivity()).onItemChanged(LotteryLover.KEY_SHOW_COLUMN_SEQUENCE);
+                AppSettings.put(getActivity(), LotteryLover.KEY_SHOW_COLUMN_SEQUENCE,  ((CheckBoxPreference) preference).isChecked());
             }
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);

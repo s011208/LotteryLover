@@ -313,6 +313,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 int[] parameters = MainTableItem.initParameters(ltoType);
                 ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(activity, ltoType), ltoType);
                 final int digitLength = Utilities.getMaximumDigitLengthOfSum(items, parameters[3]);
+                final boolean showSequence = AppSettings.get(activity, LotteryLover.KEY_SHOW_COLUMN_SEQUENCE, true);
                 MainTableItem rtn;
                 if (listType == LotteryLover.LIST_TYPE_OVERALL) {
                     return null;
@@ -320,6 +321,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypeNumeric(MainTableAdapter.TYPE_NUMERIC,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
                     for (int i = 1; i < parameters[2] + 1; ++i) {
@@ -338,6 +340,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
                     for (int i = 1; i < parameters[2] + 1; ++i) {
@@ -355,6 +358,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypeLastDigit(MainTableAdapter.TYPE_LAST_DIGIT,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
                     for (int i = 1; i < parameters[2] + 1; ++i) {
@@ -417,6 +421,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                 ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(activity, ltoType), ltoType);
                 final int digitLength = Utilities.getMaximumDigitLengthOfSum(items, parameters[3]);
                 Pair<ArrayList<Integer>, ArrayList<Integer>> combinedResult = Utilities.collectLotteryItemsData(items);
+                final boolean showSequence = AppSettings.get(activity, LotteryLover.KEY_SHOW_COLUMN_SEQUENCE, true);
                 if (combinedResult.first.isEmpty() || combinedResult.second.isEmpty()) return null;
                 MainTableItem rtn;
                 if (parameters[3] <= 0) {
@@ -431,6 +436,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypeNumeric(MainTableAdapter.TYPE_NUMERIC,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_FOOTER);
                     for (int i = 0; i < combinedResult.first.size(); ++i) {
@@ -448,6 +454,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_FOOTER);
                     List<Integer> tempData = new ArrayList<>();
@@ -479,6 +486,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     rtn = new TypeLastDigit(MainTableAdapter.TYPE_LAST_DIGIT,
                             0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
                     rtn.setDigitLength(digitLength);
+                    rtn.setShowSequence(showSequence);
                     rtn.setWindowBackgroundColor(getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
                     rtn.setItemType(MainTableItem.ITEM_TYPE_FOOTER);
 

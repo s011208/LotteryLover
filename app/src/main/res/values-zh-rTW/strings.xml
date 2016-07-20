@@ -46,7 +46,7 @@
         <item>遞增</item>
         <item>遞減</item>
     </string-array>
-
+    <string name="settings_display_show_sequence">顯示期數欄位</string>
     <string-array name="settings_appearance_digit_size_list">
         <item>微小</item>
         <item>小</item>
