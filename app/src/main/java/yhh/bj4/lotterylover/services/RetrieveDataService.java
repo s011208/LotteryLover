@@ -182,18 +182,13 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                             Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
                                     LotteryItem.COLUMN_SEQUENCE
                             }, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " asc");
-                            final boolean d = requestLtoType == LotteryLover.LTO_TYPE_LTO;
                             if (data == null) return;
                             try {
                                 long previous = 0;
                                 while (data.moveToNext()) {
                                     long seq = data.getLong(0);
-                                    if (d)
-                                        Log.e("QQQQ", "seq: " + seq + ", previous: " + previous + ", page: " + page);
                                     if (previous == 0) {
                                         if (seq > 1) {
-                                            if (d)
-                                                Log.w("QQQQ", "handleLtoUpdate 1, page: " + (page + 1));
                                             handleLtoUpdate(requestLtoType, page + 1);
                                             return;
                                         }
@@ -205,8 +200,6 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                                             previous = seq;
                                             continue;
                                         }
-                                        if (d)
-                                            Log.w("QQQQ", "handleLtoUpdate 2, page: " + page + 1);
                                         handleLtoUpdate(requestLtoType, page + 1);
                                         return;
                                     }
