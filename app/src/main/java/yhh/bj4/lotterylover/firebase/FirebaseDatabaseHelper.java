@@ -20,7 +20,7 @@ public class FirebaseDatabaseHelper {
         return sFirebaseDatabase;
     }
 
-    public static final String CHILD_LOTTERY_DATA = "lottery_data";
+    public static final String CHILD_LOTTERY_DATA = "lottery_data_v20";
 
     private FirebaseDatabaseHelper() {
     }
