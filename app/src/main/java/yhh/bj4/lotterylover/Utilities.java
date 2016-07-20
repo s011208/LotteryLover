@@ -279,6 +279,7 @@ public class Utilities {
     }
 
     public static boolean areAllLtoItemsAreInit(Context context) {
+        if (!AppSettings.get(context, LotteryLover.KEY_SYNC_FROM_FIREBASE, false)) return true;
         return AppSettings.get(context, LotteryLover.KEY_INIT_LTO, false) &&
                 AppSettings.get(context, LotteryLover.KEY_INIT_LTO2C, false) &&
                 AppSettings.get(context, LotteryLover.KEY_INIT_LTO7C, false) &&

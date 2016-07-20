@@ -70,7 +70,10 @@ public class InitLtoDataTask implements Runnable {
                     + ", pid: " + Process.myPid() + ", tid: " + Process.myTid());
         }
         Context context = mContext;
-        if (context == null) return;
+        if (context == null) {
+            mCallback.onDataChangeFinish(mLtoType);
+            return;
+        }
         // check whether sync old providerData from firebase.
         final int providerDataCount;
         Cursor providerData = context.getContentResolver().query(LotteryItem.getLtoTypeUri(mLtoType), new String[]{LotteryItem.COLUMN_SEQUENCE}, null, null, null);
@@ -110,7 +113,10 @@ public class InitLtoDataTask implements Runnable {
                 }
 
                 Context context = mContext;
-                if (context == null) return;
+                if (context == null) {
+                    mCallback.onDataChangeFinish(mLtoType);
+                    return;
+                }
                 String key;
                 switch (mLtoType) {
                     case LotteryLover.LTO_TYPE_LTO:
@@ -171,6 +177,7 @@ public class InitLtoDataTask implements Runnable {
                 if (DEBUG) {
                     Log.w(TAG, "onCancelled", databaseError.toException());
                 }
+                mCallback.onDataChangeFinish(mLtoType);
             }
         });
     }

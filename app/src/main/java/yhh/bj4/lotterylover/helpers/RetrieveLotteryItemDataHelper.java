@@ -81,12 +81,12 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                 @Override
                 public int compare(LotteryItem lhs, LotteryItem rhs) {
                     if (isAsc) {
-                        if (lhs.getSequence() < rhs.getSequence()) return -1;
-                        else if (lhs.getSequence() > rhs.getSequence()) return 1;
+                        if (lhs.getDrawingDateTime() < rhs.getDrawingDateTime()) return -1;
+                        else if (lhs.getDrawingDateTime() > rhs.getDrawingDateTime()) return 1;
                         else return 0;
                     } else {
-                        if (lhs.getSequence() < rhs.getSequence()) return 1;
-                        else if (lhs.getSequence() > rhs.getSequence()) return -1;
+                        if (lhs.getDrawingDateTime() < rhs.getDrawingDateTime()) return 1;
+                        else if (lhs.getDrawingDateTime() > rhs.getDrawingDateTime()) return -1;
                         else return 0;
                     }
                 }
@@ -345,7 +345,7 @@ public class RetrieveLotteryItemDataHelper extends AsyncTask<Void, Void, List<Lo
                     break;
             }
         }
-        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_SEQUENCE + " " + order + " " + row);
+        return context.getContentResolver().query(queryUri, null, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " " + order + " " + row);
     }
 
     @Override

@@ -97,6 +97,7 @@ public class LotteryLover {
     public static final String KEY_SET_TABLE_BACKGROUND_FROM_WEB = "set_table_background_from_web";
     public static final String KEY_SELECTED_LTO_TYPE_ANALYZE = "selected_lto_type_analyze";
     public static final String KEY_ALLOW_USER_UPDATE_LTO_LIST = "allow_user_update_lto_data";
+    public static final String KEY_SYNC_FROM_FIREBASE = "sync_from_firebase";
 
     public static final String KEY_UPDATE_PERIOD = "key_update_period";
     public static final int KEY_UPDATE_PERIOD_DEFUALT = 0;

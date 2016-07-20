@@ -76,8 +76,8 @@ public abstract class LotteryItem {
 
     public static String COMMAND_CREATE_TABLE(String lotteryItemTableName) {
         return "CREATE TABLE IF NOT EXISTS " + lotteryItemTableName + " ("
-                + COLUMN_SEQUENCE + " INTEGER PRIMARY KEY,"
-                + COLUMN_DRAWING_DATE_TIME + " INTEGER NOT NULL,"
+                + COLUMN_SEQUENCE + " INTEGER NOT NULL,"
+                + COLUMN_DRAWING_DATE_TIME + " INTEGER PRIMARY KEY,"
                 + COLUMN_NORMAL_NUMBERS + " TEXT NOT NULL,"
                 + COLUMN_SPECIAL_NUMBERS + " TEXT,"
                 + COLUMN_MEMO + " TEXT,"

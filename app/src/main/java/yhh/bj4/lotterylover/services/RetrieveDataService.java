@@ -19,7 +19,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import yhh.bj4.lotterylover.LotteryLover;
 import yhh.bj4.lotterylover.Utilities;
@@ -50,7 +49,6 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
 
     private final Map<Integer, InitLtoDataTask> mRunnableTaskMap = new HashMap<>();
 
-    private AtomicInteger mCheckInitCount = new AtomicInteger(0);
     private String mUpdateReason = "service start";
 
     @Override
@@ -115,7 +113,6 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
             }
             if (intent.getStringExtra(INTENT_FORCE_RELOAD) != null) {
                 mHandler.removeCallbacks(null);
-                mCheckInitCount.set(0);
                 mUpdateReason = "force reload";
                 Utilities.clearAllLtoTables(RetrieveDataService.this);
                 checkAndInitLtoData();
@@ -167,7 +164,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                                 requestLtoType == LotteryLover.LTO_TYPE_LTO_LIST4) {
                             Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
                                     LotteryItem.COLUMN_SEQUENCE
-                            }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc limit 1");
+                            }, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " asc limit 1");
                             if (data == null) return;
                             try {
                                 if (data.getCount() == 0) return;
@@ -184,14 +181,19 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                         } else {
                             Cursor data = getContentResolver().query(LotteryItem.getLtoTypeUri(requestLtoType), new String[]{
                                     LotteryItem.COLUMN_SEQUENCE
-                            }, null, null, LotteryItem.COLUMN_SEQUENCE + " asc");
+                            }, null, null, LotteryItem.COLUMN_DRAWING_DATE_TIME + " asc");
+                            final boolean d = requestLtoType == LotteryLover.LTO_TYPE_LTO;
                             if (data == null) return;
                             try {
                                 long previous = 0;
                                 while (data.moveToNext()) {
                                     long seq = data.getLong(0);
+                                    if (d)
+                                        Log.e("QQQQ", "seq: " + seq + ", previous: " + previous + ", page: " + page);
                                     if (previous == 0) {
-                                        if (seq != 1) {
+                                        if (seq > 1) {
+                                            if (d)
+                                                Log.w("QQQQ", "handleLtoUpdate 1, page: " + (page + 1));
                                             handleLtoUpdate(requestLtoType, page + 1);
                                             return;
                                         }
@@ -203,6 +205,8 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                                             previous = seq;
                                             continue;
                                         }
+                                        if (d)
+                                            Log.w("QQQQ", "handleLtoUpdate 2, page: " + page + 1);
                                         handleLtoUpdate(requestLtoType, page + 1);
                                         return;
                                     }
@@ -213,7 +217,7 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                             }
                         }
                     }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             }
         });
     }
@@ -317,11 +321,13 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
                 if (needToInit(LotteryLover.LTO_TYPE_LTO_LIST4)) {
                     updateLtoList.add(LotteryLover.LTO_TYPE_LTO_LIST4);
                 }
+                if (!AppSettings.get(RetrieveDataService.this, LotteryLover.KEY_SYNC_FROM_FIREBASE, false)) {
+                    updateLtoList.clear();
+                }
                 for (Integer ltoType : updateLtoList) {
                     mHandler.post(new InitLtoDataTask(ltoType, RetrieveDataService.this, RetrieveDataService.this));
                 }
-                mCheckInitCount.set(LotteryItem.TOTAL_LTO_TYPE_COUNT - updateLtoList.size());
-                if (mCheckInitCount.get() == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
+                if (updateLtoList.isEmpty()) {
                     updateRegularly(mUpdateReason);
                 }
             }
@@ -390,8 +396,6 @@ public class RetrieveDataService extends Service implements InitLtoDataTask.Call
 
     @Override
     public void onDataChangeFinish(int ltoType) {
-        if (mCheckInitCount.addAndGet(1) == LotteryItem.TOTAL_LTO_TYPE_COUNT) {
-            updateRegularly(mUpdateReason);
-        }
+        handleLtoUpdate(ltoType, 0);
     }
 }

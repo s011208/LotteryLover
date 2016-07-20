@@ -24,4 +24,8 @@
         <key>allow_user_update_lto_data</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>sync_from_firebase</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

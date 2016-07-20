@@ -27,8 +27,9 @@ import yhh.bj4.lotterylover.settings.calendar.ShowDrawingTip;
  * Created by yenhsunhuang on 2016/6/14.
  */
 public class LotteryDatabase extends SQLiteOpenHelper {
+    // adb exec-out run-as yhh.bj4.lotterylover cat databases/ltd.db > file.db
     private static final String DATABASE_NAME = "ltd.db";
-    private static final int VERSION = 13;
+    private static final int VERSION = 14;
 
     private static final String TAG = "LotteryDatabase";
     private static final boolean DEBUG = Utilities.DEBUG;
@@ -133,6 +134,30 @@ public class LotteryDatabase extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + UpdateLogger.TABLE_NAME + " ADD " + UpdateLogger.COLUMN_TYPE + " INTEGER DEFAULT " + UpdateLogger.TYPE_NORMAL);
             ++oldVersion;
         }
+        if (oldVersion == 13) {
+            // update all tables' primary key
+            dropAllLtoTables(db);
+            createAllLtoTables(db);
+            ++oldVersion;
+        }
+    }
+
+    private void dropAllLtoTables(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE " + Lto.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoBig.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoHK.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoDof.TABLE_NAME);
+        db.execSQL("DROP TABLE " + Lto2C.TABLE_NAME);
+        db.execSQL("DROP TABLE " + Lto7C.TABLE_NAME);
+        db.execSQL("DROP TABLE " + Lto539.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoPow.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoMM.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoJ6.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoToTo.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoAuPow.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoEm.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoList4.TABLE_NAME);
+        db.execSQL("DROP TABLE " + LtoList3.TABLE_NAME);
     }
 
     private void clearAllLtoTables(SQLiteDatabase db) {
@@ -151,6 +176,24 @@ public class LotteryDatabase extends SQLiteOpenHelper {
         db.delete(LtoEm.TABLE_NAME, null, null);
         db.delete(LtoList4.TABLE_NAME, null, null);
         db.delete(LtoList3.TABLE_NAME, null, null);
+    }
+
+    private void createAllLtoTables(SQLiteDatabase db) {
+        createTableLto(db);
+        createTableLtoBig(db);
+        createTableLtoHK(db);
+        createTableLtoDof(db);
+        createTableLto2C(db);
+        createTableLto7C(db);
+        createTableLto539(db);
+        createTableLtoPow(db);
+        createTableLtoMM(db);
+        createTableLtoJ6(db);
+        createTableLtoToTo(db);
+        createTableLtoAuPow(db);
+        createTableLtoEM(db);
+        createTableLtoList4(db);
+        createTableLtoList3(db);
     }
 
     private void createTableAppSettings(SQLiteDatabase db) {
