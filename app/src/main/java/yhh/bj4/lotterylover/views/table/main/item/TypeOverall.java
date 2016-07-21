@@ -104,7 +104,9 @@ public class TypeOverall extends MainTableItem {
         for (int i = 0; i < indexOfSep.size(); ++i) {
             final int startIndex = indexOfSep.get(i) + 1;
             final int endIndex = startIndex + SEP.length() - 2;
-            if ((mSequence < 100000 && i == 1) || (mSequence >= 100000 && i == 0)) {
+            if (!mShowSequence && i == 0) {
+                rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL_OF_GROUP), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (mShowSequence && (mSequence < 100000 && i == 1) || (mSequence >= 100000 && i == 0)) {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL_OF_GROUP), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_SPECIAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
