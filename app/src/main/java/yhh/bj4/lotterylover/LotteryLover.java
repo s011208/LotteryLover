@@ -37,6 +37,7 @@ public class LotteryLover {
     public static final int DIGIT_SCALE_SIZE_NORMAL = 2;
     public static final int DIGIT_SCALE_SIZE_LARGE = 3;
     public static final int DIGIT_SCALE_SIZE_HUGE = 4;
+    public static final int DIGIT_SCALE_SIZE_AUTO = 5;
 
     public static final float VALUE_DIGIT_SCALE_SIZE_TINY = .70f;
     public static final float VALUE_DIGIT_SCALE_SIZE_SMALL = .85f;

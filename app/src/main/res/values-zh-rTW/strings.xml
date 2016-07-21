@@ -53,6 +53,7 @@
         <item>一般</item>
         <item>大</item>
         <item>最大</item>
+        <item>自動</item>
     </string-array>
 
     <string name="settings_other_update_period">更新間隔</string>

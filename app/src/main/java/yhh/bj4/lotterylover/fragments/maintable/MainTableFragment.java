@@ -2,6 +2,7 @@ package yhh.bj4.lotterylover.fragments.maintable;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -60,6 +61,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
     private int mLtoType, mListType;
 
+    private int mPreviousLtoType = -1;
+
     private boolean mIsShowSubTotalOnly = false;
 
     private RecyclerView mMainTable;
@@ -78,6 +81,10 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private int mMaximumOfCachedSize;
 
     private int mScrollViewWidth = 0;
+
+    private float mAutoDigitalScale = 1f;
+
+    private boolean mUpdateTableAfterGlobalLayout = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +118,9 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     }
                 }
                 mScrollViewWidth = mScrollView.getWidth();
+                if (mUpdateTableAfterGlobalLayout) {
+                    updateTable(true);
+                }
             }
         });
         mMainTable = (RecyclerView) root.findViewById(R.id.main_table_recyclerview);
@@ -227,10 +237,44 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         updateTable(true);
     }
 
+    private boolean canAutoSetDigitScalable() {
+        return !(mListType == LotteryLover.LIST_TYPE_OVERALL ||
+                mListType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS ||
+                mListType == LotteryLover.LIST_TYPE_COMBINE_LIST);
+    }
+
     private void updateTable(final boolean updateHeaderAndFooter) {
         final Activity activity = getActivity();
         if (activity != null && activity instanceof Callback) {
             ((Callback) activity).onStartUpdate();
+        }
+
+        if (!canAutoSetDigitScalable()) {
+            mAutoDigitalScale = 1f;
+            updateDigitScaleSize();
+        } else if (mScrollViewWidth == 0) {
+            mUpdateTableAfterGlobalLayout = true;
+            return;
+        } else if (canAutoSetDigitScalable() &&
+                AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL) == LotteryLover.DIGIT_SCALE_SIZE_AUTO) {
+            new AsyncTask<Void, Void, Float>() {
+                final int ltoType = mLtoType;
+                final int listType = mListType;
+                final int scrollViewWidth = mScrollViewWidth;
+
+                @Override
+                protected Float doInBackground(Void... params) {
+                    return preCalculateDigitScale(getActivity(), listType, ltoType, scrollViewWidth);
+                }
+
+                @Override
+                protected void onPostExecute(Float result) {
+                    if (result == null) mAutoDigitalScale = 1f;
+                    else mAutoDigitalScale = result;
+                    updateDigitScaleSize();
+                }
+            }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            mPreviousLtoType = mLtoType;
         }
         updateMainTableAdapter();
         if (updateHeaderAndFooter) {
@@ -569,7 +613,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private float getDigitScaleSize() {
         final Activity activity = getActivity();
         if (activity == null) return LotteryLover.VALUE_DIGIT_SCALE_SIZE_NORMAL;
-        return Utilities.getDigitSizeScale(AppSettings.get(activity, LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL));
+        final int scaleSettings = AppSettings.get(activity, LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL);
+        return scaleSettings == LotteryLover.DIGIT_SCALE_SIZE_AUTO ? Utilities.getDigitSizeScale(scaleSettings) * mAutoDigitalScale : Utilities.getDigitSizeScale(scaleSettings);
     }
 
     public void updateAllList() {
@@ -604,4 +649,108 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
         void onFinishUpdate();
     }
+
+
+    private static Float preCalculateDigitScale(Activity activity, int listType, int ltoType, int scrollViewWidth) {
+        if (activity == null) return null;
+        int[] parameters = MainTableItem.initParameters(ltoType);
+        ArrayList<LotteryItem> items = RetrieveLotteryItemDataHelper.getDataFromCursor(RetrieveLotteryItemDataHelper.getDataCursor(activity, ltoType), listType);
+        final int digitLength = Utilities.getMaximumDigitLengthOfSum(items, parameters[3]);
+        final boolean showSequence = AppSettings.get(activity, LotteryLover.KEY_SHOW_COLUMN_SEQUENCE, true);
+        MainTableItem rtn;
+        if (listType == LotteryLover.LIST_TYPE_OVERALL) {
+            return null;
+        } else if (listType == LotteryLover.LIST_TYPE_NUMERIC) {
+            rtn = new TypeNumeric(MainTableAdapter.TYPE_NUMERIC,
+                    0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
+            rtn.setDigitLength(digitLength);
+            rtn.setShowSequence(showSequence);
+            rtn.setWindowBackgroundColor(activity.getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
+            rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
+            for (int i = 1; i < parameters[2] + 1; ++i) {
+                rtn.addNormalNumber(i - 1, i);
+            }
+
+            if (parameters[3] > 0) {
+                for (int i = 1; i < parameters[3] + 1; ++i) {
+                    rtn.addSpecialNumber(i - 1, i);
+                }
+            }
+
+            rtn.makeSpannableString();
+        } else if (listType == LotteryLover.LIST_TYPE_PLUS_TOGETHER) {
+            Map<Integer, Integer> index = Utilities.getPlusAndLastDigitMap(parameters[2]);
+            rtn = new TypePlusTogether(MainTableAdapter.TYPE_PLUS_TOGETHER,
+                    0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
+            rtn.setDigitLength(digitLength);
+            rtn.setShowSequence(showSequence);
+            rtn.setWindowBackgroundColor(activity.getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
+            rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
+            for (int i = 1; i < parameters[2] + 1; ++i) {
+                rtn.addNormalNumber(i - 1, index.get(i));
+            }
+
+            if (parameters[3] > 0) {
+                index = Utilities.getPlusAndLastDigitMap(parameters[3]);
+                for (int i = 1; i < parameters[3] + 1; ++i) {
+                    rtn.addSpecialNumber(i - 1, index.get(i));
+                }
+            }
+        } else if (listType == LotteryLover.LIST_TYPE_LAST_DIGIT) {
+            Map<Integer, Integer> index = Utilities.getLastDigitMap(parameters[2]);
+            rtn = new TypeLastDigit(MainTableAdapter.TYPE_LAST_DIGIT,
+                    0, 0, "", "", parameters[0], parameters[1], parameters[2], parameters[3]);
+            rtn.setDigitLength(digitLength);
+            rtn.setShowSequence(showSequence);
+            rtn.setWindowBackgroundColor(activity.getResources().getColor(HEADER_AND_FOOTER_BACKGROUND_COLOR_RES));
+            rtn.setItemType(MainTableItem.ITEM_TYPE_HEADER);
+            for (int i = 1; i < parameters[2] + 1; ++i) {
+                rtn.addNormalNumber(i - 1, index.get(i));
+            }
+
+            if (parameters[3] > 0) {
+                index = Utilities.getLastDigitMap(parameters[3]);
+                for (int i = 1; i < parameters[3] + 1; ++i) {
+                    rtn.addSpecialNumber(i - 1, index.get(i));
+                }
+            }
+        } else if (listType == LotteryLover.LIST_TYPE_PLUS_AND_MINUS) {
+            return null;
+        } else if (listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
+            return null;
+        } else {
+            throw new RuntimeException("unexpected list type, listType: " + listType);
+        }
+        if (rtn != null) {
+            if (scrollViewWidth == 0) return null;
+            TextView preCalculate = (TextView) ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.main_table_adapter_text, null);
+            preCalculate.setText(rtn.makeSpannableString());
+            final float textSize = preCalculate.getTextSize();
+            int size = 10000;
+            float digitSize = 1;
+            int times = 0;
+            while (size > scrollViewWidth) {
+                preCalculate.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize * digitSize);
+                preCalculate.measure(View.MeasureSpec.makeMeasureSpec(10000, View.MeasureSpec.AT_MOST)
+                        , View.MeasureSpec.makeMeasureSpec(10000, View.MeasureSpec.AT_MOST));
+                preCalculate.layout(0, 0, preCalculate.getMeasuredWidth(), preCalculate.getMeasuredHeight());
+                size = preCalculate.getWidth();
+                if (times == 0 && scrollViewWidth > size) {
+                    digitSize = 1;
+                } else if (size / scrollViewWidth > 2) {
+                    digitSize -= 0.2f;
+                } else if (size / scrollViewWidth > 1.3f) {
+                    digitSize -= 0.05f;
+                } else {
+                    digitSize -= 0.0005f;
+                }
+
+                if (Math.abs(size - scrollViewWidth) <= 100) break;
+                ++times;
+            }
+            return digitSize;
+        }
+        return null;
+    }
+
 }
