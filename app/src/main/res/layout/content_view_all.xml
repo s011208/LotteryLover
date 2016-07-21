@@ -30,16 +30,16 @@
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-6361389364792908/9700783026"></com.google.android.gms.ads.AdView>
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/adView"
         android:layout_below="@+id/list_type_recyclerview"
         android:paddingBottom="@dimen/main_table_fragment_padding"
         android:paddingLeft="@dimen/main_table_fragment_padding"
         android:paddingRight="@dimen/main_table_fragment_padding"
-        android:paddingTop="@dimen/main_table_fragment_padding"></RelativeLayout>
+        android:paddingTop="@dimen/main_table_fragment_padding"></FrameLayout>
 
     <LinearLayout
         android:id="@+id/loading_progressbar"
