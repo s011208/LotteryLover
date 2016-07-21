@@ -132,6 +132,7 @@ public class AnalyzeFragment extends Fragment implements LtoTypeAdapter.Callback
 
     @Override
     public void onLoadList34Finished(List34Result result) {
+        if (result == null) return;
         if (result.getLotteryType() != mLtoType) {
             if (DEBUG) {
                 Log.w(TAG, "lto type expired, ignore update");
