@@ -119,7 +119,7 @@ public class TypeNumeric extends MainTableItem {
         for (int i = 0; i < indexOfSepOfNormal.size(); ++i) {
             final int startIndex = indexOfSepOfNormal.get(i) + 1;
             final int endIndex = startIndex + SEP.length() - 2;
-            if (i % 10 == 1 || i == indexOfSepOfNormal.size() - 1) {
+            if ((mShowSequence && i % 10 == 1) || (!mShowSequence && i % 10 == 0) || i == indexOfSepOfNormal.size() - 1) {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL_OF_GROUP), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
