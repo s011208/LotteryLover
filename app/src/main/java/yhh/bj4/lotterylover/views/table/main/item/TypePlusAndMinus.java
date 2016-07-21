@@ -175,7 +175,7 @@ public class TypePlusAndMinus extends MainTableItem {
         for (int i = 0; i < indexOfSep.size(); ++i) {
             final int startIndex = indexOfSep.get(i) + 1;
             final int endIndex = startIndex + SEP.length() - 2;
-            if (i == 1) {
+            if ((mShowSequence && i == 1) || (!mShowSequence && i == 0)) {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_NORMAL_OF_GROUP), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 rtn.setSpan(new BackgroundColorSpan(SEP_COLOR_OF_SPECIAL), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
