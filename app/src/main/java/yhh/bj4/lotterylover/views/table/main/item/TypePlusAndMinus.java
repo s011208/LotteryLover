@@ -156,7 +156,7 @@ public class TypePlusAndMinus extends MainTableItem {
         SpannableString rtn = new SpannableString(builder.toString());
 
         if (mItemType == ITEM_TYPE_HEADER || mItemType == ITEM_TYPE_FOOTER || mItemType == ITEM_TYPE_SUB_TOTAL) {
-            rtn.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            rtn.setSpan(new BackgroundColorSpan(mWindowBackgroundColor), 0, rtn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         // first spe
