@@ -39,6 +39,7 @@ import yhh.bj4.lotterylover.R;
 import yhh.bj4.lotterylover.Utilities;
 import yhh.bj4.lotterylover.firebase.StorageHelper;
 import yhh.bj4.lotterylover.helpers.RetrieveLotteryItemDataHelper;
+import yhh.bj4.lotterylover.helpers.SharedPrefHelper;
 import yhh.bj4.lotterylover.parser.LotteryItem;
 import yhh.bj4.lotterylover.provider.AppSettings;
 import yhh.bj4.lotterylover.views.DividerItemDecoration;
@@ -60,8 +61,6 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
     private static final int HEADER_AND_FOOTER_BACKGROUND_COLOR_RES = R.color.colorPrimary;
 
     private int mLtoType, mListType;
-
-    private int mPreviousLtoType = -1;
 
     private boolean mIsShowSubTotalOnly = false;
 
@@ -257,24 +256,33 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
             return;
         } else if (canAutoSetDigitScalable() &&
                 AppSettings.get(getActivity(), LotteryLover.KEY_DIGIT_SCALE_SIZE, LotteryLover.DIGIT_SCALE_SIZE_NORMAL) == LotteryLover.DIGIT_SCALE_SIZE_AUTO) {
-            new AsyncTask<Void, Void, Float>() {
-                final int ltoType = mLtoType;
-                final int listType = mListType;
-                final int scrollViewWidth = mScrollViewWidth;
+            final String prefKey = SharedPrefHelper.getInstance(getActivity()).getAutoScaleKeyByLtoType(mLtoType);
+            final float storedValue = SharedPrefHelper.getInstance(getActivity()).getPrefs().getFloat(prefKey, -1);
+            if (storedValue != -1) {
+                mAutoDigitalScale = storedValue;
+                updateDigitScaleSize();
+            } else {
+                new AsyncTask<Void, Void, Float>() {
+                    final int ltoType = mLtoType;
+                    final int listType = mListType;
+                    final int scrollViewWidth = mScrollViewWidth;
 
-                @Override
-                protected Float doInBackground(Void... params) {
-                    return preCalculateDigitScale(getActivity(), listType, ltoType, scrollViewWidth);
-                }
+                    @Override
+                    protected Float doInBackground(Void... params) {
+                        return preCalculateDigitScale(getActivity(), listType, ltoType, scrollViewWidth);
+                    }
 
-                @Override
-                protected void onPostExecute(Float result) {
-                    if (result == null) mAutoDigitalScale = 1f;
-                    else mAutoDigitalScale = result;
-                    updateDigitScaleSize();
-                }
-            }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-            mPreviousLtoType = mLtoType;
+                    @Override
+                    protected void onPostExecute(Float result) {
+                        if (result == null) mAutoDigitalScale = 1f;
+                        else {
+                            SharedPrefHelper.getInstance(getActivity()).getPrefs().edit().putFloat(prefKey, result).apply();
+                            mAutoDigitalScale = result;
+                        }
+                        updateDigitScaleSize();
+                    }
+                }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
         }
         updateMainTableAdapter();
         if (updateHeaderAndFooter) {
