@@ -23,15 +23,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp" />
 
-            <RadioGroup
-                android:id="@+id/plus_rg_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="invisible"></RadioGroup>
         </FrameLayout>
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/footer_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,12 +40,20 @@
                 android:layout_margin="2dp" />
 
             <RadioGroup
-                android:id="@+id/minus_rg_group"
+                android:id="@+id/plus_rg_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="invisible"></RadioGroup>
-        </FrameLayout>
+                android:visibility="gone"></RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/minus_rg_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/plus_rg_group"
+                android:orientation="horizontal"
+                android:visibility="gone"></RadioGroup>
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/main_table_recyclerview"

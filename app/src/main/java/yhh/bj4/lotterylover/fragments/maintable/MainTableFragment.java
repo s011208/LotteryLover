@@ -136,8 +136,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mOriginHeaderTextSize = mHeader.getTextSize();
         mOriginFooterTextSize = mFooter.getTextSize();
 
-        mHeader.setVisibility(View.INVISIBLE);
-        mFooter.setVisibility(View.INVISIBLE);
+        mHeader.setVisibility(View.GONE);
+        mFooter.setVisibility(View.GONE);
 
         final float digitScaleSize = getDigitScaleSize();
         mHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, mOriginHeaderTextSize * digitScaleSize);
@@ -147,6 +147,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         RadioButton btn;
         for (int i = 1; i < 11; ++i) {
             btn = new RadioButton(getActivity());
+            btn.setMinEms(3);
             btn.setText("+" + i);
             btn.setTag(i);
             btn.setOnClickListener(this);
@@ -160,6 +161,7 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
         mMinusGroup = (RadioGroup) root.findViewById(R.id.minus_rg_group);
         for (int i = 1; i < 11; ++i) {
             btn = new RadioButton(getActivity());
+            btn.setMinEms(3);
             btn.setText("-" + i);
             btn.setTag(-i);
             btn.setOnClickListener(this);
@@ -335,8 +337,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
             @Override
             protected void onPreExecute() {
-                mHeader.setVisibility(View.INVISIBLE);
-                mPlusGroup.setVisibility(View.INVISIBLE);
+                mHeader.setVisibility(View.GONE);
+                mPlusGroup.setVisibility(View.GONE);
             }
 
             @Override
@@ -346,13 +348,13 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     if (listType == LotteryLover.LIST_TYPE_OVERALL ||
                             listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
                         mPlusGroup.setVisibility(View.GONE);
-                        mHeader.setVisibility(View.INVISIBLE);
+                        mHeader.setVisibility(View.GONE);
                     } else {
                         mPlusGroup.setVisibility(View.VISIBLE);
-                        mHeader.setVisibility(View.INVISIBLE);
+                        mHeader.setVisibility(View.GONE);
                     }
                 } else {
-                    mPlusGroup.setVisibility(View.INVISIBLE);
+                    mPlusGroup.setVisibility(View.GONE);
                     mHeader.setVisibility(View.VISIBLE);
                     mHeader.setText(mainTableItem.makeSpannableString());
                 }
@@ -442,8 +444,8 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
 
             @Override
             protected void onPreExecute() {
-                mFooter.setVisibility(View.INVISIBLE);
-                mMinusGroup.setVisibility(View.INVISIBLE);
+                mFooter.setVisibility(View.GONE);
+                mMinusGroup.setVisibility(View.GONE);
             }
 
             @Override
@@ -453,13 +455,13 @@ public class MainTableFragment extends Fragment implements MainTableAdapter.Call
                     if (listType == LotteryLover.LIST_TYPE_OVERALL ||
                             listType == LotteryLover.LIST_TYPE_COMBINE_LIST) {
                         mMinusGroup.setVisibility(View.GONE);
-                        mFooter.setVisibility(View.INVISIBLE);
+                        mFooter.setVisibility(View.GONE);
                     } else {
                         mMinusGroup.setVisibility(View.VISIBLE);
-                        mFooter.setVisibility(View.INVISIBLE);
+                        mFooter.setVisibility(View.GONE);
                     }
                 } else {
-                    mMinusGroup.setVisibility(View.INVISIBLE);
+                    mMinusGroup.setVisibility(View.GONE);
                     mFooter.setVisibility(View.VISIBLE);
                     mFooter.setText(mainTableItem.makeSpannableString());
                 }
